@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include "SDL/SDL.h"
 
+#include "game.cpp"
+
 int main()
 {
   // Start up SDL
@@ -17,7 +19,7 @@ int main()
       exit(1);
     }
 
-    // TODO Construct game elements, start everything up
+    Game* game = new Game();
   }
 
   atexit(SDL_Quit);
