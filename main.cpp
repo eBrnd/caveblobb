@@ -22,6 +22,7 @@ int main()
 
   Game* game = new Game(display);
   game->frame();
+  SDL_Delay(1000);
 
   atexit(SDL_Quit);
 }
