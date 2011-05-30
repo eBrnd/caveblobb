@@ -1,3 +1,5 @@
+#include <string>
+
 class GameMode
 {
   private:
@@ -24,11 +26,18 @@ class GameMode
       SDL_FillRect(display, &rect, color);
     }
 
-    void frame()
+    int frame()
     {
-      // TODO move all objects
+      // move all objects
+      for(int i = 0; i < 159; i++) // move the walls
+      {
+        walls_top[i] = walls_top[i+1];
+        walls_bottom[i] = walls_bottom[i+1];
+      }
+      walls_top[159] = 90;
+      walls_bottom[159] = 420;
 
-      // TODO draw the walls
+      // draw the walls
       for(int i = 0; i < 800; i++)
       {
         FillRect(5 * i, 0, 5, walls_top[i], 0x80FF80);
@@ -37,9 +46,23 @@ class GameMode
 
       // TODO draw the obstacles
 
+      // Grab the input
+      SDL_Event event;
+      if(SDL_PollEvent(&event))
+      {
+        switch(event.type)
+        {
+          case SDL_KEYDOWN:
+              std::string esc ("escape");
+              if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
+                return 1;
+        }
+      }
+
       // TODO draw the player
 
       // TODO collision detection
 
+      return 0;
     }
 };

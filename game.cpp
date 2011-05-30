@@ -6,15 +6,15 @@
 class Game
 {
   private:
-      enum Mode { MENU, PLAY };
-      Mode mode;
-      SDL_Surface* display;
+    enum Mode { MENU, PLAY };
+    Mode mode;
+    SDL_Surface* display;
 
-      TTF_Font* menuFont;
-      SDL_Color clrWhite;
-      SDL_Color clrBlack;
+    TTF_Font* menuFont;
+    SDL_Color clrWhite;
+    SDL_Color clrBlack;
 
-      GameMode* gameMode;
+    GameMode* gameMode;
   public:
     Game(SDL_Surface* display)
     {
@@ -34,15 +34,19 @@ class Game
 
     void frame()
     {
+      SDL_FillRect(display, NULL, 0); // clear the buffer
+
       switch(mode)
       {
         case MENU:
             drawMenu();
-          //break;
+          break;
 
         case PLAY:
-            gameMode->frame();
+            if(gameMode->frame())
+              mode = MENU;
           break;
+
         default:
           break;
       }
@@ -52,8 +56,22 @@ class Game
 
     void drawMenu()
     {
-      SDL_Surface* text = TTF_RenderText_Shaded(menuFont, "Click to start.", clrWhite, clrBlack);
+      SDL_Surface* text = TTF_RenderText_Shaded(menuFont, "Click to start. Esc to quit.", clrWhite, clrBlack);
       SDL_Rect textLocation = { 100,100, 0,0 };
       SDL_BlitSurface(text, NULL, display, &textLocation);
+
+      SDL_Event event;
+      if(SDL_PollEvent(&event))
+      {
+        switch(event.type)
+        {
+          case SDL_MOUSEBUTTONDOWN:
+            mode = PLAY;
+          case SDL_KEYDOWN:
+              std::string esc ("escape");
+              if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
+                exit(0);
+        }
+      }
     }
 };
