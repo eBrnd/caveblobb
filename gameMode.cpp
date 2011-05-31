@@ -9,7 +9,7 @@ class GameMode
     int walls_top[160], walls_bottom[160], obstacles[160], player_tail[29];
     float player_pos, player_vel;
     bool up;
-    int frames_to_corner, corner_at, level_height, frames_to_obstacle;
+    int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed;
     unsigned long int playtime;
     float slope;
     TTF_Font* scoreFont;
@@ -36,8 +36,9 @@ class GameMode
       up = true; // since mouse button is still pressed from the click in the menu when the game starts
       slope = 0;
       playtime = 0;
+      passed = 0;
 
-      // for testing purposes, init with constant values
+      // init with constant values
       for(int i = 0; i < 160; i++)
       {
         walls_top[i] = 80;
@@ -135,10 +136,14 @@ class GameMode
           (int)player_pos + 10 > walls_bottom[28] ||
           ((int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50))
         return 2;
+      
+      // obstacle counter
+      if(obstacles[28] && !obstacles[29])
+        passed++;
 
       // draw the score panel
       std::ostringstream s;
-      s << playtime++ / 60;
+      s << playtime++ / 60 << " seconds - " << passed << " obstacles";
       SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
       SDL_Rect textLocation = { 100,540, 0,0 };
       SDL_BlitSurface(text, NULL, display, &textLocation);
