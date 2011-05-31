@@ -13,7 +13,7 @@ int main()
   }
 
   SDL_Surface *display;
-  display = SDL_SetVideoMode(800, 600, 16, SDL_SWSURFACE); // HWSURFACE?
+  display = SDL_SetVideoMode(800, 600, 32, SDL_SWSURFACE); // HWSURFACE?
   if(display == NULL)
   {
     fprintf(stderr, "Could not initialize video: %s\n", SDL_GetError());

@@ -6,7 +6,7 @@
 class Game
 {
   private:
-    enum Mode { MENU, PLAY };
+    enum Mode { MENU, PLAY, GAMEOVER };
     Mode mode;
     SDL_Surface* display;
 
@@ -39,12 +39,26 @@ class Game
       switch(mode)
       {
         case MENU:
-            drawMenu();
+          drawMenu();
           break;
 
         case PLAY:
-            if(gameMode->frame())
+          switch(gameMode->frame())
+          {
+            case 0:
+              break;
+            case 1:
               mode = MENU;
+              break;
+            case 2:
+              mode = GAMEOVER;
+              break;
+          }
+          break;
+
+        case GAMEOVER:
+          drawMenu();
+          // TODO implement game over screen
           break;
 
         default:
@@ -67,10 +81,11 @@ class Game
         {
           case SDL_MOUSEBUTTONDOWN:
             mode = PLAY;
+            gameMode->reset();
           case SDL_KEYDOWN:
-              std::string esc ("escape");
-              if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
-                exit(0);
+            std::string esc ("escape");
+            if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
+              exit(0);
         }
       }
     }
