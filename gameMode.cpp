@@ -142,23 +142,23 @@ class GameMode
       bool crashed = false;
       if( (int)player_pos < walls_top[28] )
       {
-        printf("crashed into top wall");
+        // crashed into top wall
         crashed = true;
       }
       if( (int)player_pos + 10 > walls_bottom[28] )
       {
-        printf("crashed into bottom wall");
+        // crashed into bottom wall
         crashed = true;
       }
       if( obstacles[28] && (int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50 )
       {
-        printf("crashed into obstacle");
+        // crashed into obstacle
         crashed = true;
       }
 
       if(crashed)
       {
-        globalStore->seconds = playtime;
+        globalStore->seconds = playtime / 60;
         globalStore->obstacles = passed;
         SDL_Delay(2000);
         return 2;
