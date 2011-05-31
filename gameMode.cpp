@@ -10,6 +10,7 @@ class GameMode
     float player_pos, player_vel;
     bool up;
     int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed;
+    int obstacle_distance, decrease_height_frames;
     unsigned long int playtime;
     float slope;
     TTF_Font* scoreFont;
@@ -37,6 +38,9 @@ class GameMode
       slope = 0;
       playtime = 0;
       passed = 0;
+
+      obstacle_distance = 160;
+      decrease_height_frames = 0;
 
       // init with constant values
       for(int i = 0; i < 160; i++)
@@ -98,7 +102,7 @@ class GameMode
       if(!frames_to_obstacle--)
       {
         obstacles[157] = obstacles[158] = obstacles[159] = walls_top[159] + (rand() % (level_height - 50));
-        frames_to_obstacle = 10 + rand() % 160;
+        frames_to_obstacle = 10 + rand() % obstacle_distance;
       }
 
       // Grab the input
@@ -139,7 +143,20 @@ class GameMode
       
       // obstacle counter
       if(obstacles[28] && !obstacles[29])
+      {
         passed++;
+        if((passed % 5) == 0 && obstacle_distance > 10)
+          obstacle_distance--;
+      }
+
+      // make level smaller
+      if(playtime % 600 == 0)
+        decrease_height_frames = 20;
+      if(decrease_height_frames)
+      {
+        level_height--;
+        decrease_height_frames--;
+      }
 
       // draw the score panel
       std::ostringstream s;
