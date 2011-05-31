@@ -138,7 +138,7 @@ class GameMode
 
       // draw the score panel
       std::ostringstream s;
-      s << playtime++;
+      s << playtime++ / 60;
       SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
       SDL_Rect textLocation = { 100,540, 0,0 };
       SDL_BlitSurface(text, NULL, display, &textLocation);
