@@ -1,5 +1,6 @@
 #include <string>
 #include <sstream>
+#include "globalStore.cpp"
 
 class GameMode
 {
@@ -16,10 +17,12 @@ class GameMode
     TTF_Font* scoreFont;
     SDL_Color clrWhite;
     SDL_Color clrBlack;
+    GlobalStore* globalStore;
   public:
-    GameMode(SDL_Surface* display)
+    GameMode(SDL_Surface* display, GlobalStore* globalStore)
     {
       this->display = display;
+      this->globalStore = globalStore;
       scoreFont = TTF_OpenFont("/usr/share/fonts/TTF/FreeSans.ttf", 18);
       clrWhite = { 255,255,255, 0 };
       clrBlack = { 0,0,0, 0 };
@@ -136,10 +139,30 @@ class GameMode
       player_tail[28] = (int)player_pos;
 
       // collision detection
-      if( (int)player_pos < walls_top[28] ||
-          (int)player_pos + 10 > walls_bottom[28] ||
-          ((int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50))
+      bool crashed = false;
+      if( (int)player_pos < walls_top[28] )
+      {
+        printf("crashed into top wall");
+        crashed = true;
+      }
+      if( (int)player_pos + 10 > walls_bottom[28] )
+      {
+        printf("crashed into bottom wall");
+        crashed = true;
+      }
+      if( obstacles[28] && (int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50 )
+      {
+        printf("crashed into obstacle");
+        crashed = true;
+      }
+
+      if(crashed)
+      {
+        globalStore->seconds = playtime;
+        globalStore->obstacles = passed;
+        SDL_Delay(2000);
         return 2;
+      }
       
       // obstacle counter
       if(obstacles[28] && !obstacles[29])

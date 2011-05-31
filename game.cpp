@@ -15,6 +15,7 @@ class Game
     SDL_Color clrBlack;
 
     GameMode* gameMode;
+    GlobalStore* globalStore;
   public:
     Game(SDL_Surface* display)
     {
@@ -28,8 +29,10 @@ class Game
       clrWhite = { 255,255,255, 0 };
       clrBlack = { 0,0,0, 0 };
 
+      globalStore = new GlobalStore();
+
       // init game mode
-      gameMode = new GameMode(display);
+      gameMode = new GameMode(display, globalStore);
     }
 
     void frame()
@@ -57,8 +60,7 @@ class Game
           break;
 
         case GAMEOVER:
-          drawMenu();
-          // TODO implement game over screen
+          drawGameOver();
           break;
 
         default:
@@ -81,6 +83,30 @@ class Game
         {
           case SDL_MOUSEBUTTONDOWN:
             mode = PLAY;
+            gameMode->reset();
+          case SDL_KEYDOWN:
+            std::string esc ("escape");
+            if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
+              exit(0);
+        }
+      }
+    }
+
+    void drawGameOver()
+    {
+      std::ostringstream s;
+      s << globalStore->seconds << " seconds " << globalStore->obstacles << " obstacles.";
+      SDL_Surface* text = TTF_RenderText_Shaded(menuFont, s.str().c_str(), clrWhite, clrBlack);
+      SDL_Rect textLocation = { 100,100, 0,0 };
+      SDL_BlitSurface(text, NULL, display, &textLocation);
+
+      SDL_Event event;
+      if(SDL_PollEvent(&event))
+      {
+        switch(event.type)
+        {
+          case SDL_MOUSEBUTTONDOWN:
+            mode = MENU;
             gameMode->reset();
           case SDL_KEYDOWN:
             std::string esc ("escape");

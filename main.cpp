@@ -3,7 +3,7 @@
 
 #include "game.cpp"
 
-float lastUpdate = 0;
+float lastUpdate;
 bool timeToUpdate()
 {
   Uint32 time = SDL_GetTicks();
@@ -34,6 +34,7 @@ int main()
 
   Game* game = new Game(display);
   
+  lastUpdate = 0;
   while(true)
     if(timeToUpdate())
       game->frame();
