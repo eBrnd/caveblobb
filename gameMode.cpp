@@ -160,7 +160,6 @@ class GameMode
       {
         globalStore->seconds = playtime / 60;
         globalStore->obstacles = passed;
-        SDL_Delay(2000);
         return 2;
       }
       
