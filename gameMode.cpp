@@ -1,4 +1,5 @@
 #include <string>
+#include <sstream>
 
 class GameMode
 {
@@ -9,11 +10,18 @@ class GameMode
     float player_pos, player_vel;
     bool up;
     int frames_to_corner, corner_at, level_height, frames_to_obstacle;
+    unsigned long int playtime;
     float slope;
+    TTF_Font* scoreFont;
+    SDL_Color clrWhite;
+    SDL_Color clrBlack;
   public:
     GameMode(SDL_Surface* display)
     {
       this->display = display;
+      scoreFont = TTF_OpenFont("/usr/share/fonts/TTF/FreeSans.ttf", 18);
+      clrWhite = { 255,255,255, 0 };
+      clrBlack = { 0,0,0, 0 };
       reset();
     }
 
@@ -27,6 +35,7 @@ class GameMode
       level_height = 340;
       up = true; // since mouse button is still pressed from the click in the menu when the game starts
       slope = 0;
+      playtime = 0;
 
       // for testing purposes, init with constant values
       for(int i = 0; i < 160; i++)
@@ -126,6 +135,13 @@ class GameMode
           (int)player_pos + 10 > walls_bottom[28] ||
           ((int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50))
         return 2;
+
+      // draw the score panel
+      std::ostringstream s;
+      s << playtime++;
+      SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
+      SDL_Rect textLocation = { 100,540, 0,0 };
+      SDL_BlitSurface(text, NULL, display, &textLocation);
 
       return 0;
     }
