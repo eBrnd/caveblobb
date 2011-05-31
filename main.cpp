@@ -3,6 +3,18 @@
 
 #include "game.cpp"
 
+float lastUpdate = 0;
+bool timeToUpdate()
+{
+  Uint32 time = SDL_GetTicks();
+  if(lastUpdate + 17 < time)
+  {
+    lastUpdate = time;
+    return true;
+  } else
+    return false;
+}
+
 int main()
 {
   // Start up SDL
@@ -21,8 +33,10 @@ int main()
   }
 
   Game* game = new Game(display);
+  
   while(true)
-    game->frame();
+    if(timeToUpdate())
+      game->frame();
 
   atexit(SDL_Quit);
 }
