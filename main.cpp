@@ -39,5 +39,6 @@ int main()
     if(timeToUpdate())
       game->frame();
 
+  delete game;
   atexit(SDL_Quit);
 }

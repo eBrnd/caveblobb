@@ -186,6 +186,7 @@ class GameMode
       SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
       SDL_Rect textLocation = { 100,540, 0,0 };
       SDL_BlitSurface(text, NULL, display, &textLocation);
+      SDL_FreeSurface(text);
 
       return 0;
     }

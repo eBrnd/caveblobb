@@ -35,6 +35,12 @@ class Game
       gameMode = new GameMode(display, globalStore);
     }
 
+    ~Game()
+    {
+      delete globalStore;
+      delete gameMode;
+    }
+
     void frame()
     {
       SDL_FillRect(display, NULL, 0); // clear the buffer
@@ -75,6 +81,7 @@ class Game
       SDL_Surface* text = TTF_RenderText_Shaded(menuFont, "Click to start. Esc to quit.", clrWhite, clrBlack);
       SDL_Rect textLocation = { 100,100, 0,0 };
       SDL_BlitSurface(text, NULL, display, &textLocation);
+      SDL_FreeSurface(text);
 
       SDL_Event event;
       if(SDL_PollEvent(&event))
@@ -87,7 +94,10 @@ class Game
           case SDL_KEYDOWN:
             std::string esc ("escape");
             if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
+            {
+              SDL_Quit();
               exit(0);
+            }
         }
       }
     }
@@ -99,6 +109,7 @@ class Game
       SDL_Surface* text = TTF_RenderText_Shaded(menuFont, s.str().c_str(), clrWhite, clrBlack);
       SDL_Rect textLocation = { 100,100, 0,0 };
       SDL_BlitSurface(text, NULL, display, &textLocation);
+      SDL_FreeSurface(text);
 
       SDL_Event event;
       if(SDL_PollEvent(&event))
@@ -108,10 +119,6 @@ class Game
           case SDL_MOUSEBUTTONDOWN:
             mode = MENU;
             gameMode->reset();
-          case SDL_KEYDOWN:
-            std::string esc ("escape");
-            if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
-              exit(0);
         }
       }
     }
