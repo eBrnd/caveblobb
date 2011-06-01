@@ -18,13 +18,13 @@ Game::Game(SDL_Surface* display)
   globalStore = new GlobalStore();
 
   // init game mode
-  gameMode = new GameMode(display, globalStore);
+  playMode = new PlayMode(display, globalStore);
 }
 
 Game::~Game()
 {
   delete globalStore;
-  delete gameMode;
+  delete playMode;
 }
 
 void Game::frame()
@@ -38,7 +38,7 @@ void Game::frame()
       break;
 
     case PLAY:
-      switch(gameMode->frame())
+      switch(playMode->frame())
       {
         case 0:
           break;
@@ -76,7 +76,7 @@ void Game::drawMenu()
     {
       case SDL_MOUSEBUTTONDOWN:
         mode = PLAY;
-        gameMode->reset();
+        playMode->reset();
       case SDL_KEYDOWN:
         std::string esc ("escape");
         if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
@@ -104,7 +104,7 @@ void Game::drawGameOver()
     {
       case SDL_MOUSEBUTTONDOWN:
         mode = MENU;
-        gameMode->reset();
+        playMode->reset();
     }
   }
 }

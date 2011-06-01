@@ -6,6 +6,8 @@ UpdateTimer::UpdateTimer()
 {
   lastUpdate = 0;
 }
+
+// TODO Idle wait > busy wait
 bool UpdateTimer::timeToUpdate()
 {
   Uint32 time = SDL_GetTicks();

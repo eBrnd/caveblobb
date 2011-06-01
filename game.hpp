@@ -2,7 +2,7 @@
 #define GAME
 
 #include "SDL/SDL_ttf.h"
-#include "gameMode.hpp"
+#include "playMode.hpp"
 
 class Game
 {
@@ -15,7 +15,7 @@ class Game
     SDL_Color clrWhite;
     SDL_Color clrBlack;
 
-    GameMode* gameMode;
+    PlayMode* playMode;
     GlobalStore* globalStore;
   public:
     Game(SDL_Surface* display);
