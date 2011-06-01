@@ -1,7 +1,7 @@
 #ifndef GAMEMODE
 #define GAMEMODE
 
-#include "globalStore.cpp"
+#include "globalStore.hpp"
 #include "SDL/SDL.h"
 #include "SDL/SDL_ttf.h"
 
