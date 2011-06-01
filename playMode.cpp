@@ -47,7 +47,7 @@ inline void PlayMode::FillRect(int x, int y, int w, int h, int color)
   SDL_FillRect(display, &rect, color);
 }
 
-int PlayMode::frame()
+Mode PlayMode::frame()
 {
   // move all objects
   for(int i = 0; i < 159; i++) // move the walls and obstacles
@@ -106,7 +106,7 @@ int PlayMode::frame()
       case SDL_KEYDOWN:
         std::string esc ("escape");
         if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
-          return 1;
+          return MENU;
     }
   }
 
@@ -143,7 +143,7 @@ int PlayMode::frame()
   {
     globalStore->seconds = playtime / 60;
     globalStore->obstacles = passed;
-    return 2;
+    return GAMEOVER;
   }
   
   // obstacle counter
@@ -171,5 +171,5 @@ int PlayMode::frame()
   SDL_BlitSurface(text, NULL, display, &textLocation);
   SDL_FreeSurface(text);
 
-  return 0;
+  return PLAY;
 }

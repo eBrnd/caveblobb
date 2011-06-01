@@ -11,7 +11,7 @@ GameOverMode::GameOverMode(SDL_Surface* display, GlobalStore* globalStore)
   clrBlack = { 0,0,0, 0 };
 }
 
-int GameOverMode::frame()
+Mode GameOverMode::frame()
 {
   std::ostringstream s;
   s << globalStore->seconds << " seconds, " << globalStore->obstacles << " obstacles. Click for Menu.";
@@ -26,11 +26,11 @@ int GameOverMode::frame()
     switch(event.type)
     {
       case SDL_MOUSEBUTTONDOWN:
-        return 1;
+        return MENU;
     }
   }
 
-  return 0;
+  return GAMEOVER;
 }
 
 void GameOverMode::reset()

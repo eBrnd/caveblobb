@@ -3,6 +3,7 @@
 
 #include "SDL/SDL.h"
 #include "globalStore.hpp"
+#include "mode.hpp"
 
 class GameMode
 {
@@ -12,7 +13,7 @@ class GameMode
   public:
     GameMode(SDL_Surface* display, GlobalStore* globalStore);
     virtual void reset() = 0;
-    virtual int frame() = 0;
+    virtual Mode frame() = 0;
 };
 
 #endif

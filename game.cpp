@@ -42,42 +42,20 @@ void Game::frame()
   switch(mode)
   {
     case MENU:
-      switch(menuMode->frame())
-      {
-        case 0:
-          break;
-        case 1:
-          playMode->reset();
-          mode = PLAY;
-          break;
-      }
+      mode = menuMode->frame();
       break;
-
+    case START:
+      playMode->reset();
+      mode = PLAY;
     case PLAY:
-      switch(playMode->frame())
-      {
-        case 0:
-          break;
-        case 1:
-          mode = MENU;
-          break;
-        case 2:
-          mode = GAMEOVER;
-          break;
-      }
+      mode = playMode->frame();
       break;
-
     case GAMEOVER:
-      switch(gameOverMode->frame())
-      {
-        case 0:
-          break;
-        case 1:
-          mode = MENU;
-          break;
-      }
+      mode = gameOverMode->frame();
       break;
-
+    case QUIT:
+      SDL_Quit();
+      exit(0);      // still not sure whether here is the right play to do this
     default:
       break;
   }

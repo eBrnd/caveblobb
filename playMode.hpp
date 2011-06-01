@@ -3,6 +3,7 @@
 
 #include "globalStore.hpp"
 #include "gameMode.hpp"
+#include "mode.hpp"
 #include "SDL/SDL.h"
 #include "SDL/SDL_ttf.h"
 
@@ -23,7 +24,7 @@ class PlayMode : public GameMode
     PlayMode(SDL_Surface* display, GlobalStore* globalStore);
     void reset();
     inline void FillRect(int x, int y, int w, int h, int color);
-    int frame();
+    Mode frame();
 };
 
 #endif

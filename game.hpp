@@ -3,11 +3,11 @@
 
 #include "SDL/SDL_ttf.h"
 #include "gameMode.hpp"
+#include "mode.hpp"
 
 class Game
 {
   private:
-    enum Mode { MENU, PLAY, GAMEOVER };
     Mode mode;
     SDL_Surface* display;
 

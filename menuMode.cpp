@@ -10,7 +10,7 @@ MenuMode::MenuMode(SDL_Surface* display, GlobalStore* globalStore)
   clrBlack = { 0,0,0, 0 };
 }
 
-int MenuMode::frame()
+Mode MenuMode::frame()
 {
   SDL_Surface* text = TTF_RenderText_Shaded(menuFont, "Click to start. Esc to quit.", clrWhite, clrBlack);
   SDL_Rect textLocation = { 100,100, 0,0 };
@@ -23,18 +23,17 @@ int MenuMode::frame()
     switch(event.type)
     {
       case SDL_MOUSEBUTTONDOWN:
-        return 1;
+        return START;
       case SDL_KEYDOWN:
         std::string esc ("escape");
         if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
         {
-          SDL_Quit();
-          exit(0); // TODO this should not be done down here...
+          return QUIT;
         }
     }
   }
 
-  return 0;
+  return MENU;
 }
 
 void MenuMode::reset()

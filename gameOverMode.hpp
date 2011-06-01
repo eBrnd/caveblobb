@@ -3,6 +3,7 @@
 
 #include "gameMode.hpp"
 #include "SDL/SDL_ttf.h"
+#include "mode.hpp"
 
 class GameOverMode : public GameMode
 {
@@ -11,7 +12,7 @@ class GameOverMode : public GameMode
     SDL_Color clrWhite, clrBlack;
   public:
     GameOverMode(SDL_Surface* display, GlobalStore* globalStore);
-    int frame();
+    Mode frame();
     void reset();
 };
 
