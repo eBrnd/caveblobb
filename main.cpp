@@ -1,19 +1,8 @@
 #include <stdlib.h>
 #include "SDL/SDL.h"
 
+#include "updateTimer.hpp"
 #include "game.cpp"
-
-float lastUpdate;
-bool timeToUpdate()
-{
-  Uint32 time = SDL_GetTicks();
-  if(lastUpdate + 17 < time)
-  {
-    lastUpdate = time;
-    return true;
-  } else
-    return false;
-}
 
 int main()
 {
@@ -32,11 +21,11 @@ int main()
     exit(1);
   }
 
+  UpdateTimer* updateTimer = new UpdateTimer();
   Game* game = new Game(display);
   
-  lastUpdate = 0;
   while(true)
-    if(timeToUpdate())
+    if(updateTimer->timeToUpdate())
       game->frame();
 
   delete game;
