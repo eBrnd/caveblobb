@@ -1,125 +1,110 @@
-// TODO Probably menu should also be its own class, like GameMode
+#include "game.hpp"
 
-#include "SDL/SDL_ttf.h"
-#include "gameMode.hpp"
+#include <string>
+#include <sstream>
 
-class Game
+Game::Game(SDL_Surface* display)
 {
-  private:
-    enum Mode { MENU, PLAY, GAMEOVER };
-    Mode mode;
-    SDL_Surface* display;
+  // init private variables
+  mode = MENU;
+  this->display = display;
 
-    TTF_Font* menuFont;
-    SDL_Color clrWhite;
-    SDL_Color clrBlack;
+  // init fonts + colors for menu
+  TTF_Init();
+  menuFont = TTF_OpenFont("/usr/share/fonts/TTF/FreeSans.ttf", 18);
+  clrWhite = { 255,255,255, 0 };
+  clrBlack = { 0,0,0, 0 };
 
-    GameMode* gameMode;
-    GlobalStore* globalStore;
-  public:
-    Game(SDL_Surface* display)
-    {
-      // init private variables
-      mode = MENU;
-      this->display = display;
+  globalStore = new GlobalStore();
 
-      // init fonts + colors for menu
-      TTF_Init();
-      menuFont = TTF_OpenFont("/usr/share/fonts/TTF/FreeSans.ttf", 18);
-      clrWhite = { 255,255,255, 0 };
-      clrBlack = { 0,0,0, 0 };
+  // init game mode
+  gameMode = new GameMode(display, globalStore);
+}
 
-      globalStore = new GlobalStore();
+Game::~Game()
+{
+  delete globalStore;
+  delete gameMode;
+}
 
-      // init game mode
-      gameMode = new GameMode(display, globalStore);
-    }
+void Game::frame()
+{
+  SDL_FillRect(display, NULL, 0); // clear the buffer
 
-    ~Game()
-    {
-      delete globalStore;
-      delete gameMode;
-    }
+  switch(mode)
+  {
+    case MENU:
+      drawMenu();
+      break;
 
-    void frame()
-    {
-      SDL_FillRect(display, NULL, 0); // clear the buffer
-
-      switch(mode)
+    case PLAY:
+      switch(gameMode->frame())
       {
-        case MENU:
-          drawMenu();
+        case 0:
           break;
-
-        case PLAY:
-          switch(gameMode->frame())
-          {
-            case 0:
-              break;
-            case 1:
-              mode = MENU;
-              break;
-            case 2:
-              mode = GAMEOVER;
-              break;
-          }
+        case 1:
+          mode = MENU;
           break;
-
-        case GAMEOVER:
-          drawGameOver();
-          break;
-
-        default:
+        case 2:
+          mode = GAMEOVER;
           break;
       }
+      break;
 
-      SDL_Flip(display);
-    }
+    case GAMEOVER:
+      drawGameOver();
+      break;
 
-    void drawMenu()
+    default:
+      break;
+  }
+
+  SDL_Flip(display);
+}
+
+void Game::drawMenu()
+{
+  SDL_Surface* text = TTF_RenderText_Shaded(menuFont, "Click to start. Esc to quit.", clrWhite, clrBlack);
+  SDL_Rect textLocation = { 100,100, 0,0 };
+  SDL_BlitSurface(text, NULL, display, &textLocation);
+  SDL_FreeSurface(text);
+
+  SDL_Event event;
+  if(SDL_PollEvent(&event))
+  {
+    switch(event.type)
     {
-      SDL_Surface* text = TTF_RenderText_Shaded(menuFont, "Click to start. Esc to quit.", clrWhite, clrBlack);
-      SDL_Rect textLocation = { 100,100, 0,0 };
-      SDL_BlitSurface(text, NULL, display, &textLocation);
-      SDL_FreeSurface(text);
-
-      SDL_Event event;
-      if(SDL_PollEvent(&event))
-      {
-        switch(event.type)
+      case SDL_MOUSEBUTTONDOWN:
+        mode = PLAY;
+        gameMode->reset();
+      case SDL_KEYDOWN:
+        std::string esc ("escape");
+        if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
         {
-          case SDL_MOUSEBUTTONDOWN:
-            mode = PLAY;
-            gameMode->reset();
-          case SDL_KEYDOWN:
-            std::string esc ("escape");
-            if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
-            {
-              SDL_Quit();
-              exit(0);
-            }
+          SDL_Quit();
+          exit(0);
         }
-      }
     }
+  }
+}
 
-    void drawGameOver()
+void Game::drawGameOver()
+{
+  std::ostringstream s;
+  s << globalStore->seconds << " seconds " << globalStore->obstacles << " obstacles.";
+  SDL_Surface* text = TTF_RenderText_Shaded(menuFont, s.str().c_str(), clrWhite, clrBlack);
+  SDL_Rect textLocation = { 100,100, 0,0 };
+  SDL_BlitSurface(text, NULL, display, &textLocation);
+  SDL_FreeSurface(text);
+
+  SDL_Event event;
+  if(SDL_PollEvent(&event))
+  {
+    switch(event.type)
     {
-      std::ostringstream s;
-      s << globalStore->seconds << " seconds " << globalStore->obstacles << " obstacles.";
-      SDL_Surface* text = TTF_RenderText_Shaded(menuFont, s.str().c_str(), clrWhite, clrBlack);
-      SDL_Rect textLocation = { 100,100, 0,0 };
-      SDL_BlitSurface(text, NULL, display, &textLocation);
-      SDL_FreeSurface(text);
-
-      SDL_Event event;
-      if(SDL_PollEvent(&event))
-      {
-        switch(event.type)
-        {
-          case SDL_MOUSEBUTTONDOWN:
-            mode = MENU;
-            gameMode->reset();
-        }
-      }
+      case SDL_MOUSEBUTTONDOWN:
+        mode = MENU;
+        gameMode->reset();
     }
-};
+  }
+}

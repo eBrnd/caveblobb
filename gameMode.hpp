@@ -2,6 +2,8 @@
 #define GAMEMODE
 
 #include "globalStore.cpp"
+#include "SDL/SDL.h"
+#include "SDL/SDL_ttf.h"
 
 class GameMode
 {

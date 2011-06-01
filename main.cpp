@@ -2,7 +2,7 @@
 #include "SDL/SDL.h"
 
 #include "updateTimer.hpp"
-#include "game.cpp"
+#include "game.hpp"
 
 int main()
 {
