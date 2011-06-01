@@ -1,14 +1,14 @@
 #include "menuMode.hpp"
-#include "colors.hpp"
+#include "colorsAndFonts.hpp"
 
 #include <string>
 
 MenuMode::MenuMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
 {
-  menuFont = Colors::getInstance()->sans18;
-  clrWhite = Colors::getInstance()->white;
-  clrBlack = Colors::getInstance()->black;
+  menuFont = ColorsAndFonts::getInstance()->sans18;
+  clrWhite = ColorsAndFonts::getInstance()->white;
+  clrBlack = ColorsAndFonts::getInstance()->black;
 }
 
 Mode MenuMode::frame()

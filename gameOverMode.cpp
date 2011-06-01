@@ -1,6 +1,6 @@
 #include "gameOverMode.hpp"
 
-#include "colors.hpp"
+#include "colorsAndFonts.hpp"
 
 #include <string>
 #include <sstream>
@@ -9,8 +9,8 @@ GameOverMode::GameOverMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
 {
   gameOverFont = TTF_OpenFont("/usr/share/fonts/TTF/FreeSans.ttf", 18);
-  clrWhite = Colors::getInstance()->white;
-  clrBlack = Colors::getInstance()->black;
+  clrWhite = ColorsAndFonts::getInstance()->white;
+  clrBlack = ColorsAndFonts::getInstance()->black;
 }
 
 Mode GameOverMode::frame()

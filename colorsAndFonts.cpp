@@ -1,8 +1,8 @@
-#include "colors.hpp"
+#include "colorsAndFonts.hpp"
 
-Colors* Colors::pointer = NULL;
+ColorsAndFonts* ColorsAndFonts::pointer = NULL;
 
-Colors::Colors()
+ColorsAndFonts::ColorsAndFonts()
 {
   TTF_Init();
   sans18 = TTF_OpenFont("/usr/share/fonts/TTF/FreeSans.ttf", 18);
@@ -10,11 +10,11 @@ Colors::Colors()
   black.r = black.b = black.g = 0;
 }
 
-Colors* Colors::getInstance()
+ColorsAndFonts* ColorsAndFonts::getInstance()
 {
   if(pointer == NULL)
   {
-    pointer = new Colors();
+    pointer = new ColorsAndFonts();
   }
   return pointer;
 }

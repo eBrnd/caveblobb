@@ -2,7 +2,7 @@
 #include "playMode.hpp"
 #include "menuMode.hpp"
 #include "gameOverMode.hpp"
-#include "colors.hpp"
+#include "colorsAndFonts.hpp"
 
 #include <iostream>
 #include <string>

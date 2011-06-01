@@ -1,6 +1,6 @@
 #include "playMode.hpp"
 
-#include "colors.hpp"
+#include "colorsAndFonts.hpp"
 
 #include <string>
 #include <sstream>
@@ -9,9 +9,9 @@
 PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
 {
-  scoreFont = Colors::getInstance()->sans18;
-  clrWhite = Colors::getInstance()->white;
-  clrBlack = Colors::getInstance()->black;
+  scoreFont = ColorsAndFonts::getInstance()->sans18;
+  clrWhite = ColorsAndFonts::getInstance()->white;
+  clrBlack = ColorsAndFonts::getInstance()->black;
   reset();
 }
 
