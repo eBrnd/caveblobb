@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "playMode.hpp"
 #include "menuMode.hpp"
+#include "gameOverMode.hpp"
 
 #include <iostream>
 #include <string>
@@ -23,12 +24,15 @@ Game::Game(SDL_Surface* display)
   // init game mode
   playMode = new PlayMode(display, globalStore);
   menuMode = new MenuMode(display, globalStore);
+  gameOverMode = new GameOverMode(display, globalStore);
 }
 
 Game::~Game()
 {
   delete globalStore;
   delete playMode;
+  delete menuMode;
+  delete gameOverMode;
 }
 
 void Game::frame()
@@ -64,7 +68,14 @@ void Game::frame()
       break;
 
     case GAMEOVER:
-      drawGameOver();
+      switch(gameOverMode->frame())
+      {
+        case 0:
+          break;
+        case 1:
+          mode = MENU;
+          break;
+      }
       break;
 
     default:
@@ -72,24 +83,4 @@ void Game::frame()
   }
 
   SDL_Flip(display);
-}
-
-void Game::drawGameOver()
-{
-  std::ostringstream s;
-  s << globalStore->seconds << " seconds " << globalStore->obstacles << " obstacles.";
-  SDL_Surface* text = TTF_RenderText_Shaded(menuFont, s.str().c_str(), clrWhite, clrBlack);
-  SDL_Rect textLocation = { 100,100, 0,0 };
-  SDL_BlitSurface(text, NULL, display, &textLocation);
-  SDL_FreeSurface(text);
-
-  SDL_Event event;
-  if(SDL_PollEvent(&event))
-  {
-    switch(event.type)
-    {
-      case SDL_MOUSEBUTTONDOWN:
-        mode = MENU;
-    }
-  }
 }

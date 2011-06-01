@@ -15,14 +15,14 @@ class Game
     SDL_Color clrWhite;
     SDL_Color clrBlack;
 
+    GlobalStore* globalStore;
     GameMode* playMode;
     GameMode* menuMode;
-    GlobalStore* globalStore;
+    GameMode* gameOverMode;
   public:
     Game(SDL_Surface* display);
     ~Game();
     void frame();
-    void drawGameOver(); // TODO as should GameOver! - And make it inherit from the same superclass for great Objektorientierung!
 };
 
 #endif
