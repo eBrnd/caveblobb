@@ -6,7 +6,7 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_ttf.h"
 
-class PlayMode : GameMode
+class PlayMode : public GameMode
 {
   private:
     int walls_top[160], walls_bottom[160], obstacles[160], player_tail[29];

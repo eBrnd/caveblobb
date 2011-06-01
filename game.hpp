@@ -2,7 +2,7 @@
 #define GAME
 
 #include "SDL/SDL_ttf.h"
-#include "playMode.hpp"
+#include "gameMode.hpp"
 
 class Game
 {
@@ -15,13 +15,13 @@ class Game
     SDL_Color clrWhite;
     SDL_Color clrBlack;
 
-    PlayMode* playMode;
+    GameMode* playMode;
+    GameMode* menuMode;
     GlobalStore* globalStore;
   public:
     Game(SDL_Surface* display);
     ~Game();
     void frame();
-    void drawMenu(); // TODO Menu should be its own class
     void drawGameOver(); // TODO as should GameOver! - And make it inherit from the same superclass for great Objektorientierung!
 };
 

@@ -1,5 +1,8 @@
 #include "game.hpp"
+#include "playMode.hpp"
+#include "menuMode.hpp"
 
+#include <iostream>
 #include <string>
 #include <sstream>
 
@@ -19,6 +22,7 @@ Game::Game(SDL_Surface* display)
 
   // init game mode
   playMode = new PlayMode(display, globalStore);
+  menuMode = new MenuMode(display, globalStore);
 }
 
 Game::~Game()
@@ -34,7 +38,15 @@ void Game::frame()
   switch(mode)
   {
     case MENU:
-      drawMenu();
+      switch(menuMode->frame())
+      {
+        case 0:
+          break;
+        case 1:
+          playMode->reset();
+          mode = PLAY;
+          break;
+      }
       break;
 
     case PLAY:
@@ -62,32 +74,6 @@ void Game::frame()
   SDL_Flip(display);
 }
 
-void Game::drawMenu()
-{
-  SDL_Surface* text = TTF_RenderText_Shaded(menuFont, "Click to start. Esc to quit.", clrWhite, clrBlack);
-  SDL_Rect textLocation = { 100,100, 0,0 };
-  SDL_BlitSurface(text, NULL, display, &textLocation);
-  SDL_FreeSurface(text);
-
-  SDL_Event event;
-  if(SDL_PollEvent(&event))
-  {
-    switch(event.type)
-    {
-      case SDL_MOUSEBUTTONDOWN:
-        mode = PLAY;
-        playMode->reset();
-      case SDL_KEYDOWN:
-        std::string esc ("escape");
-        if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
-        {
-          SDL_Quit();
-          exit(0);
-        }
-    }
-  }
-}
-
 void Game::drawGameOver()
 {
   std::ostringstream s;
@@ -104,7 +90,6 @@ void Game::drawGameOver()
     {
       case SDL_MOUSEBUTTONDOWN:
         mode = MENU;
-        playMode->reset();
     }
   }
 }

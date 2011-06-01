@@ -11,8 +11,8 @@ class GameMode
     GlobalStore* globalStore;
   public:
     GameMode(SDL_Surface* display, GlobalStore* globalStore);
-    void reset();
-    int frame();
+    virtual void reset() = 0;
+    virtual int frame() = 0;
 };
 
 #endif
