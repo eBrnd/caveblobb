@@ -2,6 +2,7 @@
 #include "playMode.hpp"
 #include "menuMode.hpp"
 #include "gameOverMode.hpp"
+#include "colors.hpp"
 
 #include <iostream>
 #include <string>
@@ -12,16 +13,9 @@ Game::Game(SDL_Surface* display)
   // init private variables
   mode = MENU;
   this->display = display;
-
-  // init fonts + colors for menu
-  TTF_Init();
-  menuFont = TTF_OpenFont("/usr/share/fonts/TTF/FreeSans.ttf", 18);
-  clrWhite = { 255,255,255, 0 };
-  clrBlack = { 0,0,0, 0 };
-
   globalStore = new GlobalStore();
 
-  // init game mode
+  // init game modes
   playMode = new PlayMode(display, globalStore);
   menuMode = new MenuMode(display, globalStore);
   gameOverMode = new GameOverMode(display, globalStore);
@@ -29,10 +23,10 @@ Game::Game(SDL_Surface* display)
 
 Game::~Game()
 {
-  delete globalStore;
   delete playMode;
   delete menuMode;
   delete gameOverMode;
+  delete globalStore;
 }
 
 void Game::frame()

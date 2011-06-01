@@ -1,14 +1,17 @@
 #include "playMode.hpp"
 
+#include "colors.hpp"
+
 #include <string>
 #include <sstream>
+#include <iostream>
 
 PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
 {
-  scoreFont = TTF_OpenFont("/usr/share/fonts/TTF/FreeSans.ttf", 18);
-  clrWhite = { 255,255,255, 0 };
-  clrBlack = { 0,0,0, 0 };
+  scoreFont = Colors::getInstance()->sans18;
+  clrWhite = Colors::getInstance()->white;
+  clrBlack = Colors::getInstance()->black;
   reset();
 }
 
