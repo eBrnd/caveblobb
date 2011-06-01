@@ -1,25 +1,9 @@
+#include "gameMode.hpp"
+
 #include <string>
 #include <sstream>
-#include "globalStore.cpp"
 
-class GameMode
-{
-  private:
-    SDL_Surface* display;
-
-    int walls_top[160], walls_bottom[160], obstacles[160], player_tail[29];
-    float player_pos, player_vel;
-    bool up;
-    int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed;
-    int obstacle_distance, decrease_height_frames;
-    unsigned long int playtime;
-    float slope;
-    TTF_Font* scoreFont;
-    SDL_Color clrWhite;
-    SDL_Color clrBlack;
-    GlobalStore* globalStore;
-  public:
-    GameMode(SDL_Surface* display, GlobalStore* globalStore)
+    GameMode::GameMode(SDL_Surface* display, GlobalStore* globalStore)
     {
       this->display = display;
       this->globalStore = globalStore;
@@ -29,7 +13,7 @@ class GameMode
       reset();
     }
 
-    void reset()
+    void GameMode::reset()
     {
       player_pos = 300;
       player_vel = 0;
@@ -58,13 +42,13 @@ class GameMode
       }
     }
 
-    inline void FillRect(int x, int y, int w, int h, int color)
+    inline void GameMode::FillRect(int x, int y, int w, int h, int color)
     {
       SDL_Rect rect = {x,y,w,h};
       SDL_FillRect(display, &rect, color);
     }
 
-    int frame()
+    int GameMode::frame()
     {
       // move all objects
       for(int i = 0; i < 159; i++) // move the walls and obstacles

@@ -1,7 +1,7 @@
 // TODO Probably menu should also be its own class, like GameMode
 
 #include "SDL/SDL_ttf.h"
-#include "gameMode.cpp"
+#include "gameMode.hpp"
 
 class Game
 {
