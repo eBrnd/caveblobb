@@ -1,15 +1,14 @@
-#ifndef GAMEMODE
-#define GAMEMODE
+#ifndef PLAYMODE
+#define PLAYMODE
 
 #include "globalStore.hpp"
+#include "gameMode.hpp"
 #include "SDL/SDL.h"
 #include "SDL/SDL_ttf.h"
 
-class PlayMode
+class PlayMode : GameMode
 {
   private:
-    SDL_Surface* display;
-
     int walls_top[160], walls_bottom[160], obstacles[160], player_tail[29];
     float player_pos, player_vel;
     bool up;
@@ -20,7 +19,6 @@ class PlayMode
     TTF_Font* scoreFont;
     SDL_Color clrWhite;
     SDL_Color clrBlack;
-    GlobalStore* globalStore;
   public:
     PlayMode(SDL_Surface* display, GlobalStore* globalStore);
     void reset();

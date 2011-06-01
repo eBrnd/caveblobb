@@ -1,12 +1,11 @@
-#include "gameMode.hpp"
+#include "playMode.hpp"
 
 #include <string>
 #include <sstream>
 
 PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
+  : GameMode(display, globalStore)
 {
-  this->display = display;
-  this->globalStore = globalStore;
   scoreFont = TTF_OpenFont("/usr/share/fonts/TTF/FreeSans.ttf", 18);
   clrWhite = { 255,255,255, 0 };
   clrBlack = { 0,0,0, 0 };
