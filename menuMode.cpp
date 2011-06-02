@@ -7,14 +7,24 @@ MenuMode::MenuMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
 {
   menuFont = ColorsAndFonts::getInstance()->sans18;
+  titleFont = ColorsAndFonts::getInstance()->sans43;
   clrWhite = ColorsAndFonts::getInstance()->white;
   clrBlack = ColorsAndFonts::getInstance()->black;
 }
 
 Mode MenuMode::frame()
 {
-  SDL_Surface* text = TTF_RenderText_Shaded(menuFont, "Click to start. Esc to quit.", clrWhite, clrBlack);
-  SDL_Rect textLocation = { 100,100, 0,0 };
+  SDL_Surface* title = TTF_RenderText_Shaded(titleFont, "~cavEworm~", clrWhite, clrBlack);
+  SDL_Rect titleLocation;
+  titleLocation.x = 400 - title->w / 2;
+  titleLocation.y = 100;
+  SDL_BlitSurface(title, NULL, display, &titleLocation);
+  SDL_FreeSurface(title);
+
+  SDL_Surface* text = TTF_RenderText_Shaded(menuFont, "Click to start! Esc to quit.", clrWhite, clrBlack);
+  SDL_Rect textLocation;
+  textLocation.x = 400 - text->w / 2;
+  textLocation.y = 200;
   SDL_BlitSurface(text, NULL, display, &textLocation);
   SDL_FreeSurface(text);
 

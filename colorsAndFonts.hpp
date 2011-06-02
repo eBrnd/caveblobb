@@ -11,6 +11,7 @@ class ColorsAndFonts
     static ColorsAndFonts* pointer;
   public:
     TTF_Font* sans18;
+    TTF_Font* sans43;
     SDL_Color white, black;
     static ColorsAndFonts* getInstance();
 };

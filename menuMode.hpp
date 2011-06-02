@@ -8,7 +8,7 @@
 class MenuMode : public GameMode
 {
   private:
-    TTF_Font* menuFont;
+    TTF_Font* menuFont, * titleFont;
     SDL_Color clrWhite, clrBlack;
   public:
     MenuMode(SDL_Surface* display, GlobalStore* globalStore);
