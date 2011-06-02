@@ -1,7 +1,7 @@
 #include <iostream>
 #include "SDL/SDL.h"
+#include "SDL/SDL_framerate.h"
 
-#include "updateTimer.hpp"
 #include "game.hpp"
 
 int main()
@@ -21,12 +21,17 @@ int main()
     exit(1);
   }
 
-  UpdateTimer* updateTimer = new UpdateTimer();
   Game* game = new Game(display);
+
+  FPSmanager* fpsmanager = new FPSmanager();
+  SDL_initFramerate(fpsmanager);
+  SDL_setFramerate(fpsmanager, 60);
   
   while(true)
-    if(updateTimer->timeToUpdate())
-      game->frame();
+  {
+    SDL_framerateDelay(fpsmanager);
+    game->frame();
+  }
 
   delete game;
   atexit(SDL_Quit);
