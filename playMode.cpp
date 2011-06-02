@@ -4,7 +4,6 @@
 
 #include <string>
 #include <sstream>
-#include <iostream>
 
 PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
@@ -87,7 +86,6 @@ Mode PlayMode::frame()
     {
       frames_to_corner += 10;
       slope = ((float)last_corner - (float)corner_at) / frames_to_corner;
-      std::cout << "-----------------" << std::endl;
     }
   }
 
