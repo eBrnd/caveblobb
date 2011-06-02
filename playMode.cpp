@@ -29,7 +29,6 @@ void PlayMode::reset()
   passed = 0;
 
   obstacle_distance = 160;
-  decrease_height_frames = 0;
 
   // init with constant values
   for(int i = 0; i < 160; i++)
@@ -84,6 +83,12 @@ Mode PlayMode::frame()
     frames_to_corner = 10 + (rand() % 160);
     corner_at = rand() % (600 - level_height);
     slope = ((float)last_corner - (float)corner_at) / frames_to_corner;
+    while(slope > level_height / 45)
+    {
+      frames_to_corner += 10;
+      slope = ((float)last_corner - (float)corner_at) / frames_to_corner;
+      std::cout << "-----------------" << std::endl;
+    }
   }
 
   // generate obstacles
@@ -158,13 +163,8 @@ Mode PlayMode::frame()
   }
 
   // make level smaller
-  if(playtime % 600 == 0)
-    decrease_height_frames = 20;
-  if(decrease_height_frames)
-  {
+  if(playtime % 30 == 0)
     level_height--;
-    decrease_height_frames--;
-  }
 
   // draw the score panel
   std::ostringstream s;
