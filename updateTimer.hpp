@@ -1,10 +1,13 @@
 #ifndef UPDATETIMER
 #define UPDATETIMER
 
+#include "SDL/SDL.h"
+#include "SDL/SDL_framerate.h"
+
 class UpdateTimer
 {
   private:
-    float lastUpdate;
+    FPSmanager* manager;
 
   public:
     UpdateTimer();
