@@ -82,7 +82,7 @@ Mode PlayMode::frame()
     frames_to_corner = 10 + (rand() % 160);
     corner_at = rand() % (600 - level_height);
     slope = ((float)last_corner - (float)corner_at) / frames_to_corner;
-    while(slope > level_height / 45)
+    while(abs(slope) > level_height / 45) // infinite loop if height is smaller than 0 - but who would do that?
     {
       frames_to_corner += 10;
       slope = ((float)last_corner - (float)corner_at) / frames_to_corner;
@@ -161,7 +161,7 @@ Mode PlayMode::frame()
   }
 
   // make level smaller
-  if(playtime % 30 == 0)
+  if(playtime % 30 == 0 && level_height > 51)
     level_height--;
 
   // draw the score panel
