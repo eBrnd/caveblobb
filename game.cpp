@@ -49,7 +49,7 @@ void Game::frame()
       break;
     case QUIT:
       SDL_Quit();
-      exit(0);      // still not sure whether here is the right play to do this
+      exit(0);      // still not sure whether here is the right place to do this
     default:
       break;
   }
