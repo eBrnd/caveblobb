@@ -20,6 +20,7 @@ void PlayMode::reset()
   player_vel = 0;
 
   frames_to_corner = 1;
+  frames_to_obstacle = 60;
   corner_at = 80;
   level_height = 340;
   up = true; // since mouse button is still pressed from the click in the menu when the game starts
