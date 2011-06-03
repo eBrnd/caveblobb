@@ -149,6 +149,7 @@ Mode PlayMode::frame()
   if(crashed)
   {
     globalStore->seconds = playtime / 60;
+    globalStore->score = playtime;
     globalStore->obstacles = passed;
     return GAMEOVER;
   }
@@ -167,11 +168,11 @@ Mode PlayMode::frame()
 
   // draw the score panel
   std::ostringstream s;
-  s << " " << playtime++ / 60 << " seconds - " << passed << " obstacles ";
+  s << "Score: " << playtime++;
   SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
-  SDL_Rect textLocation = { 541,21, 0,0 };
+  SDL_Rect textLocation = { 17,17, 0,0 };
 
-  FillRect(540,20, text->w + 2,text->h + 2, 0x0000FF);
+  FillRect(16,16, text->w + 2,text->h + 2, 0x0000FF);
 
   SDL_BlitSurface(text, NULL, display, &textLocation);
   SDL_FreeSurface(text);
