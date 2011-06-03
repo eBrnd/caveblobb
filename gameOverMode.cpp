@@ -17,7 +17,7 @@ GameOverMode::GameOverMode(SDL_Surface* display, GlobalStore* globalStore)
 Mode GameOverMode::frame()
 {
   std::ostringstream s;
-  s << globalStore->seconds << " seconds, " << globalStore->obstacles << " obstacles. Click for Menu.";
+  s << globalStore->seconds << " seconds, " << globalStore->obstacles << " obstacles. Press space for Menu.";
   SDL_Surface* text = TTF_RenderText_Shaded(gameOverFont, s.str().c_str(), clrWhite, clrBlack);
   SDL_Rect textLocation = { 400 - text->w / 2, 400, 0,0 };
   SDL_BlitSurface(text, NULL, display, &textLocation);
@@ -36,8 +36,10 @@ Mode GameOverMode::frame()
   {
     switch(event.type)
     {
-      case SDL_MOUSEBUTTONDOWN:
-        return MENU;
+      case SDL_KEYDOWN:
+        std::string space ("space");
+        if(!space.compare(SDL_GetKeyName(event.key.keysym.sym)))
+          return MENU;
     }
   }
 

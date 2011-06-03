@@ -168,7 +168,7 @@ Mode PlayMode::frame()
 
   // draw the score panel
   std::ostringstream s;
-  s << "Score: " << playtime++;
+  s << " Score: " << playtime++ << " ";
   SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
   SDL_Rect textLocation = { 17,17, 0,0 };
 
