@@ -167,15 +167,19 @@ Mode PlayMode::frame()
     level_height--;
 
   // draw the score panel
-  std::ostringstream s;
-  s << " Score: " << playtime++ << " ";
-  SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
-  SDL_Rect textLocation = { 17,17, 0,0 };
+  playtime++;
+  if((int)player_pos > 60)
+  {
+    std::ostringstream s;
+    s << " Score: " << playtime << " ";
+    SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
+    SDL_Rect textLocation = { 17,17, 0,0 };
 
-  FillRect(16,16, text->w + 2,text->h + 2, 0x0000FF);
+    FillRect(16,16, text->w + 2,text->h + 2, 0x0000FF);
 
-  SDL_BlitSurface(text, NULL, display, &textLocation);
-  SDL_FreeSurface(text);
+    SDL_BlitSurface(text, NULL, display, &textLocation);
+    SDL_FreeSurface(text);
+  }
 
   return PLAY;
 }
