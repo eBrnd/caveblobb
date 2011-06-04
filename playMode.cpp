@@ -11,6 +11,7 @@ PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   scoreFont = ColorsAndFonts::getInstance()->sans18;
   clrWhite = ColorsAndFonts::getInstance()->white;
   clrBlack = ColorsAndFonts::getInstance()->black;
+  // TODO Initialize random generator
   reset();
 }
 
@@ -213,6 +214,7 @@ bool PlayMode::collisionDetect()
     special = true;
 
   // collision of shots with obstacles
+  // TODO Collision of shots with walls
   for(int i = 0; i < 131; i++)
   {
     if(shot[i] + 5 > obstacles[i+28] && shot[i] < obstacles[i+28] + 50)
