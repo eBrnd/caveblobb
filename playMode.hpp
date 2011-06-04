@@ -10,7 +10,7 @@
 class PlayMode : public GameMode
 {
   private:
-    int walls_top[160], walls_bottom[160], obstacles[160], player_tail[29];
+    int walls_top[160], walls_bottom[160], obstacles[160], player_tail[29], shot[131];
     float player_pos, player_vel;
     bool up;
     int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed;
@@ -20,6 +20,8 @@ class PlayMode : public GameMode
     TTF_Font* scoreFont;
     SDL_Color clrWhite;
     SDL_Color clrBlack;
+    bool special;
+
     void moveField();
     void drawStuff();
     void generateWalls();
