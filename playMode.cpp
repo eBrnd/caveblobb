@@ -51,20 +51,49 @@ inline void PlayMode::FillRect(int x, int y, int w, int h, int color)
 
 Mode PlayMode::frame()
 {
-  // move all objects
+  moveField();
+  drawStuff();
+  generateWalls();
+  generateObstacles();
+  if(!handleInput())
+    return MENU;
+  updatePlayer();
+  if(collisionDetect())
+  {
+    globalStore->seconds = playtime / 60;
+    globalStore->score = playtime;
+    globalStore->obstacles = passed;
+    return GAMEOVER;
+  }
+  obstacleCounter();
+  drawScorePanel();
+
+  return PLAY;
+}
+
+void PlayMode::moveField()
+{
   for(int i = 0; i < 159; i++) // move the walls and obstacles
   {
     walls_top[i] = walls_top[i+1];
     walls_bottom[i] = walls_bottom[i+1];
     obstacles[i] = obstacles[i+1];
   }
-  for(int i = 0; i < 28; i++)
+  for(int i = 0; i < 28; i++)  // move player tail
     player_tail[i] = player_tail[i+1];
 
-  //draw new wall bits
+  // add new wall bits
   walls_top[159] = corner_at + (slope * frames_to_corner);
   walls_bottom[159] = walls_top[159] + level_height;
 
+  // make level smaller
+  if(playtime % 30 == 0 && level_height > 51)
+    level_height--;
+
+}
+
+void PlayMode::drawStuff()
+{
   // draw the walls and obstacles and the player tail
   for(int i = 0; i < 160; i++)
   {
@@ -75,8 +104,10 @@ Mode PlayMode::frame()
     if(i < 29)
       FillRect(5 * i, player_tail[i], 5, 10, 0xFF0000);
   }
+}
 
-  // generate walls
+void PlayMode::generateWalls()
+{
   if(!frames_to_corner--)
   {
     int last_corner = corner_at;
@@ -89,16 +120,20 @@ Mode PlayMode::frame()
       slope = ((float)last_corner - (float)corner_at) / frames_to_corner;
     }
   }
+}
 
-  // generate obstacles
+void PlayMode::generateObstacles()
+{
   obstacles[159] = 0;
   if(!frames_to_obstacle--)
   {
     obstacles[157] = obstacles[158] = obstacles[159] = walls_top[159] + (rand() % (level_height - 50));
     frames_to_obstacle = 10 + rand() % obstacle_distance;
   }
+}
 
-  // Grab the input
+bool PlayMode::handleInput()
+{
   SDL_Event event;
   if(SDL_PollEvent(&event))
   {
@@ -113,11 +148,15 @@ Mode PlayMode::frame()
       case SDL_KEYDOWN:
         std::string esc ("escape");
         if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
-          return MENU;
+          return false;
     }
   }
+  return true;
+}
 
-  // physics
+void PlayMode::updatePlayer()
+{
+  // move Player
   if(up)
     player_vel -= .1f;
   else
@@ -127,46 +166,40 @@ Mode PlayMode::frame()
   // draw the player
   FillRect(140,(int)player_pos, 10,10, 0xFF0000);
   player_tail[28] = (int)player_pos;
+}
 
-  // collision detection
-  bool crashed = false;
+bool PlayMode::collisionDetect()
+{
   if( (int)player_pos < walls_top[28] )
   {
     // crashed into top wall
-    crashed = true;
+    return true;
   }
   if( (int)player_pos + 10 > walls_bottom[28] )
   {
     // crashed into bottom wall
-    crashed = true;
+    return true;
   }
   if( obstacles[28] && (int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50 )
   {
     // crashed into obstacle
-    crashed = true;
+    return true;
   }
+  return false;
+}
 
-  if(crashed)
-  {
-    globalStore->seconds = playtime / 60;
-    globalStore->score = playtime;
-    globalStore->obstacles = passed;
-    return GAMEOVER;
-  }
-  
-  // obstacle counter
+void PlayMode::obstacleCounter()
+{
   if(obstacles[28] && !obstacles[29])
   {
     passed++;
     if((passed % 5) == 0 && obstacle_distance > 10)
       obstacle_distance--;
   }
+}
 
-  // make level smaller
-  if(playtime % 30 == 0 && level_height > 51)
-    level_height--;
-
-  // draw the score panel
+void PlayMode::drawScorePanel()
+{
   playtime++;
   if((int)player_pos > 60)
   {
@@ -180,6 +213,4 @@ Mode PlayMode::frame()
     SDL_BlitSurface(text, NULL, display, &textLocation);
     SDL_FreeSurface(text);
   }
-
-  return PLAY;
 }

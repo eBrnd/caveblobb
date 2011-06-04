@@ -20,6 +20,16 @@ class PlayMode : public GameMode
     TTF_Font* scoreFont;
     SDL_Color clrWhite;
     SDL_Color clrBlack;
+    void moveField();
+    void drawStuff();
+    void generateWalls();
+    void generateObstacles();
+    bool handleInput();
+    void updatePlayer();
+    bool collisionDetect();
+    void obstacleCounter();
+    void drawScorePanel();
+
   public:
     PlayMode(SDL_Surface* display, GlobalStore* globalStore);
     void reset();
