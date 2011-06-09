@@ -12,7 +12,7 @@ class PlayMode : public GameMode
 {
   private:
     int walls_top[160], walls_bottom[160], obstacles[160], shot[131];
-    struct particle { float x, y, vx, vy; int r, g, b; } tail[300];
+    struct particle { float x, y, vx, vy; int r, g, b; } tail[300]; // the 300 is just a guesstimate here - when it looks good, make the array as small as possible
     float player_pos, player_vel;
     bool up;
     int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed;
