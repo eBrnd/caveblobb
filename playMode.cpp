@@ -39,13 +39,13 @@ void PlayMode::reset()
     walls_bottom[i] = walls_top[i] + level_height;
     obstacles[i] = 0;
   }
-  for(int i = 0; i < 29; i++)
-  {
-    player_tail[i] = 300;
-  }
   for(int i = 0; i < 131; i++)
   {
     shot[i] = 0;
+  }
+  for(int i = 0; i < 300; i++)
+  {
+    tail[i].x = 0;
   }
 }
 
@@ -64,6 +64,7 @@ Mode PlayMode::frame()
   if(!handleInput())
     return MENU;
   updatePlayer();
+  drawPlayerTail();
   if(collisionDetect())
   {
     globalStore->seconds = playtime / 60;
@@ -85,8 +86,6 @@ void PlayMode::moveField()
     walls_bottom[i] = walls_bottom[i+1];
     obstacles[i] = obstacles[i+1];
   }
-  for(int i = 0; i < 28; i++)  // move player tail
-    player_tail[i] = player_tail[i+1];
 
   // add new wall bits
   walls_top[159] = corner_at + (slope * frames_to_corner);
@@ -102,19 +101,33 @@ void PlayMode::moveField()
     shot[i] = shot[i-1];
   }
   shot[0] = 0;
+
+  // move player tail
+  for(int i = 0; i < 299; i++)
+    tail[i] = tail[i+1];
+
+  
+  // add new player tail particle
+  tail[299].x = 140.f;
+  tail[299].y = player_pos;
+  tail[299].vx = ((float)rand() / (float)RAND_MAX) - 5;
+  tail[299].vy = ((float)rand() / (float)RAND_MAX) - .5f;
+  tail[299].r = rand() % 128 + 128;
+  tail[299].g = rand() % 128 + 128;
+  tail[299].b = rand() % 128 + 128;
+  // Idee: Die Dinger mit wenig Geschwindigkeit starten, dann
+  // konstant nach links beschleunigen ^^
 }
 
 void PlayMode::drawStuff()
 {
-  // draw the walls and obstacles the player tail and the shot
+  // draw the walls and obstacles and the shot
   for(int i = 0; i < 160; i++)
   {
     FillRect(5 * i, 0, 5, walls_top[i], 0x309930);
     FillRect(5 * i, walls_bottom[i], 5, 599 - walls_bottom[i], 0x309930);
     if(obstacles[i])
       FillRect(5 * i, obstacles[i], 5, 50, 0x309930);
-    if(i < 29)
-      FillRect(5 * i, player_tail[i], 5, 10, 0xFF0000);
     if(i < 131 && shot[i])
       FillRect(5 * i + 140, shot[i], 5, 5, 0xFFFFFF);
   }
@@ -185,8 +198,18 @@ void PlayMode::updatePlayer()
   player_pos += player_vel;
 
   // draw the player
-  FillRect(140,(int)player_pos, 10,10, 0xFF0000);
-  player_tail[28] = (int)player_pos;
+  circleColor(display, 140,(int)player_pos, 5, 0xFF0000FF);
+  // TODO atm the player is not drawn where it is supposed to be. player_pos refers to the upper left corner of the sprite if its 10 pixels large.
+}
+
+void PlayMode::drawPlayerTail()
+{
+  for(int i = 0; i < 300; i++)
+  {
+    aacircleColor(display, (int)tail[i].x, (int)tail[i].y, 0, tail[i].r << 24 | tail[i].g << 16 | tail[i].b << 8 | 255);
+    tail[i].x += tail[i].vx;
+    tail[i].y += tail[i].vy;
+  }
 }
 
 bool PlayMode::collisionDetect()

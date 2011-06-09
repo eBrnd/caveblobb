@@ -6,11 +6,13 @@
 #include "mode.hpp"
 #include "SDL/SDL.h"
 #include "SDL/SDL_ttf.h"
+#include "SDL/SDL_gfxPrimitives.h"
 
 class PlayMode : public GameMode
 {
   private:
-    int walls_top[160], walls_bottom[160], obstacles[160], player_tail[29], shot[131];
+    int walls_top[160], walls_bottom[160], obstacles[160], shot[131];
+    struct particle { float x, y, vx, vy; int r, g, b; } tail[300];
     float player_pos, player_vel;
     bool up;
     int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed;
@@ -31,6 +33,7 @@ class PlayMode : public GameMode
     bool collisionDetect();
     void obstacleCounter();
     void drawScorePanel();
+    void drawPlayerTail();
 
   public:
     PlayMode(SDL_Surface* display, GlobalStore* globalStore);
