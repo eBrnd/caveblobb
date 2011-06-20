@@ -1,6 +1,8 @@
 #ifndef COLORSANDFONTS
 #define COLORSANDFONTS
 
+#include <iostream>
+
 #include "SDL/SDL.h"
 #include "SDL/SDL_ttf.h"
 

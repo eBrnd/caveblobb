@@ -206,14 +206,15 @@ void PlayMode::updatePlayer()
   player_pos += player_vel;
 
   // draw the player
-  FillRect(140,(int)player_pos, 10,10, 0xFF0000);
+  // FillRect(140,(int)player_pos, 10,10, 0xFF0000);
+  filledCircleColor(display, 145,(int)(player_pos + 4.5f), 5, 0xFF0000FF);
 }
 
 void PlayMode::drawPlayerTail()
 {
   for(int i = 0; i < 300; i++)
   {
-    filledCircleRGBA(display, (int)tail[i].x, (int)tail[i].y, 2, tail[i].r, tail[i].g, tail[i].b, 192);
+    circleRGBA(display, (int)tail[i].x, (int)tail[i].y, 3, tail[i].r, tail[i].g, tail[i].b, 192);
     tail[i].x += tail[i].vx;
     tail[i].y += tail[i].vy;
   }
@@ -276,12 +277,15 @@ void PlayMode::drawScorePanel()
     s << " Score: " << playtime << " ";
     if(special)
       s << "++SPECIAL++";
-    SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
-    SDL_Rect textLocation = { 17,17, 0,0 };
+    if(scoreFont != NULL)
+    {
+      SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
+      SDL_Rect textLocation = { 17,17, 0,0 };
 
-    FillRect(16,16, text->w + 2,text->h + 2, 0x0000FF);
+      FillRect(16,16, text->w + 2,text->h + 2, 0x0000FF);
 
-    SDL_BlitSurface(text, NULL, display, &textLocation);
-    SDL_FreeSurface(text);
+      SDL_BlitSurface(text, NULL, display, &textLocation);
+      SDL_FreeSurface(text);
+    }
   }
 }
