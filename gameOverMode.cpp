@@ -1,9 +1,5 @@
 #include "gameOverMode.hpp"
 
-#include "colorsAndFonts.hpp"
-
-#include <string>
-#include <sstream>
 
 GameOverMode::GameOverMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)

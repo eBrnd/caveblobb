@@ -1,9 +1,5 @@
 #include "playMode.hpp"
 
-#include "colorsAndFonts.hpp"
-
-#include <string>
-#include <sstream>
 
 PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)

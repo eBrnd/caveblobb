@@ -1,9 +1,14 @@
 #ifndef GAMEOVERMODE
 #define GAMEOVERMODE
 
-#include "gameMode.hpp"
+#include <string>
+#include <sstream>
+
 #include "SDL/SDL_ttf.h"
+
+#include "gameMode.hpp"
 #include "mode.hpp"
+#include "colorsAndFonts.hpp"
 
 class GameOverMode : public GameMode
 {

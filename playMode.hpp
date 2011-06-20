@@ -1,12 +1,17 @@
 #ifndef PLAYMODE
 #define PLAYMODE
 
-#include "globalStore.hpp"
-#include "gameMode.hpp"
-#include "mode.hpp"
+#include <string>
+#include <sstream>
+
 #include "SDL/SDL.h"
 #include "SDL/SDL_ttf.h"
 #include "SDL/SDL_gfxPrimitives.h"
+
+#include "globalStore.hpp"
+#include "gameMode.hpp"
+#include "mode.hpp"
+#include "colorsAndFonts.hpp"
 
 class PlayMode : public GameMode
 {

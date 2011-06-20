@@ -1,8 +1,15 @@
 #ifndef GAME
 #define GAME
 
+#include <string>
+#include <sstream>
+
 #include "gameMode.hpp"
 #include "mode.hpp"
+#include "playMode.hpp"
+#include "menuMode.hpp"
+#include "gameOverMode.hpp"
+#include "colorsAndFonts.hpp"
 
 class Game
 {

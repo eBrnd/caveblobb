@@ -2,6 +2,7 @@
 #define GAMEMODE
 
 #include "SDL/SDL.h"
+
 #include "globalStore.hpp"
 #include "mode.hpp"
 

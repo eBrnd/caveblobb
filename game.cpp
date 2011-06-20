@@ -1,12 +1,4 @@
 #include "game.hpp"
-#include "playMode.hpp"
-#include "menuMode.hpp"
-#include "gameOverMode.hpp"
-#include "colorsAndFonts.hpp"
-
-#include <iostream>
-#include <string>
-#include <sstream>
 
 Game::Game(SDL_Surface* display)
 {
