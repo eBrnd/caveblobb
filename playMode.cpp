@@ -103,9 +103,11 @@ void PlayMode::moveField()
   shot[0] = 0;
 
   // move player tail
-  for(int i = 0; i < 299; i++)
-    tail[i] = tail[i+1];
-
+  for(int i = 0; i < 297; i++)
+  {
+    tail[i] = tail[i+2];
+    tail[i+1] = tail[i+3];
+  }
   
   // add new player tail particle
   tail[299].x = 140.f;
@@ -115,8 +117,14 @@ void PlayMode::moveField()
   tail[299].r = rand() % 128 + 128;
   tail[299].g = rand() % 128 + 128;
   tail[299].b = rand() % 128 + 128;
-  // Idee: Die Dinger mit wenig Geschwindigkeit starten, dann
-  // konstant nach links beschleunigen ^^
+  // Add two particles each frame to make the tail denser
+  tail[298].x = 140.f;
+  tail[298].y = player_pos + 5;
+  tail[298].vx = ((float)rand() / (float)RAND_MAX) - 5;
+  tail[298].vy = ((float)rand() / (float)RAND_MAX) - .5f;
+  tail[298].r = rand() % 128 + 128;
+  tail[298].g = rand() % 128 + 128;
+  tail[298].b = rand() % 128 + 128;
 }
 
 void PlayMode::drawStuff()
