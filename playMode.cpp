@@ -11,12 +11,13 @@ PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   scoreFont = ColorsAndFonts::getInstance()->sans18;
   clrWhite = ColorsAndFonts::getInstance()->white;
   clrBlack = ColorsAndFonts::getInstance()->black;
-  // TODO Initialize random generator
   reset();
 }
 
 void PlayMode::reset()
 {
+  srand(time(NULL));
+
   player_pos = 300;
   player_vel = 0;
 
@@ -103,28 +104,31 @@ void PlayMode::moveField()
   shot[0] = 0;
 
   // move player tail
-  for(int i = 0; i < 297; i++)
+  for(int i = 0; i < 296; i++)
   {
-    tail[i] = tail[i+2];
-    tail[i+1] = tail[i+3];
+    tail[i] = tail[i+3];
+    tail[i+1] = tail[i+4];
+    tail[i+2] = tail[i+5];
   }
   
-  // add new player tail particle
-  tail[299].x = 140.f;
-  tail[299].y = player_pos + 5;
+  // add three new player tail particles
+  tail[297].x = tail[298].x = tail[299].x = 140.f;
+  tail[297].y = tail[298].y = tail[299].y = player_pos + 5;
   tail[299].vx = ((float)rand() / (float)RAND_MAX) - 5;
   tail[299].vy = ((float)rand() / (float)RAND_MAX) - .5f;
   tail[299].r = rand() % 128 + 128;
-  tail[299].g = rand() % 128 + 128;
-  tail[299].b = rand() % 128 + 128;
-  // Add two particles each frame to make the tail denser
-  tail[298].x = 140.f;
-  tail[298].y = player_pos + 5;
+  tail[299].g = rand() % 128 + 64;
+  tail[299].b = rand() % 128 + 64;
   tail[298].vx = ((float)rand() / (float)RAND_MAX) - 5;
   tail[298].vy = ((float)rand() / (float)RAND_MAX) - .5f;
   tail[298].r = rand() % 128 + 128;
-  tail[298].g = rand() % 128 + 128;
-  tail[298].b = rand() % 128 + 128;
+  tail[298].g = rand() % 128 + 32;
+  tail[298].b = rand() % 128 + 32;
+  tail[297].vx = ((float)rand() / (float)RAND_MAX) - 5;
+  tail[297].vy = ((float)rand() / (float)RAND_MAX) - .5f;
+  tail[297].r = rand() % 128 + 128;
+  tail[297].g = rand() % 128 + 16;
+  tail[297].b = rand() % 128 + 16;
 }
 
 void PlayMode::drawStuff()
@@ -244,12 +248,15 @@ bool PlayMode::collisionDetect()
     special = true;
 
   // collision of shots with obstacles
-  // TODO Collision of shots with walls
   for(int i = 0; i < 131; i++)
   {
     if(shot[i] + 5 > obstacles[i+28] && shot[i] < obstacles[i+28] + 50)
       obstacles[i+28] = 0;
   }
+  // ...and with walls
+  for(int i = 1; i < 130; i++) // only from 1..130 because we have to delete 3 elements in the shots array to make sure the shot is erased completely
+    if(shot[i] && (shot[i] + 5 > walls_bottom[i+28] || shot[i] < walls_top[i+28]))
+      shot[i-1] = shot[i] = shot[i+1] = 0;
 
   return false;
 }
