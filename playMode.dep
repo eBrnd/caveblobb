@@ -1,0 +1,2 @@
+playMode.dep playMode.o: playMode.cpp playMode.hpp globalStore.hpp gameMode.hpp \
+ mode.hpp colorsAndFonts.hpp

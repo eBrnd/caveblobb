@@ -58,13 +58,13 @@ inline void PlayMode::FillRect(int x, int y, int w, int h, int color)
 Mode PlayMode::frame()
 {
   moveField();
+  drawPlayerTail();
   drawStuff();
   generateWalls();
   generateObstacles();
   if(!handleInput())
     return MENU;
   updatePlayer();
-  drawPlayerTail();
   if(collisionDetect())
   {
     globalStore->seconds = playtime / 60;
@@ -109,7 +109,7 @@ void PlayMode::moveField()
   
   // add new player tail particle
   tail[299].x = 140.f;
-  tail[299].y = player_pos;
+  tail[299].y = player_pos + 5;
   tail[299].vx = ((float)rand() / (float)RAND_MAX) - 5;
   tail[299].vy = ((float)rand() / (float)RAND_MAX) - .5f;
   tail[299].r = rand() % 128 + 128;
@@ -198,15 +198,14 @@ void PlayMode::updatePlayer()
   player_pos += player_vel;
 
   // draw the player
-  circleColor(display, 140,(int)player_pos, 5, 0xFF0000FF);
-  // TODO atm the player is not drawn where it is supposed to be. player_pos refers to the upper left corner of the sprite if its 10 pixels large.
+  FillRect(140,(int)player_pos, 10,10, 0xFF0000);
 }
 
 void PlayMode::drawPlayerTail()
 {
   for(int i = 0; i < 300; i++)
   {
-    aacircleColor(display, (int)tail[i].x, (int)tail[i].y, 0, tail[i].r << 24 | tail[i].g << 16 | tail[i].b << 8 | 255);
+    filledCircleRGBA(display, (int)tail[i].x, (int)tail[i].y, 2, tail[i].r, tail[i].g, tail[i].b, 192);
     tail[i].x += tail[i].vx;
     tail[i].y += tail[i].vy;
   }
