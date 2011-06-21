@@ -31,6 +31,8 @@ void PlayMode::reset()
 
   explosion_x = explosion_y = explosion_size = 0;
 
+  crashed = false;
+
   // init with constant values
   for(int i = 0; i < 160; i++)
   {
@@ -56,23 +58,31 @@ inline void PlayMode::FillRect(int x, int y, int w, int h, int color)
 
 Mode PlayMode::frame()
 {
-  moveField();
+  if(!crashed)
+  {
+    if(!handleInput())
+      return MENU;
+    moveField();
+    updatePlayer();
+    generateWalls();
+    generateObstacles();
+  }
+  updatePlayerTail();
   drawPlayerTail();
   drawStuff();
-  generateWalls();
-  generateObstacles();
-  if(!handleInput())
-    return MENU;
-  updatePlayer();
   if(collisionDetect())
+  {
+    crashed = true;  // TODO this needs some cleaning up - control flow is a mess especially here
+  }
+  obstacleCounter();
+  drawScorePanel();
+  if(crashed && !explosion_size)
   {
     globalStore->seconds = playtime / 60;
     globalStore->score = playtime;
     globalStore->obstacles = passed;
     return GAMEOVER;
   }
-  obstacleCounter();
-  drawScorePanel();
 
   return PLAY;
 }
@@ -101,6 +111,12 @@ void PlayMode::moveField()
   }
   shot[0] = 0;
 
+  // move explosion
+  explosion_x -= 4;
+}
+
+void PlayMode::updatePlayerTail()
+{
   // move player tail
   for(int i = 0; i < 296; i++)
   {
@@ -110,23 +126,26 @@ void PlayMode::moveField()
   }
   
   // add three new player tail particles
-  tail[297].x = tail[298].x = tail[299].x = 140.f;
-  tail[297].y = tail[298].y = tail[299].y = player_pos + 5;
-  tail[299].vx = ((float)rand() / (float)RAND_MAX) - 5;
-  tail[299].vy = ((float)rand() / (float)RAND_MAX) - .5f;
-  tail[299].r = rand() % 128 + 128;
-  tail[299].g = rand() % 128 + 64;
-  tail[299].b = rand() % 128 + 64;
-  tail[298].vx = ((float)rand() / (float)RAND_MAX) - 5;
-  tail[298].vy = ((float)rand() / (float)RAND_MAX) - .5f;
-  tail[298].r = rand() % 128 + 128;
-  tail[298].g = rand() % 128 + 32;
-  tail[298].b = rand() % 128 + 32;
-  tail[297].vx = ((float)rand() / (float)RAND_MAX) - 5;
-  tail[297].vy = ((float)rand() / (float)RAND_MAX) - .5f;
-  tail[297].r = rand() % 128 + 128;
-  tail[297].g = rand() % 128 + 16;
-  tail[297].b = rand() % 128 + 16;
+  if(!crashed)
+  {
+    tail[297].x = tail[298].x = tail[299].x = 140.f;
+    tail[297].y = tail[298].y = tail[299].y = player_pos + 5;
+    tail[299].vx = ((float)rand() / (float)RAND_MAX) - 5;
+    tail[299].vy = ((float)rand() / (float)RAND_MAX) - .5f;
+    tail[299].r = rand() % 128 + 128;
+    tail[299].g = rand() % 128 + 64;
+    tail[299].b = rand() % 128 + 64;
+    tail[298].vx = ((float)rand() / (float)RAND_MAX) - 5;
+    tail[298].vy = ((float)rand() / (float)RAND_MAX) - .5f;
+    tail[298].r = rand() % 128 + 128;
+    tail[298].g = rand() % 128 + 32;
+    tail[298].b = rand() % 128 + 32;
+    tail[297].vx = ((float)rand() / (float)RAND_MAX) - 5;
+    tail[297].vy = ((float)rand() / (float)RAND_MAX) - .5f;
+    tail[297].r = rand() % 128 + 128;
+    tail[297].g = rand() % 128 + 16;
+    tail[297].b = rand() % 128 + 16;
+  } // when the player is crashed, no new particles are added. Instead, the last three partlcles are copied over and over. Not pretty, but doesn't hurt either.
 }
 
 void PlayMode::drawStuff()
@@ -142,10 +161,16 @@ void PlayMode::drawStuff()
       FillRect(5 * i + 140, shot[i], 5, 5, 0xFFFFFF);
   }
 
+  if(!crashed)
+  {
+    // draw the player
+    filledCircleColor(display, 145,(int)(player_pos + 4.5f), 5, 0xFF0000FF);
+  }
+
   // draw explosion
   if(explosion_size)
   {
-    filledCircleColor(display, explosion_x-=4, explosion_y, explosion_size-=2, 0xFFFF00FF);
+    filledCircleColor(display, explosion_x, explosion_y, explosion_size-=2, 0xFFFF00FF);
   }
 }
 
@@ -212,10 +237,6 @@ void PlayMode::updatePlayer()
   else
     player_vel += .1f;
   player_pos += player_vel;
-
-  // draw the player
-  // FillRect(140,(int)player_pos, 10,10, 0xFF0000);
-  filledCircleColor(display, 145,(int)(player_pos + 4.5f), 5, 0xFF0000FF);
 }
 
 void PlayMode::drawPlayerTail()
@@ -230,19 +251,28 @@ void PlayMode::drawPlayerTail()
 
 bool PlayMode::collisionDetect()
 {
-  if( (int)player_pos < walls_top[28] )
+  if( (int)player_pos < walls_top[28] && !crashed )
   {
     // crashed into top wall
+    explosion_x = 140;
+    explosion_y = player_pos + 5;
+    explosion_size = 56;
     return true;
   }
-  if( (int)player_pos + 10 > walls_bottom[28] )
+  if( (int)player_pos + 10 > walls_bottom[28] && !crashed )
   {
     // crashed into bottom wall
+    explosion_x = 140;
+    explosion_y = player_pos + 5;
+    explosion_size = 56;
     return true;
   }
-  if( obstacles[28] && (int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50 )
+  if( obstacles[28] && (int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50 && !crashed )
   {
     // crashed into obstacle
+    explosion_x = 140;
+    explosion_y = player_pos + 5;
+    explosion_size = 56;
     return true;
   }
 
@@ -260,7 +290,7 @@ bool PlayMode::collisionDetect()
       obstacles[i+28] = 0;
       explosion_x = 5*(28+i);
       explosion_y = shot[i] + 3;
-      explosion_size = 35;
+      explosion_size = 36;
     }
   }
   // ...and with walls
@@ -269,7 +299,7 @@ bool PlayMode::collisionDetect()
     {
       explosion_x = 5*(28+i);
       explosion_y = shot[i] + 3;
-      explosion_size = 35;
+      explosion_size = 36;
       shot[i-1] = shot[i] = shot[i+1] = 0;
     }
 

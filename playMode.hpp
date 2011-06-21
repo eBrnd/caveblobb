@@ -28,9 +28,11 @@ class PlayMode : public GameMode
     SDL_Color clrWhite;
     SDL_Color clrBlack;
     bool special;
-    int explosion_x, explosion_y, explosion_size;
+    int explosion_x, explosion_y, explosion_size; // explosion_size should be set to a multiple of 2, because we have lots of if(explosion_size)-tests and do explosion_size-=2 each frame -_^
+    bool crashed;
 
     void moveField();
+    void updatePlayerTail();
     void drawStuff();
     void generateWalls();
     void generateObstacles();
