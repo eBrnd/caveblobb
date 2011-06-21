@@ -29,6 +29,8 @@ void PlayMode::reset()
 
   obstacle_distance = 160;
 
+  explosion_x = explosion_y = explosion_size = 0;
+
   // init with constant values
   for(int i = 0; i < 160; i++)
   {
@@ -139,6 +141,12 @@ void PlayMode::drawStuff()
     if(i < 131 && shot[i])
       FillRect(5 * i + 140, shot[i], 5, 5, 0xFFFFFF);
   }
+
+  // draw explosion
+  if(explosion_size)
+  {
+    filledCircleColor(display, explosion_x-=4, explosion_y, explosion_size-=2, 0xFFFF00FF);
+  }
 }
 
 void PlayMode::generateWalls()
@@ -247,13 +255,23 @@ bool PlayMode::collisionDetect()
   // collision of shots with obstacles
   for(int i = 0; i < 131; i++)
   {
-    if(shot[i] + 5 > obstacles[i+28] && shot[i] < obstacles[i+28] + 50)
+    if(shot[i] && shot[i] + 5 > obstacles[i+28] && shot[i] < obstacles[i+28] + 50)
+    {
       obstacles[i+28] = 0;
+      explosion_x = 5*(28+i);
+      explosion_y = shot[i] + 3;
+      explosion_size = 35;
+    }
   }
   // ...and with walls
   for(int i = 1; i < 130; i++) // only from 1..130 because we have to delete 3 elements in the shots array to make sure the shot is erased completely
     if(shot[i] && (shot[i] + 5 > walls_bottom[i+28] || shot[i] < walls_top[i+28]))
+    {
+      explosion_x = 5*(28+i);
+      explosion_y = shot[i] + 3;
+      explosion_size = 35;
       shot[i-1] = shot[i] = shot[i+1] = 0;
+    }
 
   return false;
 }

@@ -28,6 +28,7 @@ class PlayMode : public GameMode
     SDL_Color clrWhite;
     SDL_Color clrBlack;
     bool special;
+    int explosion_x, explosion_y, explosion_size;
 
     void moveField();
     void drawStuff();
