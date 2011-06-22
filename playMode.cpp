@@ -142,7 +142,10 @@ void PlayMode::updatePlayerTail()
     tail[297].r = rand() % 128 + 128;
     tail[297].g = rand() % 128 + 16;
     tail[297].b = rand() % 128 + 16;
-  } // when the player is crashed, no new particles are added. Instead, the last three partlcles are copied over and over. Not pretty, but doesn't hurt either.
+  } else
+  {
+    tail[297].x = tail[298].x = tail[299].x = 0;
+  }
 }
 
 void PlayMode::drawStuff()
@@ -240,9 +243,12 @@ void PlayMode::drawPlayerTail()
 {
   for(int i = 0; i < 300; i++)
   {
-    circleRGBA(display, (int)tail[i].x, (int)tail[i].y, 3, tail[i].r, tail[i].g, tail[i].b, 192);
-    tail[i].x += tail[i].vx;
-    tail[i].y += tail[i].vy;
+    if(tail[i].x)
+    {
+      circleRGBA(display, (int)tail[i].x, (int)tail[i].y, 3, tail[i].r, tail[i].g, tail[i].b, 192);
+      tail[i].x += tail[i].vx;
+      tail[i].y += tail[i].vy;
+    }
   }
 }
 
