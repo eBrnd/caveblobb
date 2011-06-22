@@ -121,11 +121,11 @@ void PlayMode::updatePlayerTail()
     tail[i+1] = tail[i+4];
     tail[i+2] = tail[i+5];
   }
-  
+
   // add three new player tail particles
   if(!crashed)
   {
-    tail[297].x = tail[298].x = tail[299].x = 140.f;
+/*    tail[297].x = tail[298].x = tail[299].x = 140.f;
     tail[297].y = tail[298].y = tail[299].y = player_pos + 5;
     tail[299].vx = ((float)rand() / (float)RAND_MAX) - 5;
     tail[299].vy = ((float)rand() / (float)RAND_MAX) - .5f;
@@ -142,6 +142,21 @@ void PlayMode::updatePlayerTail()
     tail[297].r = rand() % 128 + 128;
     tail[297].g = rand() % 128 + 16;
     tail[297].b = rand() % 128 + 16;
+    */
+    for(int i = 299; i >= 297; i--)
+    {
+      tail[i].x = 140.f;
+      tail[i].y = player_pos + 5;
+
+      float angle = ((float)rand() / (float)RAND_MAX) * 360;
+      float speed = 1.25 + ((float)rand() / (float)RAND_MAX);
+      tail[i].color = hue2rgb(360 - (angle + 60));
+
+      angle = angle / 7 - 205;
+      angle = angle * (PI / 180); // radian
+      tail[i].vx = cos(angle) * speed;
+      tail[i].vy = sin(angle) * speed;
+    }
   } else
   {
     tail[297].x = tail[298].x = tail[299].x = 0;
@@ -245,7 +260,7 @@ void PlayMode::drawPlayerTail()
   {
     if(tail[i].x)
     {
-      circleRGBA(display, (int)tail[i].x, (int)tail[i].y, 3, tail[i].r, tail[i].g, tail[i].b, 192);
+      circleColor(display, (int)tail[i].x, (int)tail[i].y, 3, tail[i].color);
       tail[i].x += tail[i].vx;
       tail[i].y += tail[i].vy;
     }
@@ -337,4 +352,50 @@ void PlayMode::drawScorePanel()
       SDL_FreeSurface(text);
     }
   }
+}
+
+Uint32 PlayMode::hue2rgb(float h)
+{
+  while(h > 360) h -= 360;
+  while(h < 0) h += 360;
+  h = h / 60;
+  float x = 1 - abs(fmod(h, 2)); // see Wikipedia - and in our case, C = 1.
+  int r = 0, g = 0, b = 0;
+  if(0 <= h && h < 1)
+  {
+    r = 255;
+    g = x * 255;
+    b = 0;
+  }
+  if(1 <= h && h < 2)
+  {
+    r = x * 255;
+    g = 255;
+    b = 0;
+  }
+  if(2 <= h && h < 3)
+  {
+    r = 0;
+    g = 255;
+    b = x * 255;
+  }
+  if(3 <= h && h < 4)
+  {
+    r = 0;
+    g = x * 255;
+    b = 255;
+  }
+  if(4 <= h && h < 5)
+  {
+    r = x * 255;
+    g = 0;
+    b = 255;
+  }
+  if(5 <= h && h < 6)
+  {
+    r = 255;
+    g = 0;
+    b = x * 255;
+  }
+  return r << 24 | g << 16 | b << 8 | 0xFF;
 }
