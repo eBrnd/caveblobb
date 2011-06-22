@@ -1,6 +1,6 @@
 CXX := g++
 CXXFLAGS := -lSDL -lSDL_ttf -lSDL_gfx -Werror -Wall -pthread $(CXXFLAGS)
-BINARY := caveworm
+BINARY := caveblobb
 
 ifneq "$(DEBUG)" ""
     CXXFLAGS += -g
