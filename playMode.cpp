@@ -115,44 +115,29 @@ void PlayMode::moveField()
 void PlayMode::updatePlayerTail()
 {
   // move player tail
-  for(int i = 0; i < 296; i++)
+  for(int i = 0; i < 293; i++)
   {
-    tail[i] = tail[i+3];
-    tail[i+1] = tail[i+4];
-    tail[i+2] = tail[i+5];
+    tail[i] = tail[i+6];
+    tail[i+1] = tail[i+7];
+    tail[i+2] = tail[i+8];
+    tail[i+3] = tail[i+9];
+    tail[i+4] = tail[i+10];
+    tail[i+5] = tail[i+11];
   }
 
   // add three new player tail particles
   if(!crashed)
   {
-/*    tail[297].x = tail[298].x = tail[299].x = 140.f;
-    tail[297].y = tail[298].y = tail[299].y = player_pos + 5;
-    tail[299].vx = ((float)rand() / (float)RAND_MAX) - 5;
-    tail[299].vy = ((float)rand() / (float)RAND_MAX) - .5f;
-    tail[299].r = rand() % 128 + 128;
-    tail[299].g = rand() % 128 + 64;
-    tail[299].b = rand() % 128 + 64;
-    tail[298].vx = ((float)rand() / (float)RAND_MAX) - 5;
-    tail[298].vy = ((float)rand() / (float)RAND_MAX) - .5f;
-    tail[298].r = rand() % 128 + 128;
-    tail[298].g = rand() % 128 + 32;
-    tail[298].b = rand() % 128 + 32;
-    tail[297].vx = ((float)rand() / (float)RAND_MAX) - 5;
-    tail[297].vy = ((float)rand() / (float)RAND_MAX) - .5f;
-    tail[297].r = rand() % 128 + 128;
-    tail[297].g = rand() % 128 + 16;
-    tail[297].b = rand() % 128 + 16;
-    */
-    for(int i = 299; i >= 297; i--)
+    for(int i = 299; i >= 294; i--)
     {
       tail[i].x = 140.f;
       tail[i].y = player_pos + 5;
 
       float angle = ((float)rand() / (float)RAND_MAX) * 360;
-      float speed = 2.2 + ((float)rand() / (float)RAND_MAX);
-      tail[i].color = hue2rgb(360 - (angle + 60));
+      float speed = ((float)rand() / (float)RAND_MAX) + 5;
+      tail[i].color = hue2rgb(angle - 60);
 
-      angle = angle / 8 - 202;
+      angle = angle / 12 - 195;
       angle = angle * (PI / 180); // radian
       tail[i].vx = cos(angle) * speed;
       tail[i].vy = sin(angle) * speed;
@@ -179,7 +164,7 @@ void PlayMode::drawStuff()
   if(!crashed)
   {
     // draw the player
-    filledCircleColor(display, 145,(int)(player_pos + 4.5f), 5, 0xFF0000FF);
+    filledCircleColor(display, 145,(int)(player_pos + 4.5f), 5, 0x9DD8F6FF);
   }
 
   // draw explosion
