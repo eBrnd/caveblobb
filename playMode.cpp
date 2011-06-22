@@ -149,10 +149,10 @@ void PlayMode::updatePlayerTail()
       tail[i].y = player_pos + 5;
 
       float angle = ((float)rand() / (float)RAND_MAX) * 360;
-      float speed = 1.25 + ((float)rand() / (float)RAND_MAX);
+      float speed = 2.2 + ((float)rand() / (float)RAND_MAX);
       tail[i].color = hue2rgb(360 - (angle + 60));
 
-      angle = angle / 7 - 205;
+      angle = angle / 8 - 202;
       angle = angle * (PI / 180); // radian
       tail[i].vx = cos(angle) * speed;
       tail[i].vy = sin(angle) * speed;
@@ -356,46 +356,21 @@ void PlayMode::drawScorePanel()
 
 Uint32 PlayMode::hue2rgb(float h)
 {
-  while(h > 360) h -= 360;
+  while(h > 360) h -= 360; // normalize to 360 degrees
   while(h < 0) h += 360;
   h = h / 60;
   float x = 1 - abs(fmod(h, 2)); // see Wikipedia - and in our case, C = 1.
-  int r = 0, g = 0, b = 0;
   if(0 <= h && h < 1)
-  {
-    r = 255;
-    g = x * 255;
-    b = 0;
-  }
+    return 0xFF0000FF | (Uint8)(x * 255) << 16; // r = 255, g = (x*255), b = 0, a = 255
   if(1 <= h && h < 2)
-  {
-    r = x * 255;
-    g = 255;
-    b = 0;
-  }
+    return 0x00FF00FF | (Uint8)(x * 255) << 24;
   if(2 <= h && h < 3)
-  {
-    r = 0;
-    g = 255;
-    b = x * 255;
-  }
+    return 0x00FF00FF | (Uint8)(x * 255) << 8;
   if(3 <= h && h < 4)
-  {
-    r = 0;
-    g = x * 255;
-    b = 255;
-  }
+    return 0x0000FFFF | (Uint8)(x * 255) << 16;
   if(4 <= h && h < 5)
-  {
-    r = x * 255;
-    g = 0;
-    b = 255;
-  }
+    return 0x0000FFFF | (Uint8)(x * 255) << 24;
   if(5 <= h && h < 6)
-  {
-    r = 255;
-    g = 0;
-    b = x * 255;
-  }
-  return r << 24 | g << 16 | b << 8 | 0xFF;
+    return 0xFF0000FF | (Uint8)(x * 255) << 8;
+  return 0;
 }
