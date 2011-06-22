@@ -70,10 +70,7 @@ Mode PlayMode::frame()
   updatePlayerTail();
   drawPlayerTail();
   drawStuff();
-  if(collisionDetect())
-  {
-    crashed = true;  // TODO this needs some cleaning up - control flow is a mess especially here
-  }
+  collisionDetect();
   obstacleCounter();
   drawScorePanel();
   if(crashed && !explosion_size)
@@ -249,7 +246,7 @@ void PlayMode::drawPlayerTail()
   }
 }
 
-bool PlayMode::collisionDetect()
+void PlayMode::collisionDetect()
 {
   if( (int)player_pos < walls_top[28] && !crashed )
   {
@@ -257,7 +254,7 @@ bool PlayMode::collisionDetect()
     explosion_x = 140;
     explosion_y = player_pos + 5;
     explosion_size = 56;
-    return true;
+    crashed = true;
   }
   if( (int)player_pos + 10 > walls_bottom[28] && !crashed )
   {
@@ -265,7 +262,7 @@ bool PlayMode::collisionDetect()
     explosion_x = 140;
     explosion_y = player_pos + 5;
     explosion_size = 56;
-    return true;
+    crashed = true;
   }
   if( obstacles[28] && (int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50 && !crashed )
   {
@@ -273,7 +270,7 @@ bool PlayMode::collisionDetect()
     explosion_x = 140;
     explosion_y = player_pos + 5;
     explosion_size = 56;
-    return true;
+    crashed = true;
   }
 
   // detect near-crashes for special power
@@ -302,8 +299,6 @@ bool PlayMode::collisionDetect()
       explosion_size = 36;
       shot[i-1] = shot[i] = shot[i+1] = 0;
     }
-
-  return false;
 }
 
 void PlayMode::obstacleCounter()

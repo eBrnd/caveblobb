@@ -38,7 +38,7 @@ class PlayMode : public GameMode
     void generateObstacles();
     bool handleInput();
     void updatePlayer();
-    bool collisionDetect();
+    void collisionDetect();
     void obstacleCounter();
     void drawScorePanel();
     void drawPlayerTail();
