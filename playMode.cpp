@@ -70,7 +70,7 @@ Mode PlayMode::frame()
   collisionDetect();
   obstacleCounter();
   drawScorePanel();
-  if(crashed)
+  if(crashed && !gameOverExplosionTime--)
   {
     globalStore->seconds = playtime / 60;
     globalStore->score = playtime;
@@ -215,16 +215,19 @@ void PlayMode::collisionDetect()
   if( (int)player_pos < walls_top[28] && !crashed )
   {
     // crashed into top wall
+    crashExplosion();
     crashed = true;
   }
   if( (int)player_pos + 10 > walls_bottom[28] && !crashed )
   {
     // crashed into bottom wall
+    crashExplosion();
     crashed = true;
   }
   if( obstacles[28] && (int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50 && !crashed )
   {
     // crashed into obstacle
+    crashExplosion();
     crashed = true;
   }
 
@@ -264,7 +267,8 @@ void PlayMode::obstacleCounter()
 
 void PlayMode::drawScorePanel()
 {
-  playtime++;
+  if(!crashed)
+    playtime++;
   if((int)player_pos > 60)
   {
     std::ostringstream s;
@@ -328,4 +332,15 @@ void PlayMode::addExplosion(int x, int y)
     float angle = ((float)rand() / (float)RAND_MAX) * 360;
     particles->add(x, y, (float)cos(angle) * speed + 3, (float)sin(angle) * speed, rand() % 100, 3, 1, (rand() | 0xFF0000FF) & 0xFF7F3FFF);
   }
+}
+
+void PlayMode::crashExplosion()
+{
+  for(int i = 0; i < 300; i++)
+  {
+    float speed = (float)rand() / (float)RAND_MAX + 2;
+    float angle = ((float)rand() / (float)RAND_MAX) * 360;
+    particles->add(140, player_pos, (float)cos(angle) * speed, (float)sin(angle) * speed, rand() % 192, 3, 1, rand() | 0x9DD8F6FF);
+  }
+  gameOverExplosionTime = 128;
 }

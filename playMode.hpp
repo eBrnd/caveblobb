@@ -29,6 +29,7 @@ class PlayMode : public GameMode
     SDL_Color clrBlack;
     int special;
     bool crashed;
+    int gameOverExplosionTime;
     ParticleSystem* particles;
 
     void moveField();
@@ -42,6 +43,7 @@ class PlayMode : public GameMode
     void obstacleCounter();
     void drawScorePanel();
     void addExplosion(int x, int y);
+    void crashExplosion();
 
     Uint32 hue2rgb(float h);
 
