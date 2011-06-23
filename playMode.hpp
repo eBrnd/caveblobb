@@ -41,6 +41,7 @@ class PlayMode : public GameMode
     void collisionDetect();
     void obstacleCounter();
     void drawScorePanel();
+    void addExplosion(int x, int y);
 
     Uint32 hue2rgb(float h);
 

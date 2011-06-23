@@ -28,6 +28,7 @@ void PlayMode::reset()
   passed = 0;
   special = 0;
 
+  particles->clear();
   obstacle_distance = 160;
 
   crashed = false;
@@ -64,6 +65,7 @@ Mode PlayMode::frame()
   }
   updatePlayerTail();
   particles->draw(0);
+  particles->draw(1);
   drawStuff();
   collisionDetect();
   obstacleCounter();
@@ -238,6 +240,7 @@ void PlayMode::collisionDetect()
   {
     if(shot[i] && shot[i] + 5 > obstacles[i+28] && shot[i] < obstacles[i+28] + 50)
     {
+      addExplosion((i+28) * 5, shot[i]);
       obstacles[i+28] = 0;
     }
   }
@@ -315,4 +318,14 @@ Uint32 PlayMode::hue2rgb(float h)
   if(5 <= h && h < 6)
     return 0xFF0000FF | (Uint8)(x * 255) << 8;
   return 0;
+}
+
+void PlayMode::addExplosion(int x, int y)
+{
+  for(int i = 0; i < 100; i++)
+  {
+    float speed = (float)rand() / (float)RAND_MAX;
+    float angle = ((float)rand() / (float)RAND_MAX) * 360;
+    particles->add(x, y, (float)cos(angle) * speed + 3, (float)sin(angle) * speed, rand() % 100, 3, 1, (rand() | 0xFF0000FF) & 0xFF7F3FFF);
+  }
 }
