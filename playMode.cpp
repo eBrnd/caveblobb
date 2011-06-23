@@ -27,6 +27,7 @@ void PlayMode::reset()
   slope = 0;
   playtime = 0;
   passed = 0;
+  collected = 0;
   special = 0;
 
   particles->clear();
@@ -68,6 +69,7 @@ Mode PlayMode::frame()
   }
   updatePlayerTail();
   particles->draw(0);
+  particles->draw(2);
   drawStuff();
   particles->draw(1);
   collisionDetect();
@@ -256,6 +258,20 @@ void PlayMode::collisionDetect()
     crashed = true;
   }
 
+  // collision of player with stars
+  if( items[28] && (int)player_pos + 10 > items[28] && (int)player_pos < items[28] + 16 && !crashed )
+  {
+    collected++;
+    items[28] = 0;
+    for(int i = 0; i < 150; i++)
+    {
+      float speed = .5f * (float)rand() / (float)RAND_MAX + .5;
+      float angle = ((float)rand() / (float)RAND_MAX) * 360;
+      particles->add(140, player_pos, (float)cos(angle * (3.14159265 / 180)) * speed - 3, 2 * (float)sin(angle * (3.14159265 / 180)) * speed, rand() % 64, 2, 2, ParticleSystem::SQUARE, hue2rgb(angle + 60));
+
+    }
+  }
+
   // detect near-crashes for special power
   if( !crashed && special < 100 && (
      (int)player_pos < walls_top[28] + 10 ||
@@ -297,7 +313,7 @@ void PlayMode::drawScorePanel()
   if((int)player_pos > 60)
   {
     std::ostringstream s;
-    s << " Score: " << playtime; // TODO Some more useful score counting - collect items or something
+    s << " Score: " << playtime << " Stars: " << collected;
 
     int barHeight = 10; // if text is rendered, replace this with the height of the text
     if(scoreFont != NULL)
@@ -362,8 +378,8 @@ void PlayMode::addExplosion(int x, int y)
   for(int i = 0; i < 100; i++)
   {
     float speed = (float)rand() / (float)RAND_MAX;
-    float angle = ((float)rand() / (float)RAND_MAX) * 360;
-    particles->add(x, y, (float)cos(angle) * speed + 3, (float)sin(angle) * speed, rand() % 100, 3, 1, ParticleSystem::SQUARE, (rand() | 0xFF0000FF) & 0xFFAF3FFF);
+    float angle = ((float)rand() / (float)RAND_MAX) * 360; // TODO radian conversion can be done right here
+    particles->add(x, y, (float)cos(angle * (3.14159265 / 180)) * speed + 3, (float)sin(angle * (3.14159265 / 180)) * speed, rand() % 100, 3, 1, ParticleSystem::SQUARE, (rand() | 0xFF0000FF) & 0xFFAF3FFF);
   }
 }
 
@@ -373,7 +389,7 @@ void PlayMode::crashExplosion()
   {
     float speed = 2 * (float)rand() / (float)RAND_MAX + 1;
     float angle = ((float)rand() / (float)RAND_MAX) * 360;
-    particles->add(140, player_pos, (float)cos(angle) * speed, (float)sin(angle) * speed, rand() % 192, 3, 1, ParticleSystem::CIRCLE, rand() | 0x9DD8F6FF);
+    particles->add(140, player_pos, (float)cos(angle * (3.14159265 / 180)) * speed, (float)sin(angle * (3.14159265 / 180)) * speed, rand() % 192, 3, 1, ParticleSystem::CIRCLE, rand() | 0x9DD8F6FF);
   }
   gameOverExplosionTime = 128;
 }

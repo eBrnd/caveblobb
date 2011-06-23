@@ -20,7 +20,7 @@ class PlayMode : public GameMode
     int walls_top[160], walls_bottom[160], obstacles[160], shot[131], items[160];
     float player_pos, player_vel;
     bool up;
-    int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed, frames_to_item;
+    int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed, frames_to_item, collected;
     int obstacle_distance, decrease_height_frames;
     unsigned long int playtime;
     float slope;
