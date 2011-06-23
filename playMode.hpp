@@ -12,12 +12,12 @@
 #include "gameMode.hpp"
 #include "mode.hpp"
 #include "colorsAndFonts.hpp"
+#include "particleSystem.hpp"
 
 class PlayMode : public GameMode
 {
   private:
     int walls_top[160], walls_bottom[160], obstacles[160], shot[131];
-    struct particle { float x, y, vx, vy; Uint32 color; } tail[300]; // the 300 is just a guesstimate here - when it looks good, make the array as small as possible
     float player_pos, player_vel;
     bool up;
     int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed;
@@ -30,6 +30,7 @@ class PlayMode : public GameMode
     int special;
     int explosion_x, explosion_y, explosion_size; // explosion_size should be set to a multiple of 2, because we have lots of if(explosion_size)-tests and do explosion_size-=2 each frame -_^
     bool crashed;
+    ParticleSystem* particles;
 
     void moveField();
     void updatePlayerTail();
@@ -41,7 +42,6 @@ class PlayMode : public GameMode
     void collisionDetect();
     void obstacleCounter();
     void drawScorePanel();
-    void drawPlayerTail();
 
     Uint32 hue2rgb(float h);
 

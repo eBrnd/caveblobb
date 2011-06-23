@@ -7,6 +7,7 @@ PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   scoreFont = ColorsAndFonts::getInstance()->sans18;
   clrWhite = ColorsAndFonts::getInstance()->white;
   clrBlack = ColorsAndFonts::getInstance()->black;
+  particles = new ParticleSystem(display);
   reset();
 }
 
@@ -44,10 +45,6 @@ void PlayMode::reset()
   {
     shot[i] = 0;
   }
-  for(int i = 0; i < 300; i++)
-  {
-    tail[i].x = 0;
-  }
 }
 
 inline void PlayMode::FillRect(int x, int y, int w, int h, int color)
@@ -68,7 +65,7 @@ Mode PlayMode::frame()
     generateObstacles();
   }
   updatePlayerTail();
-  drawPlayerTail();
+  particles->draw(0);
   drawStuff();
   collisionDetect();
   obstacleCounter();
@@ -80,6 +77,7 @@ Mode PlayMode::frame()
     globalStore->obstacles = passed;
     return GAMEOVER;
   }
+  particles->update();
 
   return PLAY;
 }
@@ -114,38 +112,20 @@ void PlayMode::moveField()
 
 void PlayMode::updatePlayerTail()
 {
-  // move player tail
-  for(int i = 0; i < 293; i++)
-  {
-    tail[i] = tail[i+6];
-    tail[i+1] = tail[i+7];
-    tail[i+2] = tail[i+8];
-    tail[i+3] = tail[i+9];
-    tail[i+4] = tail[i+10];
-    tail[i+5] = tail[i+11];
-  }
-
   // add six new player tail particles
   if(!crashed)
   {
-    for(int i = 299; i >= 294; i--)
+    for(int i = 0; i < 6; i++)
     {
-      tail[i].x = 140.f;
-      tail[i].y = player_pos + 5;
-
       float angle = ((float)rand() / (float)RAND_MAX) * 360;
       float speed = ((float)rand() / (float)RAND_MAX) + 5;
-      tail[i].color = hue2rgb(angle - 60);
+      Uint32 color = hue2rgb(angle - 60);
 
       angle = angle / 12 - 195;
       angle = angle * (3.14159265 / 180); // radian
-      tail[i].vx = cos(angle) * speed;
-      tail[i].vy = sin(angle) * speed;
+      particles->add(140.f, player_pos + 5, (float)cos(angle) * speed, (float)sin(angle) * speed, 30, 3, 0, color);
     }
-  } else
-  {
-    tail[294].x = tail[295].x = tail[296].x = tail[297].x = tail[298].x = tail[299].x = 0;
-  }
+  } 
 }
 
 void PlayMode::drawStuff()
@@ -237,19 +217,6 @@ void PlayMode::updatePlayer()
   else
     player_vel += .1f;
   player_pos += player_vel;
-}
-
-void PlayMode::drawPlayerTail()
-{
-  for(int i = 0; i < 300; i++)
-  {
-    if(tail[i].x)
-    {
-      circleColor(display, (int)tail[i].x, (int)tail[i].y, 3, tail[i].color);
-      tail[i].x += tail[i].vx;
-      tail[i].y += tail[i].vy;
-    }
-  }
 }
 
 void PlayMode::collisionDetect()

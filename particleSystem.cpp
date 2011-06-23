@@ -24,7 +24,7 @@ void ParticleSystem::add(float x, float y, float vx, float vy, int ttl, int size
   {
     particle p;
     p.x = x; p.y = y; p.vx = vx; p.vy = vy;
-    p.ttl = ttl; p.group = group; p.color = color;
+    p.ttl = ttl; p.size = size; p.group = group; p.color = color;
     particles.push_back(p);
   }
 }
@@ -33,7 +33,7 @@ void ParticleSystem::draw(int group)
 {
   for(unsigned int i = 0; i < particles.size(); i++)
     if(particles[i].group == group)
-      circleColor(display, (int)particles[i].x, (int)particles[i].y, 3, particles[i].color);
+      circleColor(display, (int)particles[i].x, (int)particles[i].y, particles[i].size, particles[i].color);
 }
 
 void ParticleSystem::update()
