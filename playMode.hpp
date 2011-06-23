@@ -3,7 +3,6 @@
 
 #include <string>
 #include <sstream>
-#define PI 3.14159265
 
 #include "SDL/SDL.h"
 #include "SDL/SDL_ttf.h"
@@ -18,7 +17,7 @@ class PlayMode : public GameMode
 {
   private:
     int walls_top[160], walls_bottom[160], obstacles[160], shot[131];
-    struct particle { float x, y, vx, vy; /* int r, g, b; */ Uint32 color; } tail[300]; // the 300 is just a guesstimate here - when it looks good, make the array as small as possible
+    struct particle { float x, y, vx, vy; Uint32 color; } tail[300]; // the 300 is just a guesstimate here - when it looks good, make the array as small as possible
     float player_pos, player_vel;
     bool up;
     int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed;
@@ -28,7 +27,7 @@ class PlayMode : public GameMode
     TTF_Font* scoreFont;
     SDL_Color clrWhite;
     SDL_Color clrBlack;
-    bool special;
+    int special;
     int explosion_x, explosion_y, explosion_size; // explosion_size should be set to a multiple of 2, because we have lots of if(explosion_size)-tests and do explosion_size-=2 each frame -_^
     bool crashed;
 

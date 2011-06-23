@@ -25,7 +25,7 @@ void PlayMode::reset()
   slope = 0;
   playtime = 0;
   passed = 0;
-  special = false;
+  special = 0;
 
   obstacle_distance = 160;
 
@@ -125,7 +125,7 @@ void PlayMode::updatePlayerTail()
     tail[i+5] = tail[i+11];
   }
 
-  // add three new player tail particles
+  // add six new player tail particles
   if(!crashed)
   {
     for(int i = 299; i >= 294; i--)
@@ -138,13 +138,13 @@ void PlayMode::updatePlayerTail()
       tail[i].color = hue2rgb(angle - 60);
 
       angle = angle / 12 - 195;
-      angle = angle * (PI / 180); // radian
+      angle = angle * (3.14159265 / 180); // radian
       tail[i].vx = cos(angle) * speed;
       tail[i].vy = sin(angle) * speed;
     }
   } else
   {
-    tail[297].x = tail[298].x = tail[299].x = 0;
+    tail[294].x = tail[295].x = tail[296].x = tail[297].x = tail[298].x = tail[299].x = 0;
   }
 }
 
@@ -218,11 +218,11 @@ bool PlayMode::handleInput()
         std::string space ("space");
         if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
           return false;
-        if(special && !space.compare(SDL_GetKeyName(event.key.keysym.sym)))  // fire shot
+        if(special > 25 && !space.compare(SDL_GetKeyName(event.key.keysym.sym)))  // fire shot
         {
           shot[0] = player_pos;
           shot[1] = player_pos; // shot needs to be 2 columns long because the shot moves to the right and the level to the left, and we have to make sure it overlaps with every column at least once
-          special = false;
+          special -= 25;
         }
     }
   }
@@ -280,10 +280,11 @@ void PlayMode::collisionDetect()
   }
 
   // detect near-crashes for special power
-  if((int)player_pos < walls_top[28] + 10 ||
+  if( !crashed && special < 100 && (
+     (int)player_pos < walls_top[28] + 10 ||
      (int)player_pos + 10 > walls_bottom[28] - 10 ||
-     (obstacles[28] && (int)player_pos + 10 > obstacles[28] - 10 && (int)player_pos < obstacles[28] + 60) )
-    special = true;
+     (obstacles[28] && (int)player_pos + 10 > obstacles[28] - 10 && (int)player_pos < obstacles[28] + 60) ) )
+    special++;
 
   // collision of shots with obstacles
   for(int i = 0; i < 131; i++)
@@ -323,11 +324,12 @@ void PlayMode::drawScorePanel()
   if((int)player_pos > 60)
   {
     std::ostringstream s;
-    s << " Score: " << playtime << " ";
-    if(special)
-      s << "++SPECIAL++";
+    s << " Score: " << playtime; // TODO Some more useful score counting - collect items or something
+
+    int barHeight = 10; // if text is rendered, replace this with the height of the text
     if(scoreFont != NULL)
     {
+      // Score text
       SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
       SDL_Rect textLocation = { 17,17, 0,0 };
 
@@ -335,7 +337,21 @@ void PlayMode::drawScorePanel()
 
       SDL_BlitSurface(text, NULL, display, &textLocation);
       SDL_FreeSurface(text);
+
+      // "Special" bar
+      text = TTF_RenderText_Shaded(scoreFont, "Special", clrWhite, clrBlack);
+
+      FillRect(297 - text->w, 16, text->w + 204, text->h + 2, 0x0000FF);
+      SDL_Rect specialLocation = { 299 - text->w,17, 0,0 };
+      SDL_BlitSurface(text, NULL, display, &specialLocation);
+      barHeight = text->h;
     }
+
+    FillRect(300,17, 200, barHeight, 0x000000);
+    FillRect(300,17, 2 * special, barHeight, 0xFFFF00);
+    FillRect(350,17, 1, barHeight, 0x808080);
+    FillRect(400,17, 1, barHeight, 0x808080);
+    FillRect(450,17, 1, barHeight, 0x808080);
   }
 }
 
