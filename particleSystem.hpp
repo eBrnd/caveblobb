@@ -5,12 +5,11 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_gfxPrimitives.h"
 
-// TODO Idea: Implement different classes of particles, e.g. DOT, PIXEL, CIRCLE, ...
-
-class ParticleSystem
-{
+class ParticleSystem {
+  public:
+    enum Type { CIRCLE, SQUARE };
   private:
-    struct particle { float x,y, vx,vy; int ttl, size, group; Uint32 color; };
+    struct particle { float x,y, vx,vy; int ttl, size, group; Type type; Uint32 color; };
 
     SDL_Surface* display;
     std::vector<particle> particles;
@@ -18,7 +17,7 @@ class ParticleSystem
     ParticleSystem(SDL_Surface* display);
     void clear();
     void clear(int group);
-    void add(float x, float y, float vx, float vy, int ttl, int size, int group, Uint32 color);
+    void add(float x, float y, float vx, float vy, int ttl, int size, int group, Type type, Uint32 color);
     void draw(int group);
     void update();
 };
