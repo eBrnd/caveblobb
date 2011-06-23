@@ -30,8 +30,6 @@ void PlayMode::reset()
 
   obstacle_distance = 160;
 
-  explosion_x = explosion_y = explosion_size = 0;
-
   crashed = false;
 
   // init with constant values
@@ -70,7 +68,7 @@ Mode PlayMode::frame()
   collisionDetect();
   obstacleCounter();
   drawScorePanel();
-  if(crashed && !explosion_size)
+  if(crashed)
   {
     globalStore->seconds = playtime / 60;
     globalStore->score = playtime;
@@ -105,9 +103,6 @@ void PlayMode::moveField()
     shot[i] = shot[i-1];
   }
   shot[0] = 0;
-
-  // move explosion
-  explosion_x -= 4;
 }
 
 void PlayMode::updatePlayerTail()
@@ -145,12 +140,6 @@ void PlayMode::drawStuff()
   {
     // draw the player
     filledCircleColor(display, 145,(int)(player_pos + 4.5f), 5, 0x9DD8F6FF);
-  }
-
-  // draw explosion
-  if(explosion_size)
-  {
-    filledCircleColor(display, explosion_x, explosion_y, explosion_size-=2, 0xFFFF00FF);
   }
 }
 
@@ -224,25 +213,16 @@ void PlayMode::collisionDetect()
   if( (int)player_pos < walls_top[28] && !crashed )
   {
     // crashed into top wall
-    explosion_x = 140;
-    explosion_y = player_pos + 5;
-    explosion_size = 56;
     crashed = true;
   }
   if( (int)player_pos + 10 > walls_bottom[28] && !crashed )
   {
     // crashed into bottom wall
-    explosion_x = 140;
-    explosion_y = player_pos + 5;
-    explosion_size = 56;
     crashed = true;
   }
   if( obstacles[28] && (int)player_pos + 10 > obstacles[28] && (int)player_pos < obstacles[28] + 50 && !crashed )
   {
     // crashed into obstacle
-    explosion_x = 140;
-    explosion_y = player_pos + 5;
-    explosion_size = 56;
     crashed = true;
   }
 
@@ -259,18 +239,12 @@ void PlayMode::collisionDetect()
     if(shot[i] && shot[i] + 5 > obstacles[i+28] && shot[i] < obstacles[i+28] + 50)
     {
       obstacles[i+28] = 0;
-      explosion_x = 5*(28+i);
-      explosion_y = shot[i] + 3;
-      explosion_size = 36;
     }
   }
   // ...and with walls
   for(int i = 1; i < 130; i++) // only from 1..130 because we have to delete 3 elements in the shots array to make sure the shot is erased completely
     if(shot[i] && (shot[i] + 5 > walls_bottom[i+28] || shot[i] < walls_top[i+28]))
     {
-      explosion_x = 5*(28+i);
-      explosion_y = shot[i] + 3;
-      explosion_size = 36;
       shot[i-1] = shot[i] = shot[i+1] = 0;
     }
 }
