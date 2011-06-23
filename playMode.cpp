@@ -20,6 +20,7 @@ void PlayMode::reset()
 
   frames_to_corner = 1;
   frames_to_obstacle = 60;
+  frames_to_item = 100;
   corner_at = 80;
   level_height = 340;
   up = true; // since mouse button is still pressed from the click in the menu when the game starts
@@ -39,6 +40,7 @@ void PlayMode::reset()
     walls_top[i] = 80;
     walls_bottom[i] = walls_top[i] + level_height;
     obstacles[i] = 0;
+    items[i] = 0;
   }
   for(int i = 0; i < 131; i++)
   {
@@ -62,6 +64,7 @@ Mode PlayMode::frame()
     updatePlayer();
     generateWalls();
     generateObstacles();
+    generateItems();
   }
   updatePlayerTail();
   particles->draw(0);
@@ -89,6 +92,7 @@ void PlayMode::moveField()
     walls_top[i] = walls_top[i+1];
     walls_bottom[i] = walls_bottom[i+1];
     obstacles[i] = obstacles[i+1];
+    items[i] = items[i+1];
   }
 
   // add new wall bits
@@ -127,7 +131,7 @@ void PlayMode::updatePlayerTail()
 
 void PlayMode::drawStuff()
 {
-  // draw the walls and obstacles and the shot
+  // draw the walls, obstacles, items and the shot
   for(int i = 0; i < 160; i++)
   {
     FillRect(5 * i, 0, 5, walls_top[i], 0x309930);
@@ -136,6 +140,17 @@ void PlayMode::drawStuff()
       FillRect(5 * i, obstacles[i], 5, 50, 0x309930);
     if(i < 131 && shot[i])
       FillRect(5 * i + 140, shot[i], 5, 5, 0xFFFFFF);
+    if(items[i])
+    {
+      Sint16 vx[] = { 7, 5, 0, 4, 2, 7, 9, 14, 12, 16, 10, 8 }; // Star shape
+      Sint16 vy[] = { 0, 5, 5, 9, 15, 12, 12, 15, 9, 5, 5, 0 };
+      for(int j = 0; j < 12; j++) // translate
+      {
+        vx[j] += i * 5;
+        vy[j] += items[i];
+      }
+      filledPolygonColor(display, vx, vy, 12, 0xFFFF40FF);
+    }
   }
 
   if(!crashed)
@@ -168,6 +183,16 @@ void PlayMode::generateObstacles()
   {
     obstacles[157] = obstacles[158] = obstacles[159] = walls_top[159] + (rand() % (level_height - 50));
     frames_to_obstacle = 10 + rand() % obstacle_distance;
+  }
+}
+
+void PlayMode::generateItems()
+{
+  items[159] = 0;
+  if(!frames_to_item--)
+  {
+    items[159] = walls_top[159] + (rand() % (level_height - 16));
+    frames_to_item = 10 + rand() % 256;
   }
 }
 
