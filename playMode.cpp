@@ -217,11 +217,11 @@ bool PlayMode::handleInput()
         std::string space ("space");
         if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
           return false;
-        if(special >= 25 && !space.compare(SDL_GetKeyName(event.key.keysym.sym)))  // fire shot
+        if(special >= 50 && !space.compare(SDL_GetKeyName(event.key.keysym.sym)))  // fire shot
         {
           shot[0] = player_pos;
           shot[1] = player_pos; // shot needs to be 2 columns long because the shot moves to the right and the level to the left, and we have to make sure it overlaps with every column at least once
-          special -= 25;
+          special -= 50;
         }
     }
   }
@@ -274,11 +274,13 @@ void PlayMode::collisionDetect()
   }
 
   // detect near-crashes for special power
-  if( !crashed && special < 100 && (
-     (int)player_pos < walls_top[28] + 10 ||
-     (int)player_pos + 10 > walls_bottom[28] - 10 ||
-     (obstacles[28] && (int)player_pos + 10 > obstacles[28] - 10 && (int)player_pos < obstacles[28] + 60) ) )
-    special++;
+  if(!crashed && special < 200)
+  {
+    if((int)player_pos < walls_top[28] + 10 || (int)player_pos + 10 > walls_bottom[28] - 10)
+      special++;
+    if((int)player_pos + 10 > obstacles[28] - 10 && (int)player_pos < obstacles[28] + 60)
+      special+=10;
+  }
 
   // collision of shots with obstacles
   for(int i = 0; i < 131; i++)
@@ -338,14 +340,14 @@ void PlayMode::drawScorePanel()
     }
 
     FillRect(300,17, 200, barHeight, 0x000000);
-    FillRect(300,17, 2 * special, barHeight, 0xFFFF00);
-    if(special >= 25)
-      FillRect(300,17, 50, barHeight, 0x00FF00);
+    FillRect(300,17, special, barHeight, 0xFFFF00);
     if(special >= 50)
-      FillRect(350,17, 50, barHeight, 0x00FF00);
-    if(special >= 75)
-      FillRect(400,17, 50, barHeight, 0x00FF00);
+      FillRect(300,17, 50, barHeight, 0x00FF00);
     if(special >= 100)
+      FillRect(350,17, 50, barHeight, 0x00FF00);
+    if(special >= 150)
+      FillRect(400,17, 50, barHeight, 0x00FF00);
+    if(special >= 200)
       FillRect(450,17, 50, barHeight, 0x00FF00);
     FillRect(350,17, 1, barHeight, 0x808080);
     FillRect(400,17, 1, barHeight, 0x808080);
