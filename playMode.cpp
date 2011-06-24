@@ -264,11 +264,11 @@ void PlayMode::collisionDetect()
   {
     collected++;
     items[28] = 0;
-    for(int i = 0; i < 150; i++)
+    for(int i = 0; i < 250; i++)
     {
       float speed = .5f * (float)rand() / (float)RAND_MAX + .5;
       float angle = ((float)rand() / (float)RAND_MAX) * 360;
-      particles->add(140, player_pos, (float)cos(angle * (3.14159265 / 180)) * speed - 3, 2 * (float)sin(angle * (3.14159265 / 180)) * speed, rand() % 64, 2, 2, ParticleSystem::SQUARE, hue2rgb(angle + 60));
+      particles->add(140, player_pos, (float)cos(angle * (3.14159265 / 180)) * speed - 3, 2 * (float)sin(angle * (3.14159265 / 180)) * speed, rand() % 64, 2, 2, ParticleSystem::PIXEL, hue2rgb(angle + 60));
 
     }
   }

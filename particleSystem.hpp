@@ -7,7 +7,7 @@
 
 class ParticleSystem {
   public:
-    enum Type { CIRCLE, SQUARE };
+    enum Type { PIXEL, CIRCLE, SQUARE };
   private:
     struct particle { float x,y, vx,vy; int ttl, size, group; Type type; Uint32 color; };
 

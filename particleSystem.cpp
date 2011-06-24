@@ -36,6 +36,9 @@ void ParticleSystem::draw(int group)
     if(particles[i].group == group)
       switch(particles[i].type)
       {
+        case PIXEL:
+          pixelColor(display, (int)particles[i].x, (int)particles[i].y, particles[i].color);
+          break;
         case CIRCLE:
           circleColor(display, (int)particles[i].x, (int)particles[i].y, particles[i].size, particles[i].color);
           break;
