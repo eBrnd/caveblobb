@@ -13,7 +13,7 @@ GameOverMode::GameOverMode(SDL_Surface* display, GlobalStore* globalStore)
 Mode GameOverMode::frame()
 {
   std::ostringstream s;
-  s << globalStore->seconds << " seconds, " << globalStore->obstacles << " obstacles. Press space for Menu.";
+  s << globalStore->seconds << " seconds, " << globalStore->obstacles << " obstacles, " << globalStore->stars << " stars. Press space to continue.";
   if(gameOverFont != NULL)
   {
     SDL_Surface* text = TTF_RenderText_Shaded(gameOverFont, s.str().c_str(), clrWhite, clrBlack);
@@ -34,7 +34,7 @@ Mode GameOverMode::frame()
   
 
   SDL_Event event;
-  if(SDL_PollEvent(&event))
+  while(SDL_PollEvent(&event))
   {
     switch(event.type)
     {

@@ -4,7 +4,7 @@
 class GlobalStore
 {
   public:
-    int seconds, obstacles;
+    int seconds, obstacles, stars;
     unsigned long int score;
 };
 

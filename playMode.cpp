@@ -80,6 +80,7 @@ Mode PlayMode::frame()
     globalStore->seconds = playtime / 60;
     globalStore->score = playtime;
     globalStore->obstacles = passed;
+    globalStore->stars = collected;
     return GAMEOVER;
   }
   particles->update();
@@ -121,7 +122,7 @@ void PlayMode::updatePlayerTail()
     for(int i = 0; i < 6; i++)
     {
       float angle = ((float)rand() / (float)RAND_MAX) * 360;
-      float speed = ((float)rand() / (float)RAND_MAX) + 5;
+      float speed = ((float)rand() / (float)RAND_MAX) + 4.5;
       Uint32 color = hue2rgb(angle - 60);
 
       angle = angle / 12 - 195;
@@ -201,7 +202,7 @@ void PlayMode::generateItems()
 bool PlayMode::handleInput()
 {
   SDL_Event event;
-  if(SDL_PollEvent(&event))
+  while(SDL_PollEvent(&event))
   {
     switch(event.type)
     {
