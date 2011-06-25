@@ -278,7 +278,7 @@ void PlayMode::collisionDetect()
   {
     if((int)player_pos < walls_top[28] + 10 || (int)player_pos + 10 > walls_bottom[28] - 10)
       special++;
-    if((int)player_pos + 10 > obstacles[28] - 10 && (int)player_pos < obstacles[28] + 60)
+    if(obstacles[28] && (int)player_pos + 10 > obstacles[28] - 10 && (int)player_pos < obstacles[28] + 60)
       special+=10;
   }
 
