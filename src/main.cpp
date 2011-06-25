@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <SDL.h>
 #include <SDL_framerate.h>
 #include <boost/random.hpp>
