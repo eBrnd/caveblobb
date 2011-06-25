@@ -9,6 +9,7 @@ include_directories(${CMAKE_SOURCE_DIR}
   ${SDL_INCLUDE_DIR}
   ${SDLGFX_INCLUDE_DIR}
   ${SDLTTF_INCLUDE_DIR}
+  ${Boost_INCLUDE_DIRS}
 )
 add_executable(caveblobb ${caveblobb_src})
 
@@ -19,7 +20,7 @@ target_link_libraries(caveblobb
   ${SDLTTF_LIBRARY}
 )
 
-# add programs to the install target - do not install the hashbench benchmark program.
+# add programs to the install target 
 INSTALL(PROGRAMS 
   ${CMAKE_CURRENT_BINARY_DIR}/caveblobb
   DESTINATION bin)
