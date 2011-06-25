@@ -62,6 +62,7 @@ include(FindSDL_ttf)
 
 # Reflect the package structure
 add_subdirectory(src)
+add_subdirectory(contrib)
 
 # add some files to the installation target
 INSTALL(FILES README.txt LICENSE.txt DESTINATION share/doc/caveblobb)

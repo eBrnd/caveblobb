@@ -19,7 +19,7 @@ target_link_libraries(caveblobb
   ${SDLTTF_LIBRARY}
 )
 
-# add programs to the install target - do not install the hashbench benchmark program.
+# add programs to the install target 
 INSTALL(PROGRAMS 
   ${CMAKE_CURRENT_BINARY_DIR}/caveblobb
   DESTINATION bin)
