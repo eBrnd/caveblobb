@@ -1,10 +1,10 @@
 #include <iostream>
-#include "SDL/SDL.h"
-#include "SDL/SDL_framerate.h"
+#include <SDL.h>
+#include <SDL_framerate.h>
 
 #include "game.hpp"
 
-int main()
+int main(int argc, char** argv)
 {
   // Start up SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) 

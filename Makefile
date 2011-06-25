@@ -1,51 +1,43 @@
-CXX := g++
-CXXFLAGS := -lSDL -lSDL_ttf -lSDL_gfx -Werror -Wall -pthread $(CXXFLAGS)
-BINARY := caveblobb
+BUILDDIR = build
+CMAKECMD = cmake ../
+CMAKEOUTPUT = $(BUILDDIR)/Makefile
+MFLAGS = -s
 
-ifneq "$(DEBUG)" ""
-    CXXFLAGS += -g
-else
-    CXXFLAGS += -O3
-endif
+all: $(CMAKEOUTPUT)
+	@cd $(BUILDDIR) && $(MAKE) $(MFLAGS)
 
-ifeq "$(VERBOSE)" ""
-    VERBOSE := @
-else
-    VERBOSE := 
-    FIND_VERB := -print
-    RM_VERB := -v
-endif
+plot: $(CMAKEOUTPUT) all
+	@cd $(BUILDDIR) && ./src/ev-simanealing 
+	@cd $(BUILDDIR) && Rscript ../tools/plot-all.R
 
-SRC := $(wildcard *.cpp)
-OBJECTS := $(SRC:.cpp=.o)
-MODULES := 
+plotref: $(CMAKEOUTPUT) all
+	@cd $(BUILDDIR) && ./src/ev-enumerate 
+	@cd $(BUILDDIR) && Rscript ../tools/plot-all.R
+# No tests for now
+#test: all
+#	@cd $(BUILDDIR) && $(MAKE) $(MFLAGS) test
 
-all: $(BINARY)
+$(CMAKEOUTPUT): $(BUILDDIR)
+	@cd $(BUILDDIR) && $(CMAKECMD) -DCMAKE_BUILD_TYPE=Debug
 
--include $(OBJECTS:.o=.dep)
+release: $(BUILDDIR)
+	@cd $(BUILDDIR) && $(CMAKECMD) -DCMAKE_BUILD_TYPE=Release
+	@cd $(BUILDDIR) && $(MAKE) $(MFLAGS) package
 
-$(BINARY): $(MODULES) $(OBJECTS)
-	@echo "Linking main executable"
-	$(VERBOSE)$(CXX) $(CXXFLAGS) -o $(BINARY) $(OBJECTS)
+install: $(BUILDDIR)
+	@cd $(BUILDDIR) && $(CMAKECMD) -DCMAKE_BUILD_TYPE=Release
+	@cd $(BUILDDIR) && $(MAKE) $(MFLAGS) install
 
-%.dep: %.cpp
-	@echo "Analyzing dependencies of $*.cpp"
-	$(VERBOSE)./depend.sh `dirname $*` $(CXXFLAGS) $*.cpp > $@
+$(BUILDDIR):
+	@mkdir $(BUILDDIR)
 
-%.o: %.cpp
-	@echo "Compiling $*.cpp"
-	$(VERBOSE)$(CXX) $(CXXFLAGS) -c $*.cpp -o $*.o
+clean:
+	@cd $(BUILDDIR) && $(MAKE) $(MFLAGS) clean
 
-.PHONY: clean-deps clean-objs
+distclean:
+	@rm -rf $(BUILDDIR)
 
-clean: clean-deps clean-objs
+bindist:
+	(cd ${BUILDDIR}; cpack)
 
-clean-deps:
-	-$(VERBOSE)find . -name '*.dep' -delete $(FIND_VERB)
-
-clean-objs:
-	-$(VERBOSE)find . '(' -name '*.dep' -or -name '*.o' ')' -delete $(FIND_VERB)
-	-$(VERBOSE)rm $(RM_VERB) -f $(BINARY)
-
-%:
-	@echo $* > /dev/null
+.PHONY: clean distclean

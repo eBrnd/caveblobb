@@ -4,9 +4,9 @@
 #include <string>
 #include <sstream>
 
-#include "SDL/SDL.h"
-#include "SDL/SDL_ttf.h"
-#include "SDL/SDL_gfxPrimitives.h"
+#include <SDL.h>
+#include <SDL_ttf.h>
+#include <SDL_gfxPrimitives.h>
 
 #include "globalStore.hpp"
 #include "gameMode.hpp"

@@ -2,8 +2,8 @@
 #define PARTICLESYSTEM
 
 #include <vector>
-#include "SDL/SDL.h"
-#include "SDL/SDL_gfxPrimitives.h"
+#include <SDL.h>
+#include <SDL_gfxPrimitives.h>
 
 class ParticleSystem {
   public:

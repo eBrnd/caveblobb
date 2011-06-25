@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "SDL/SDL_ttf.h"
+#include <SDL_ttf.h>
 
 #include "gameMode.hpp"
 #include "mode.hpp"
