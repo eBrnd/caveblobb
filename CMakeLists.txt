@@ -59,6 +59,8 @@ include(FindSDL)
 include(FindSDL_gfx)
 include(FindSDL_ttf)
 
+# Find Boost.
+FIND_PACKAGE(Boost 1.40.0 COMPONENTS random)
 
 # Reflect the package structure
 add_subdirectory(src)
@@ -89,3 +91,4 @@ message("  prefix: ${CMAKE_INSTALL_PREFIX}")
 message("  SDL lib: ${SDL_INCLUDE_DIR} ${SDL_LIBRARY}")
 message("  SDLGFX lib: ${SDLGFX_INCLUDE_DIR} ${SDLGFX_LIBRARY}")
 message("  SDLTTF lib: ${SDLTTF_INCLUDE_DIR} ${SDLTTF_LIBRARY}")
+message("  Boost lib: ${Boost_INCLUDE_DIRS}")

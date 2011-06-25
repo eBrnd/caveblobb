@@ -9,6 +9,7 @@ include_directories(${CMAKE_SOURCE_DIR}
   ${SDL_INCLUDE_DIR}
   ${SDLGFX_INCLUDE_DIR}
   ${SDLTTF_INCLUDE_DIR}
+  ${Boost_INCLUDE_DIRS}
 )
 add_executable(caveblobb ${caveblobb_src})
 
