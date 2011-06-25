@@ -1,6 +1,6 @@
 # -*- mode: cmake; -*-
 project(caveblobb)
-cmake_minimum_required(VERSION "2.6" FATAL_ERROR)
+cmake_minimum_required(VERSION "2.8" FATAL_ERROR)
 if(POLICY CMP0011)
   cmake_policy(SET CMP0011 NEW)
 endif(POLICY CMP0011)
@@ -59,6 +59,7 @@ include(FindSDL)
 include(FindSDL_gfx)
 include(FindSDL_ttf)
 
+
 # Reflect the package structure
 add_subdirectory(src)
 
@@ -85,8 +86,6 @@ INCLUDE(CPack)
 message("")
 message("***** Configuration *****")
 message("  prefix: ${CMAKE_INSTALL_PREFIX}")
-message("  lib: ${SDL_BUILDING_LIBRARY}")
 message("  SDL lib: ${SDL_INCLUDE_DIR} ${SDL_LIBRARY}")
 message("  SDLGFX lib: ${SDLGFX_INCLUDE_DIR} ${SDLGFX_LIBRARY}")
 message("  SDLTTF lib: ${SDLTTF_INCLUDE_DIR} ${SDLTTF_LIBRARY}")
-
