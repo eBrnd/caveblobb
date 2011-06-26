@@ -51,3 +51,11 @@ int ColorsAndFonts::textWidth(int size, char* text)
   else
     return 0;
 }
+
+int ColorsAndFonts::textHeight(int size)
+{
+  if(size < 4 && size >= 0 && fonts[size] != NULL)
+    return SFont_TextHeight(fonts[size]);
+  else
+    return 0;
+}

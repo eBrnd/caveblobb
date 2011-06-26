@@ -339,39 +339,27 @@ void PlayMode::drawScorePanel()
     s << " Score: " << playtime << " Stars: " << collected;
 
     int barHeight = 10; // if text is rendered, replace this with the height of the text
-    if(scoreFont != NULL)
-    {
-      // Score text
-      SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
-      SDL_Rect textLocation = { 17,17, 0,0 };
+    char* sc = (char*)s.str().c_str();
+    barHeight = caf->textHeight(1);
 
-      FillRect(16,16, text->w + 2,text->h + 2, 0x0000FF);
+    caf->write(display, 17,17, 1, sc);
 
-      SDL_BlitSurface(text, NULL, display, &textLocation);
-      SDL_FreeSurface(text);
+    char* pc = (char*)"Special";
+    caf->write(display, 399-caf->textWidth(1,pc), 17, 1, pc);
 
-      // "Special" bar
-      text = TTF_RenderText_Shaded(scoreFont, "Special", clrWhite, clrBlack);
-
-      FillRect(297 - text->w, 16, text->w + 204, text->h + 2, 0x0000FF);
-      SDL_Rect specialLocation = { 299 - text->w,17, 0,0 };
-      SDL_BlitSurface(text, NULL, display, &specialLocation);
-      barHeight = text->h;
-    }
-
-    FillRect(300,17, 200, barHeight, 0x000000);
-    FillRect(300,17, special, barHeight, 0xFFFF00);
+    FillRect(400,17, 200, barHeight, 0x000000);
+    FillRect(400,17, special, barHeight, 0xFFFF00);
     if(special >= 50)
-      FillRect(300,17, 50, barHeight, 0x00FF00);
-    if(special >= 100)
-      FillRect(350,17, 50, barHeight, 0x00FF00);
-    if(special >= 150)
       FillRect(400,17, 50, barHeight, 0x00FF00);
-    if(special >= 200)
+    if(special >= 100)
       FillRect(450,17, 50, barHeight, 0x00FF00);
-    FillRect(350,17, 1, barHeight, 0x808080);
-    FillRect(400,17, 1, barHeight, 0x808080);
+    if(special >= 150)
+      FillRect(500,17, 50, barHeight, 0x00FF00);
+    if(special >= 200)
+      FillRect(550,17, 50, barHeight, 0x00FF00);
     FillRect(450,17, 1, barHeight, 0x808080);
+    FillRect(500,17, 1, barHeight, 0x808080);
+    FillRect(550,17, 1, barHeight, 0x808080);
   }
 }
 

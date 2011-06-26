@@ -22,6 +22,7 @@ class ColorsAndFonts
     static ColorsAndFonts* getInstance();
     void write(SDL_Surface* display, int x, int y, int size, char* text);
     int textWidth(int size, char* text);
+    int textHeight(int size);
 };
 
 #endif
