@@ -48,12 +48,6 @@ void PlayMode::reset()
   }
 }
 
-inline void PlayMode::FillRect(int x, int y, int w, int h, int color)
-{
-  SDL_Rect rect = {x,y,w,h};
-  SDL_FillRect(display, &rect, color);
-}
-
 Mode PlayMode::frame()
 {
   if(!paused)
@@ -143,12 +137,12 @@ void PlayMode::drawStuff()
   // draw the walls, obstacles, items and the shot
   for(int i = 0; i < 160; i++)
   {
-    FillRect(5 * i, 0, 5, walls_top[i], 0x309930);
-    FillRect(5 * i, walls_bottom[i], 5, 599 - walls_bottom[i], 0x309930);
+    boxColor(display, 5*i, 0, 5*i + 5, walls_top[i], 0x309930FF);
+    boxColor(display, 5*i, walls_bottom[i], 5, 599, 0x309930);
     if(obstacles[i])
-      FillRect(5 * i, obstacles[i], 5, 50, 0x309930);
+      boxColor(display, 5*i, obstacles[i], 5*i + 5, obstacles[i] + 50, 0x309930FF);
     if(i < 131 && shot[i])
-      FillRect(5 * i + 140, shot[i], 5, 5, 0xFFFFFF);
+      boxColor(display, 5*i + 140, shot[i], 5*i + 145, shot[i] + 5, 0xFFFFFFF);
     if(items[i])
     {
       Sint16 vx[] = { 7, 5, 0, 4, 2, 7, 9, 14, 12, 16, 10, 8 }; // Star shape
@@ -345,7 +339,7 @@ void PlayMode::drawScorePanel()
       SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
       SDL_Rect textLocation = { 17,17, 0,0 };
 
-      FillRect(16,16, text->w + 2,text->h + 2, 0x0000FF);
+      boxColor(display, 16,16, 18+text->w, 18+text->h, 0x0000FFFF);
 
       SDL_BlitSurface(text, NULL, display, &textLocation);
       SDL_FreeSurface(text);
@@ -353,25 +347,25 @@ void PlayMode::drawScorePanel()
       // "Special" bar
       text = TTF_RenderText_Shaded(scoreFont, "Special", clrWhite, clrBlack);
 
-      FillRect(297 - text->w, 16, text->w + 204, text->h + 2, 0x0000FF);
+      boxColor(display, 297 - text->w, 16, 300, 18 + text->h, 0x0000FFFF);
       SDL_Rect specialLocation = { 299 - text->w,17, 0,0 };
       SDL_BlitSurface(text, NULL, display, &specialLocation);
       barHeight = text->h;
     }
 
-    FillRect(300,17, 200, barHeight, 0x000000);
-    FillRect(300,17, special, barHeight, 0xFFFF00);
+    boxColor(display, 300,17, 488, 17+barHeight, 0x000000FF);
+    boxColor(display, 300,17, 300 + special, 17 + barHeight, 0xFFFF00FF);
     if(special >= 50)
-      FillRect(300,17, 50, barHeight, 0x00FF00);
+      boxColor(display, 300,17, 350, 17+barHeight, 0x00FF00FF);
     if(special >= 100)
-      FillRect(350,17, 50, barHeight, 0x00FF00);
+      boxColor(display, 350,17, 400, 17+barHeight, 0x00FF00FF);
     if(special >= 150)
-      FillRect(400,17, 50, barHeight, 0x00FF00);
+      boxColor(display, 400,17, 450, 17+barHeight, 0x00FF00FF);
     if(special >= 200)
-      FillRect(450,17, 50, barHeight, 0x00FF00);
-    FillRect(350,17, 1, barHeight, 0x808080);
-    FillRect(400,17, 1, barHeight, 0x808080);
-    FillRect(450,17, 1, barHeight, 0x808080);
+      boxColor(display, 450,17, 500, 17+barHeight, 0x00FF00FF);
+    boxColor(display, 350,17, 351, 17 + barHeight, 0x808080FF);
+    boxColor(display, 400,17, 351, 17 + barHeight, 0x808080FF);
+    boxColor(display, 450,17, 351, 17 + barHeight, 0x808080FF);
   }
 }
 
