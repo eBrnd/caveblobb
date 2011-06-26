@@ -7,13 +7,12 @@
 
 #include "gameMode.hpp"
 #include "mode.hpp"
-#include "colorsAndFonts.hpp"
 
 class MenuMode : public GameMode
 {
   private:
-    TTF_Font* menuFont, * titleFont;
     SDL_Color clrWhite, clrBlack;
+    TTF_Font* menuFont, *titleFont;
   public:
     MenuMode(SDL_Surface* display, GlobalStore* globalStore);
     Mode frame();

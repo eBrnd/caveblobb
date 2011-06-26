@@ -21,6 +21,7 @@ class ColorsAndFonts
     SDL_Color white, black;
     static ColorsAndFonts* getInstance();
     void write(SDL_Surface* display, int x, int y, int size, char* text);
+    int textWidth(int size, char* text);
 };
 
 #endif

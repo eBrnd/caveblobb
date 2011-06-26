@@ -11,25 +11,11 @@ MenuMode::MenuMode(SDL_Surface* display, GlobalStore* globalStore)
 
 Mode MenuMode::frame()
 {
-  if(titleFont != NULL)
-  {
-    SDL_Surface* title = TTF_RenderText_Shaded(titleFont, "~cavEbl0bb~", clrWhite, clrBlack);
-    SDL_Rect titleLocation;
-    titleLocation.x = 400 - title->w / 2;
-    titleLocation.y = 100;
-    SDL_BlitSurface(title, NULL, display, &titleLocation);
-    SDL_FreeSurface(title);
-  }
+  char* title = (char*)"~cavEbl0bb~";
+  caf->write(display, 400 - caf->textWidth(3, title) / 2, 100, 3, title);
 
-  if(menuFont != NULL)
-  {
-    SDL_Surface* text = TTF_RenderText_Shaded(menuFont, "Click to start! Esc to quit.", clrWhite, clrBlack);
-    SDL_Rect textLocation;
-    textLocation.x = 400 - text->w / 2;
-    textLocation.y = 200;
-    SDL_BlitSurface(text, NULL, display, &textLocation);
-    SDL_FreeSurface(text);
-  }
+  char* clicktostart = (char*)"Click to start! Esc to quit.";
+  caf->write(display, 400 - caf->textWidth(1, clicktostart) / 2, 280, 1, clicktostart);
 
   SDL_Event event;
   while(SDL_PollEvent(&event))

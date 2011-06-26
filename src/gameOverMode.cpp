@@ -13,25 +13,17 @@ GameOverMode::GameOverMode(SDL_Surface* display, GlobalStore* globalStore)
 Mode GameOverMode::frame()
 {
   std::ostringstream s;
-  s << globalStore->seconds << " seconds, " << globalStore->obstacles << " obstacles, " << globalStore->stars << " stars. Press space to continue.";
-  if(gameOverFont != NULL)
-  {
-    SDL_Surface* text = TTF_RenderText_Shaded(gameOverFont, s.str().c_str(), clrWhite, clrBlack);
-    SDL_Rect textLocation = { 400 - text->w / 2, 400, 0,0 };
-    SDL_BlitSurface(text, NULL, display, &textLocation);
-    SDL_FreeSurface(text);
-  }
+  s << globalStore->seconds << " seconds, " << globalStore->obstacles << " obstacles, " << globalStore->stars << " stars.";
+  char* sc = (char*)s.str().c_str();
+  caf->write(display, 400 - caf->textWidth(1, sc) / 2, 400, 1, sc);
+
+  char* ps = (char*)"Press space to continue.";
+  caf->write(display, 400 - caf->textWidth(1, ps) / 2, 440, 1, ps);
 
   std::ostringstream p;
   p << "Score: " << globalStore->score;
-  if(bigFont != NULL)
-  {
-    SDL_Surface* points = TTF_RenderText_Shaded(bigFont, p.str().c_str(), clrWhite, clrBlack);
-    SDL_Rect pointsLocation = { 400 - points->w / 2, 200, 0,0 };
-    SDL_BlitSurface(points, NULL, display, &pointsLocation);
-    SDL_FreeSurface(points);
-  }
-  
+  char* pc = (char*)p.str().c_str();
+  caf->write(display, 400 - caf->textWidth(2, pc) / 2, 200, 2, pc);
 
   SDL_Event event;
   while(SDL_PollEvent(&event))

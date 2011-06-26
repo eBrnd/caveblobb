@@ -43,3 +43,11 @@ void ColorsAndFonts::write(SDL_Surface* display, int x, int y, int size, char* t
   if(size < 4 && size >= 0 && fonts[size] != NULL)
     SFont_Write(display, fonts[size], x, y, text);
 }
+
+int ColorsAndFonts::textWidth(int size, char* text)
+{
+  if(size < 4 && size >= 0 && fonts[size] != NULL)
+    return SFont_TextWidth(fonts[size], text);
+  else
+    return 0;
+}
