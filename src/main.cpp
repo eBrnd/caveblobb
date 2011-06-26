@@ -13,14 +13,21 @@ int main(int argc, char** argv)
     exit(1);
   }
 
-  int sdlopts = 0;
-  if(argc > 1)
+  int sdlopts = SDL_SWSURFACE;
+
+  for(int i = 1; i < argc; i++)
   {
     std::string fullscreen ("--fullscreen");
-    if(!fullscreen.compare(argv[1]))
+    std::string f ("-f");
+    if(!fullscreen.compare(argv[i]) || !f.compare(argv[i]))
       sdlopts = SDL_SWSURFACE | SDL_FULLSCREEN;
-    else
-      sdlopts = SDL_SWSURFACE;
+    std::string help ("--help");
+    std::string h ("-h");
+    if(!help.compare(argv[i]) || !h.compare(argv[i]))
+    {
+      std::cout << "~cavebl0bb~\n\nCommand line options:\n\t--fullscreen, -f\t\tStart in full screen mode." << std::endl;
+      exit(0);
+    }
   }
 
   SDL_Surface *display;
