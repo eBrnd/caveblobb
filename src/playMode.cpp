@@ -48,7 +48,7 @@ void PlayMode::reset()
   }
 }
 
-inline void PlayMode::FillRect(int x, int y, int w, int h, int color)
+inline void PlayMode::FillRect(int x, int y, int w, int h, Uint32 color)
 {
   SDL_Rect rect = {x,y,w,h};
   SDL_FillRect(display, &rect, color);
@@ -133,7 +133,7 @@ void PlayMode::updatePlayerTail()
 
       angle = angle / 12 - 195;
       angle = angle * (3.14159265 / 180); // radian
-      particles->add(140.f, player_pos + 5, (float)cos(angle) * speed, (float)sin(angle) * speed, 30, 2, 0, ParticleSystem::SQUARE, color);
+      particles->add(140.f, player_pos + 5, (float)cos(angle) * speed, (float)sin(angle) * speed, 30, 3, 0, ParticleSystem::SQUARE, color);
     }
   } 
 }
@@ -284,7 +284,7 @@ void PlayMode::collisionDetect()
   {
     collected++;
     items[28] = 0;
-    for(int i = 0; i < 250; i++)
+    for(int i = 0; i < 350; i++)
     {
       float speed = .5f * (float)rng->rand() / (float)RAND_MAX + .5;
       float angle = ((float)rng->rand() / (float)RAND_MAX) * 360;
@@ -402,7 +402,7 @@ void PlayMode::addExplosion(int x, int y)
   {
     float speed = (float)rng->rand() / (float)RAND_MAX;
     float angle = ((float)rng->rand() / (float)RAND_MAX) * 360; // TODO radian conversion can be done right here
-    particles->add(x, y, (float)cos(angle * (3.14159265 / 180)) * speed + 3, (float)sin(angle * (3.14159265 / 180)) * speed, rng->rand() % 100, 3, 1, ParticleSystem::SQUARE, (rng->rand() | 0xFF0000FF) & 0xFFAF3FFF);
+    particles->add(x, y, (float)cos(angle * (3.14159265 / 180)) * speed + 3, (float)sin(angle * (3.14159265 / 180)) * speed, rng->rand() % 100, 6, 1, ParticleSystem::SQUARE, (rng->rand() | 0xFF0000FF) & 0xFFAF3FFF);
   }
 }
 

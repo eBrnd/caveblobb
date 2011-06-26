@@ -43,7 +43,7 @@ void ParticleSystem::draw(int group)
           circleColor(display, (int)particles[i].x, (int)particles[i].y, particles[i].size, particles[i].color);
           break;
         case SQUARE:
-          boxColor(display, particles[i].x - particles[i].size, particles[i].y - particles[i].size, particles[i].x + particles[i].size, particles[i].y + particles[i].size, particles[i].color);
+          FillRect(particles[i].x, particles[i].y, particles[i].size, particles[i].size, particles[i].color >> 8);
           break;
       }
 }
@@ -60,4 +60,10 @@ void ParticleSystem::update()
       particles[i].y += particles[i].vy;
     }
   }
+}
+
+inline void ParticleSystem::FillRect(int x, int y, int w, int h, Uint32 color)
+{
+  SDL_Rect rect = {x,y,w,h};
+  SDL_FillRect(display, &rect, color);
 }

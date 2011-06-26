@@ -35,6 +35,7 @@ class PlayMode : public GameMode
     int gameOverExplosionTime;
     ParticleSystem* particles;
 
+    inline void FillRect(int x, int y, int w, int h, Uint32 color);
     void moveField();
     void updatePlayerTail();
     void drawStuff();
@@ -55,7 +56,6 @@ class PlayMode : public GameMode
   public:
     PlayMode(SDL_Surface* display, GlobalStore* globalStore);
     void reset();
-    inline void FillRect(int x, int y, int w, int h, int color);
     Mode frame();
 };
 

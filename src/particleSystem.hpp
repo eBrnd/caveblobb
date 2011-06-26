@@ -13,6 +13,8 @@ class ParticleSystem {
 
     SDL_Surface* display;
     std::vector<particle> particles;
+
+    inline void FillRect(int x, int y, int w, int h, Uint32 color);
   public:
     ParticleSystem(SDL_Surface* display);
     void clear();
