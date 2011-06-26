@@ -1,8 +1,9 @@
 # -*- mode: cmake; -*-
 
-file(GLOB_RECURSE h_files "*.hpp")
+file(GLOB_RECURSE h_files "*.hpp,*.h")
 file(GLOB_RECURSE cpp_files "*.cpp")
-set(caveblobb_src "${h_files}" "${cpp_files}")
+file(GLOB_RECURSE c_files "*.c")
+set(caveblobb_src "${h_files}" "${cpp_files}" "${c_files}")
 
 include_directories(${CMAKE_SOURCE_DIR} 
   ${CMAKE_CURRENT_SOURCE_DIR} 
@@ -18,6 +19,7 @@ target_link_libraries(caveblobb
   ${SDL_LIBRARY}
   ${SDLGFX_LIBRARY}
   ${SDLTTF_LIBRARY}
+  ${SDLIMAGE_LIBRARY}
 )
 
 # add programs to the install target 
