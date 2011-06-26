@@ -13,6 +13,7 @@
 #include "mode.hpp"
 #include "colorsAndFonts.hpp"
 #include "particleSystem.hpp"
+#include "randomNumberGenerator.hpp"
 
 class PlayMode : public GameMode
 {
@@ -27,6 +28,7 @@ class PlayMode : public GameMode
     TTF_Font* scoreFont;
     SDL_Color clrWhite;
     SDL_Color clrBlack;
+    RandomNumberGenerator* rng;
     int special;
     bool crashed;
     bool paused;

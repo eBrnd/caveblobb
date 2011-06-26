@@ -1,24 +1,11 @@
 #include <iostream>
-#include <ctime>
 #include <SDL.h>
 #include <SDL_framerate.h>
-#include <boost/random.hpp>
 
 #include "game.hpp"
 
 int main(int argc, char** argv)
 {
-  // gonium's boost random things -- TODO use them
-  typedef boost::mt19937 RNGType; 
-  RNGType rng;                
-  rng.seed(static_cast<unsigned int>(std::time(0)));
-  boost::uniform_real<> zero2one( 0, 1);
-  boost::variate_generator< RNGType, boost::uniform_real<> > random(rng, zero2one);          
-  for ( int i = 1; i < 6; i++ ) {
-    double n  = random();
-    std::cout << "OMG Zufall! " << n << std::endl;
-  }
-
   // Start up SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) 
   {

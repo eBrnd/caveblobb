@@ -1,6 +1,5 @@
 #include "playMode.hpp"
 
-
 PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
 {
@@ -8,13 +7,12 @@ PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   clrWhite = ColorsAndFonts::getInstance()->white;
   clrBlack = ColorsAndFonts::getInstance()->black;
   particles = new ParticleSystem(display);
+  rng = RandomNumberGenerator::getInstance();
   reset();
 }
 
 void PlayMode::reset()
 {
-  srand(time(NULL));
-
   player_pos = 300;
   player_vel = 0;
 
@@ -129,8 +127,8 @@ void PlayMode::updatePlayerTail()
   {
     for(int i = 0; i < 6; i++)
     {
-      float angle = ((float)rand() / (float)RAND_MAX) * 360;
-      float speed = ((float)rand() / (float)RAND_MAX) + 4.5;
+      float angle = ((float)rng->rand() / (float)RAND_MAX) * 360;
+      float speed = ((float)rng->rand() / (float)RAND_MAX) + 4.5;
       Uint32 color = hue2rgb(angle - 60);
 
       angle = angle / 12 - 195;
@@ -176,8 +174,8 @@ void PlayMode::generateWalls()
   if(!frames_to_corner--)
   {
     int last_corner = corner_at;
-    frames_to_corner = 10 + (rand() % 160);
-    corner_at = rand() % (600 - level_height);
+    frames_to_corner = 10 + (rng->rand() % 160);
+    corner_at = rng->rand() % (600 - level_height);
     slope = ((float)last_corner - (float)corner_at) / frames_to_corner;
     while(abs(slope) > level_height / 45) // infinite loop if height is smaller than 0 - but who would do that?
     {
@@ -192,8 +190,8 @@ void PlayMode::generateObstacles()
   obstacles[159] = 0;
   if(!frames_to_obstacle--)
   {
-    obstacles[157] = obstacles[158] = obstacles[159] = walls_top[159] + (rand() % (level_height - 50));
-    frames_to_obstacle = 10 + rand() % obstacle_distance;
+    obstacles[157] = obstacles[158] = obstacles[159] = walls_top[159] + (rng->rand() % (level_height - 50));
+    frames_to_obstacle = 10 + rng->rand() % obstacle_distance;
   }
 }
 
@@ -202,8 +200,8 @@ void PlayMode::generateItems()
   items[159] = 0;
   if(!frames_to_item--)
   {
-    items[159] = walls_top[159] + (rand() % (level_height - 16));
-    frames_to_item = 10 + rand() % 256;
+    items[159] = walls_top[159] + (rng->rand() % (level_height - 16));
+    frames_to_item = 10 + rng->rand() % 256;
   }
 }
 
@@ -288,9 +286,9 @@ void PlayMode::collisionDetect()
     items[28] = 0;
     for(int i = 0; i < 250; i++)
     {
-      float speed = .5f * (float)rand() / (float)RAND_MAX + .5;
-      float angle = ((float)rand() / (float)RAND_MAX) * 360;
-      particles->add(140, player_pos, (float)cos(angle * (3.14159265 / 180)) * speed - 3, 2 * (float)sin(angle * (3.14159265 / 180)) * speed, rand() % 64, 2, 2, ParticleSystem::PIXEL, hue2rgb(angle + 60));
+      float speed = .5f * (float)rng->rand() / (float)RAND_MAX + .5;
+      float angle = ((float)rng->rand() / (float)RAND_MAX) * 360;
+      particles->add(140, player_pos, (float)cos(angle * (3.14159265 / 180)) * speed - 3, 2 * (float)sin(angle * (3.14159265 / 180)) * speed, rng->rand() % 64, 2, 2, ParticleSystem::PIXEL, hue2rgb(angle + 60));
 
     }
   }
@@ -402,9 +400,9 @@ void PlayMode::addExplosion(int x, int y)
 {
   for(int i = 0; i < 100; i++)
   {
-    float speed = (float)rand() / (float)RAND_MAX;
-    float angle = ((float)rand() / (float)RAND_MAX) * 360; // TODO radian conversion can be done right here
-    particles->add(x, y, (float)cos(angle * (3.14159265 / 180)) * speed + 3, (float)sin(angle * (3.14159265 / 180)) * speed, rand() % 100, 3, 1, ParticleSystem::SQUARE, (rand() | 0xFF0000FF) & 0xFFAF3FFF);
+    float speed = (float)rng->rand() / (float)RAND_MAX;
+    float angle = ((float)rng->rand() / (float)RAND_MAX) * 360; // TODO radian conversion can be done right here
+    particles->add(x, y, (float)cos(angle * (3.14159265 / 180)) * speed + 3, (float)sin(angle * (3.14159265 / 180)) * speed, rng->rand() % 100, 3, 1, ParticleSystem::SQUARE, (rng->rand() | 0xFF0000FF) & 0xFFAF3FFF);
   }
 }
 
@@ -412,9 +410,9 @@ void PlayMode::crashExplosion()
 {
   for(int i = 0; i < 1000; i++)
   {
-    float speed = 2 * (float)rand() / (float)RAND_MAX + 1;
-    float angle = ((float)rand() / (float)RAND_MAX) * 360;
-    particles->add(140, player_pos, (float)cos(angle * (3.14159265 / 180)) * speed, (float)sin(angle * (3.14159265 / 180)) * speed, rand() % 192, 3, 1, ParticleSystem::CIRCLE, rand() | 0x9DD8F6FF);
+    float speed = 2 * (float)rng->rand() / (float)RAND_MAX + 1;
+    float angle = ((float)rng->rand() / (float)RAND_MAX) * 360;
+    particles->add(140, player_pos, (float)cos(angle * (3.14159265 / 180)) * speed, (float)sin(angle * (3.14159265 / 180)) * speed, rng->rand() % 192, 3, 1, ParticleSystem::CIRCLE, rng->rand() | 0x9DD8F6FF);
   }
   gameOverExplosionTime = 128;
 }
