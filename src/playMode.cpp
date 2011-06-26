@@ -34,6 +34,7 @@ void PlayMode::reset()
   obstacle_distance = 160;
 
   crashed = false;
+  paused = false;
 
   // init with constant values
   for(int i = 0; i < 160; i++)
@@ -57,34 +58,41 @@ inline void PlayMode::FillRect(int x, int y, int w, int h, int color)
 
 Mode PlayMode::frame()
 {
-  if(!crashed)
+  if(!paused)
   {
+    if(!crashed)
+    {
+      if(!handleInput())
+        return MENU;
+      moveField();
+      updatePlayer();
+      generateWalls();
+      generateObstacles();
+      generateItems();
+    }
+    updatePlayerTail();
+    particles->draw(0);
+    particles->draw(2);
+    drawStuff();
+    particles->draw(1);
+    collisionDetect();
+    obstacleCounter();
+    drawScorePanel();
+    if(crashed && !gameOverExplosionTime--)
+    {
+      globalStore->seconds = playtime / 60;
+      globalStore->score = playtime;
+      globalStore->obstacles = passed;
+      globalStore->stars = collected;
+      return GAMEOVER;
+    }
+    particles->update();
+  } else
+  {
+    drawPauseScreen();
     if(!handleInput())
       return MENU;
-    moveField();
-    updatePlayer();
-    generateWalls();
-    generateObstacles();
-    generateItems();
   }
-  updatePlayerTail();
-  particles->draw(0);
-  particles->draw(2);
-  drawStuff();
-  particles->draw(1);
-  collisionDetect();
-  obstacleCounter();
-  drawScorePanel();
-  if(crashed && !gameOverExplosionTime--)
-  {
-    globalStore->seconds = playtime / 60;
-    globalStore->score = playtime;
-    globalStore->obstacles = passed;
-    globalStore->stars = collected;
-    return GAMEOVER;
-  }
-  particles->update();
-
   return PLAY;
 }
 
@@ -213,18 +221,32 @@ bool PlayMode::handleInput()
         up = false;
         break;
       case SDL_KEYDOWN:
-        std::string esc ("escape");
-        std::string space ("space");
-        if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
-          return false;
-        if(special >= 50 && !space.compare(SDL_GetKeyName(event.key.keysym.sym)))  // fire shot
+        switch(event.key.keysym.sym)
         {
-          shot[0] = player_pos;
-          shot[1] = player_pos; // shot needs to be 2 columns long because the shot moves to the right and the level to the left, and we have to make sure it overlaps with every column at least once
-          special -= 50;
+          case SDLK_ESCAPE:
+            return false;
+          case ' ':
+            if(special >= 50 && !paused)  // fire shot
+            {
+              shot[0] = player_pos;
+              shot[1] = player_pos; // shot needs to be 2 columns long because the shot moves to the right and the level to the left, and we have to make sure it overlaps with every column at least once
+              special -= 50;
+            }
+            break;
+          case 'p':
+            paused = !paused;
+            break;
+          default:
+            break;
+        }
+      case SDL_ACTIVEEVENT: // Window gains or loses focus
+        if((event.active.state & SDL_APPINPUTFOCUS) && event.active.gain == 0)
+        {
+          paused = true;
         }
     }
   }
+
   return true;
 }
 
@@ -395,4 +417,17 @@ void PlayMode::crashExplosion()
     particles->add(140, player_pos, (float)cos(angle * (3.14159265 / 180)) * speed, (float)sin(angle * (3.14159265 / 180)) * speed, rand() % 192, 3, 1, ParticleSystem::CIRCLE, rand() | 0x9DD8F6FF);
   }
   gameOverExplosionTime = 128;
+}
+
+void PlayMode::drawPauseScreen()
+{
+  std::ostringstream s;
+  s << "Pause. Press P to continue.";
+  if(scoreFont != NULL)
+  {
+    SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
+    SDL_Rect textLocation = { 400 - text->w / 2, 200, 0,0 };
+    SDL_BlitSurface(text, NULL, display, &textLocation);
+    SDL_FreeSurface(text);
+  }
 }
