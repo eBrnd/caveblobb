@@ -1,1 +1,1 @@
-INSTALL(FILES freesans.ttf gpl.txt DESTINATION share/caveblobb)
+INSTALL(FILES FreeSans.ttf gpl.txt DESTINATION share/caveblobb)
