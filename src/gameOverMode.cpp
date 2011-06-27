@@ -4,10 +4,6 @@
 GameOverMode::GameOverMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
 {
-  gameOverFont = ColorsAndFonts::getInstance()->sans18;
-  bigFont = ColorsAndFonts::getInstance()->sans43;
-  clrWhite = ColorsAndFonts::getInstance()->white;
-  clrBlack = ColorsAndFonts::getInstance()->black;
 }
 
 Mode GameOverMode::frame()

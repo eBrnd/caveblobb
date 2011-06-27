@@ -11,8 +11,6 @@
 class MenuMode : public GameMode
 {
   private:
-    SDL_Color clrWhite, clrBlack;
-    TTF_Font* menuFont, *titleFont;
   public:
     MenuMode(SDL_Surface* display, GlobalStore* globalStore);
     Mode frame();

@@ -25,9 +25,6 @@ class PlayMode : public GameMode
     int obstacle_distance, decrease_height_frames;
     unsigned long int playtime;
     float slope;
-    TTF_Font* scoreFont;
-    SDL_Color clrWhite;
-    SDL_Color clrBlack;
     RandomNumberGenerator* rng;
     int special;
     bool crashed;

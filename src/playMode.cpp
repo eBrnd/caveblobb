@@ -3,9 +3,6 @@
 PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
 {
-  scoreFont = ColorsAndFonts::getInstance()->sans18;
-  clrWhite = ColorsAndFonts::getInstance()->white;
-  clrBlack = ColorsAndFonts::getInstance()->black;
   particles = new ParticleSystem(display);
   rng = RandomNumberGenerator::getInstance();
   reset();
@@ -338,28 +335,26 @@ void PlayMode::drawScorePanel()
     std::ostringstream s;
     s << " Score: " << playtime << " Stars: " << collected;
 
-    int barHeight = 10; // if text is rendered, replace this with the height of the text
     char* sc = (char*)s.str().c_str();
-    barHeight = caf->textHeight(1);
 
     caf->write(display, 17,17, 1, sc);
 
     char* pc = (char*)"Special";
     caf->write(display, 399-caf->textWidth(1,pc), 17, 1, pc);
 
-    FillRect(400,17, 200, barHeight, 0x000000);
-    FillRect(400,17, special, barHeight, 0xFFFF00);
+    FillRect(400,17, 200, 24, 0x000000);
+    FillRect(400,17, special, 24, 0xFFFF00);
     if(special >= 50)
-      FillRect(400,17, 50, barHeight, 0x00FF00);
+      FillRect(400,17, 50, 24, 0x00FF00);
     if(special >= 100)
-      FillRect(450,17, 50, barHeight, 0x00FF00);
+      FillRect(450,17, 50, 24, 0x00FF00);
     if(special >= 150)
-      FillRect(500,17, 50, barHeight, 0x00FF00);
+      FillRect(500,17, 50, 24, 0x00FF00);
     if(special >= 200)
-      FillRect(550,17, 50, barHeight, 0x00FF00);
-    FillRect(450,17, 1, barHeight, 0x808080);
-    FillRect(500,17, 1, barHeight, 0x808080);
-    FillRect(550,17, 1, barHeight, 0x808080);
+      FillRect(550,17, 50, 24, 0x00FF00);
+    FillRect(450,17, 1, 24, 0x808080);
+    FillRect(500,17, 1, 24, 0x808080);
+    FillRect(550,17, 1, 24, 0x808080);
   }
 }
 
@@ -409,11 +404,6 @@ void PlayMode::drawPauseScreen()
 {
   std::ostringstream s;
   s << "Pause. Press P to continue.";
-  if(scoreFont != NULL)
-  {
-    SDL_Surface* text = TTF_RenderText_Shaded(scoreFont, s.str().c_str(), clrWhite, clrBlack);
-    SDL_Rect textLocation = { 400 - text->w / 2, 200, 0,0 };
-    SDL_BlitSurface(text, NULL, display, &textLocation);
-    SDL_FreeSurface(text);
-  }
+  char* pc = (char*)"Pause. Press P to continue.";
+  caf->write(display, 400 - caf->textWidth(1,pc) / 2, 200, 1, pc);
 }

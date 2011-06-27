@@ -19,14 +19,6 @@ ColorsAndFonts::ColorsAndFonts()
     if(fonts[i] == NULL)
       std::cout << "Error loading font - text may not be renderes correctly." << std::endl;
   }
-
-  TTF_Init();
-  sans18 = TTF_OpenFont("/usr/local/share/caveblobb/FreeSans.ttf", 18);
-  sans43 = TTF_OpenFont("/usr/local/share/caveblobb/FreeSans.ttf", 43);
-  if(sans18 == NULL || sans43 == NULL)
-    std::cout << "Error loading Font: /usr/local/share/caveblobb/FreeSans.ttf - Text may not be rendered properly." << std::endl;
-  white.r = white.b = white.g = 255;
-  black.r = black.b = black.g = 0;
 }
 
 ColorsAndFonts* ColorsAndFonts::getInstance()

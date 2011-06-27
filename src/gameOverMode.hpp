@@ -12,9 +12,6 @@
 
 class GameOverMode : public GameMode
 {
-  private:
-    TTF_Font* gameOverFont, * bigFont;
-    SDL_Color clrWhite, clrBlack;
   public:
     GameOverMode(SDL_Surface* display, GlobalStore* globalStore);
     Mode frame();

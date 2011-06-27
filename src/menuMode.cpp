@@ -3,10 +3,6 @@
 MenuMode::MenuMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
 {
-  menuFont = ColorsAndFonts::getInstance()->sans18;
-  titleFont = ColorsAndFonts::getInstance()->sans43;
-  clrWhite = ColorsAndFonts::getInstance()->white;
-  clrBlack = ColorsAndFonts::getInstance()->black;
 }
 
 Mode MenuMode::frame()
