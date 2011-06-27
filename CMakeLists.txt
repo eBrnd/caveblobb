@@ -58,6 +58,7 @@ UNSET(SDL_BUILDING_LIBRARY)
 include(FindSDL)
 include(FindSDL_gfx)
 include(FindSDL_ttf)
+include(FindSDL_image)
 
 # Find Boost.
 FIND_PACKAGE(Boost 1.40.0 COMPONENTS random)
@@ -91,4 +92,5 @@ message("  prefix: ${CMAKE_INSTALL_PREFIX}")
 message("  SDL lib: ${SDL_INCLUDE_DIR} ${SDL_LIBRARY}")
 message("  SDLGFX lib: ${SDLGFX_INCLUDE_DIR} ${SDLGFX_LIBRARY}")
 message("  SDLTTF lib: ${SDLTTF_INCLUDE_DIR} ${SDLTTF_LIBRARY}")
+message("  SDLIMAGE lib: ${SDLIMAGE_INCLUDE_DIR} ${SDLIMAGE_LIBRARY}")
 message("  Boost lib: ${Boost_INCLUDE_DIRS}")
