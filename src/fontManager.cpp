@@ -1,8 +1,8 @@
-#include "colorsAndFonts.hpp"
+#include "fontManager.hpp"
 
-ColorsAndFonts* ColorsAndFonts::pointer = NULL;
+FontManager* FontManager::pointer = NULL;
 
-ColorsAndFonts::ColorsAndFonts()
+FontManager::FontManager()
 {
   font_surface = IMG_Load("/usr/local/share/caveblobb/font.png");
   font2x_surface = IMG_Load("/usr/local/share/caveblobb/font2x.png");
@@ -21,22 +21,22 @@ ColorsAndFonts::ColorsAndFonts()
   }
 }
 
-ColorsAndFonts* ColorsAndFonts::getInstance()
+FontManager* FontManager::getInstance()
 {
   if(pointer == NULL)
   {
-    pointer = new ColorsAndFonts();
+    pointer = new FontManager();
   }
   return pointer;
 }
 
-void ColorsAndFonts::write(SDL_Surface* display, int x, int y, int size, char* text)
+void FontManager::write(SDL_Surface* display, int x, int y, int size, char* text)
 {
   if(size < 4 && size >= 0 && fonts[size] != NULL)
     SFont_Write(display, fonts[size], x, y, text);
 }
 
-int ColorsAndFonts::textWidth(int size, char* text)
+int FontManager::textWidth(int size, char* text)
 {
   if(size < 4 && size >= 0 && fonts[size] != NULL)
     return SFont_TextWidth(fonts[size], text);
@@ -44,7 +44,7 @@ int ColorsAndFonts::textWidth(int size, char* text)
     return 0;
 }
 
-int ColorsAndFonts::textHeight(int size)
+int FontManager::textHeight(int size)
 {
   if(size < 4 && size >= 0 && fonts[size] != NULL)
     return SFont_TextHeight(fonts[size]);

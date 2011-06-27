@@ -8,10 +8,10 @@ MenuMode::MenuMode(SDL_Surface* display, GlobalStore* globalStore)
 Mode MenuMode::frame()
 {
   char* title = (char*)"~cavEbl0bb~";
-  caf->write(display, 400 - caf->textWidth(3, title) / 2, 100, 3, title);
+  fontm->write(display, 400 - fontm->textWidth(3, title) / 2, 100, 3, title);
 
   char* clicktostart = (char*)"Click to start! Esc to quit.";
-  caf->write(display, 400 - caf->textWidth(1, clicktostart) / 2, 280, 1, clicktostart);
+  fontm->write(display, 400 - fontm->textWidth(1, clicktostart) / 2, 280, 1, clicktostart);
 
   SDL_Event event;
   while(SDL_PollEvent(&event))

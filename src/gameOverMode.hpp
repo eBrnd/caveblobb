@@ -8,7 +8,6 @@
 
 #include "gameMode.hpp"
 #include "mode.hpp"
-#include "colorsAndFonts.hpp"
 
 class GameOverMode : public GameMode
 {

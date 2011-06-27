@@ -337,10 +337,10 @@ void PlayMode::drawScorePanel()
 
     char* sc = (char*)s.str().c_str();
 
-    caf->write(display, 17,17, 1, sc);
+    fontm->write(display, 17,17, 1, sc);
 
     char* pc = (char*)"Special";
-    caf->write(display, 399-caf->textWidth(1,pc), 17, 1, pc);
+    fontm->write(display, 399-fontm->textWidth(1,pc), 17, 1, pc);
 
     FillRect(400,17, 200, 24, 0x000000);
     FillRect(400,17, special, 24, 0xFFFF00);
@@ -405,5 +405,5 @@ void PlayMode::drawPauseScreen()
   std::ostringstream s;
   s << "Pause. Press P to continue.";
   char* pc = (char*)"Pause. Press P to continue.";
-  caf->write(display, 400 - caf->textWidth(1,pc) / 2, 200, 1, pc);
+  fontm->write(display, 400 - fontm->textWidth(1,pc) / 2, 200, 1, pc);
 }

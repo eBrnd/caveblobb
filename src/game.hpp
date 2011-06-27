@@ -9,7 +9,6 @@
 #include "playMode.hpp"
 #include "menuMode.hpp"
 #include "gameOverMode.hpp"
-#include "colorsAndFonts.hpp"
 
 class Game
 {

@@ -6,5 +6,5 @@ GameMode::GameMode(SDL_Surface* display, GlobalStore* globalStore)
 {
   this->display = display;
   this->globalStore = globalStore;
-  this->caf = ColorsAndFonts::getInstance();
+  this->fontm = FontManager::getInstance();
 }

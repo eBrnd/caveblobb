@@ -11,15 +11,15 @@ Mode GameOverMode::frame()
   std::ostringstream s;
   s << globalStore->seconds << " seconds, " << globalStore->obstacles << " obstacles, " << globalStore->stars << " stars.";
   char* sc = (char*)s.str().c_str();
-  caf->write(display, 400 - caf->textWidth(1, sc) / 2, 400, 1, sc);
+  fontm->write(display, 400 - fontm->textWidth(1, sc) / 2, 400, 1, sc);
 
   char* ps = (char*)"Press space to continue.";
-  caf->write(display, 400 - caf->textWidth(1, ps) / 2, 440, 1, ps);
+  fontm->write(display, 400 - fontm->textWidth(1, ps) / 2, 440, 1, ps);
 
   std::ostringstream p;
   p << "Score: " << globalStore->score;
   char* pc = (char*)p.str().c_str();
-  caf->write(display, 400 - caf->textWidth(2, pc) / 2, 200, 2, pc);
+  fontm->write(display, 400 - fontm->textWidth(2, pc) / 2, 200, 2, pc);
 
   SDL_Event event;
   while(SDL_PollEvent(&event))
