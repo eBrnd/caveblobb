@@ -13,6 +13,7 @@
 #include "mode.hpp"
 #include "particleSystem.hpp"
 #include "randomNumberGenerator.hpp"
+#include "floatingText.hpp"
 
 class PlayMode : public GameMode
 {
@@ -29,8 +30,10 @@ class PlayMode : public GameMode
     int special;
     bool crashed;
     bool paused;
+    int justHit;
     int gameOverExplosionTime;
     ParticleSystem* particles;
+    FloatingText* floating;
 
     inline void FillRect(int x, int y, int w, int h, Uint32 color);
     void moveField();

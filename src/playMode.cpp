@@ -4,6 +4,7 @@ PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
 {
   particles = new ParticleSystem(display);
+  floating = new FloatingText(display);
   rng = RandomNumberGenerator::getInstance();
   reset();
 }
@@ -25,6 +26,7 @@ void PlayMode::reset()
   passed = 0;
   collected = 0;
   special = 0;
+  justHit = 0;
 
   particles->clear();
   obstacle_distance = 160;
@@ -71,6 +73,7 @@ Mode PlayMode::frame()
     particles->draw(2);
     drawStuff();
     particles->draw(1);
+    floating->draw();
     collisionDetect();
     obstacleCounter();
     drawScorePanel();
@@ -83,6 +86,7 @@ Mode PlayMode::frame()
       return GAMEOVER;
     }
     particles->update();
+    floating->update();
   } else
   {
     drawPauseScreen();
@@ -288,8 +292,8 @@ void PlayMode::collisionDetect()
       float speed = .5f * (float)rng->rand() / (float)RAND_MAX + .5;
       float angle = ((float)rng->rand() / (float)RAND_MAX) * 360;
       particles->add(140, player_pos, (float)cos(angle * (3.14159265 / 180)) * speed - 3, 2 * (float)sin(angle * (3.14159265 / 180)) * speed, rng->rand() % 64, 2, 2, ParticleSystem::PIXEL, hue2rgb(angle + 60));
-
     }
+    floating->add("1024", 130, player_pos, 50);
   }
 
   // detect near-crashes for special power
@@ -311,11 +315,22 @@ void PlayMode::collisionDetect()
   {
     if(shot[i] && shot[i] + 5 > obstacles[i+28] && shot[i] < obstacles[i+28] + 50)
     {
-      addExplosion((i+28) * 5, shot[i]);
       obstacles[i+28] = 0;
-      score+=512;
+      if(!justHit)
+        justHit = 3;
+      // If an obstacle was hit by a shot, generate explosion and count score
+      if(justHit == 3)
+      {
+        addExplosion((i+28) * 5, shot[i]);
+        score+=512;
+        floating->add("512", (i+28)*5, shot[i], 40);
+      }
+      if(justHit) // too warm here to think straight - there must be a more elegant way to do this
+        justHit--;
     }
   }
+  
+
   // ...and with walls
   for(int i = 1; i < 130; i++) // only from 1..130 because we have to delete 3 elements in the shots array to make sure the shot is erased completely
     if(shot[i] && (shot[i] + 5 > walls_bottom[i+28] || shot[i] < walls_top[i+28]))
