@@ -77,7 +77,7 @@ Mode PlayMode::frame()
     if(crashed && !gameOverExplosionTime--)
     {
       globalStore->seconds = playtime / 60;
-      globalStore->score = playtime;
+      globalStore->score = score;
       globalStore->obstacles = passed;
       globalStore->stars = collected;
       return GAMEOVER;

@@ -9,7 +9,7 @@ GameOverMode::GameOverMode(SDL_Surface* display, GlobalStore* globalStore)
 Mode GameOverMode::frame()
 {
   std::ostringstream s;
-  s << globalStore->seconds << " seconds, " << globalStore->obstacles << " obstacles, " << globalStore->stars << " stars.";
+  s << globalStore->seconds << " seconds, " << globalStore->obstacles << " obstacles passed, " << globalStore->stars << " stars collected.";
   char* sc = (char*)s.str().c_str();
   fontm->write(display, 400 - fontm->textWidth(1, sc) / 2, 400, 1, sc);
 
