@@ -23,6 +23,7 @@ class PlayMode : public GameMode
     int frames_to_corner, corner_at, level_height, frames_to_obstacle, passed, frames_to_item, collected;
     int obstacle_distance, decrease_height_frames;
     unsigned long int playtime;
+    unsigned long int score;
     float slope;
     RandomNumberGenerator* rng;
     int special;

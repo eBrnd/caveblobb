@@ -21,6 +21,7 @@ void PlayMode::reset()
   up = true; // since mouse button is still pressed from the click in the menu when the game starts
   slope = 0;
   playtime = 0;
+  score = 0;
   passed = 0;
   collected = 0;
   special = 0;
@@ -280,6 +281,7 @@ void PlayMode::collisionDetect()
   if( items[28] && (int)player_pos + 10 > items[28] && (int)player_pos < items[28] + 16 && !crashed )
   {
     collected++;
+    score+=1024;
     items[28] = 0;
     for(int i = 0; i < 350; i++)
     {
@@ -311,6 +313,7 @@ void PlayMode::collisionDetect()
     {
       addExplosion((i+28) * 5, shot[i]);
       obstacles[i+28] = 0;
+      score+=512;
     }
   }
   // ...and with walls
@@ -334,11 +337,15 @@ void PlayMode::obstacleCounter()
 void PlayMode::drawScorePanel()
 {
   if(!crashed)
+  {
     playtime++;
+    if(!(playtime % 3))
+      score++;
+  }
   if((int)player_pos > 60)
   {
     std::ostringstream s;
-    s << " Score: " << playtime << " Stars: " << collected;
+    s << " Score: " << score;
 
     char* sc = (char*)s.str().c_str();
 
