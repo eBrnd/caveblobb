@@ -39,6 +39,7 @@ class PlayMode : public GameMode
     void moveField();
     void updatePlayerTail();
     void drawStuff();
+    void drawPlayer();
     void generateWalls();
     void generateObstacles();
     void generateItems();

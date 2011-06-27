@@ -72,6 +72,8 @@ Mode PlayMode::frame()
     particles->draw(0);
     particles->draw(2);
     drawStuff();
+    particles->draw(4);
+    drawPlayer();
     particles->draw(1);
     floating->draw();
     collisionDetect();
@@ -164,6 +166,10 @@ void PlayMode::drawStuff()
     }
   }
 
+}
+
+void PlayMode::drawPlayer()
+{
   if(!crashed)
   {
     // draw the player
@@ -299,14 +305,52 @@ void PlayMode::collisionDetect()
   // detect near-crashes for special power
   if(!crashed && special < 200)
   {
-    if((int)player_pos < walls_top[28] + 10 || (int)player_pos + 10 > walls_bottom[28] - 10)
+    if((int)player_pos < walls_top[28] + 10)
+    {
       special++;
+
+      for(int i = 0; i < 25; i++)
+      {
+        float speed = (float)rng->rand() / (float)RAND_MAX;
+        float angle = ((float)rng->rand() / (float)RAND_MAX) * 360; // TODO radian conversion can be done right here
+        particles->add(145, player_pos + 2, (float)cos(angle * (3.14159265 / 180)) * speed - 3, (float)sin(angle * (3.14159265 / 180)) * speed - .3f, rng->rand() % 100, 6, 4, ParticleSystem::PIXEL, (rng->rand() | 0xFF0000FF) & 0xFFD700FF);
+      }
+    }
+    if((int)player_pos + 10 > walls_bottom[28] - 10)
+    {
+      special++;
+
+      for(int i = 0; i < 25; i++)
+      {
+        float speed = (float)rng->rand() / (float)RAND_MAX;
+        float angle = ((float)rng->rand() / (float)RAND_MAX) * 360; // TODO radian conversion can be done right here
+        particles->add(145, player_pos + 8, (float)cos(angle * (3.14159265 / 180)) * speed - 3, (float)sin(angle * (3.14159265 / 180)) * speed + .3f, rng->rand() % 100, 6, 4, ParticleSystem::PIXEL, (rng->rand() | 0xFF0000FF) & 0xFFD700FF);
+      }
+    }
     if(obstacles[28] && (int)player_pos + 10 > obstacles[28] - 10 && (int)player_pos < obstacles[28] + 60)
     {
       if(special < 190)
         special+=10;
       else
         special = 200;
+
+      if(player_pos > obstacles[28])
+      {
+        for(int i = 0; i < 120; i++)
+        {
+          float speed = 1.5f * (float)rng->rand() / (float)RAND_MAX;
+          float angle = ((float)rng->rand() / (float)RAND_MAX) * 360; // TODO radian conversion can be done right here
+          particles->add(145, player_pos + 2, (float)cos(angle * (3.14159265 / 180)) * speed - 3.5f, (float)sin(angle * (3.14159265 / 180)) * speed - .5f, rng->rand() % 100, 6, 4, ParticleSystem::PIXEL, (rng->rand() | 0xFF0000FF) & 0xFFD700FF);
+        }
+      } else
+      {
+        for(int i = 0; i < 120; i++)
+        {
+          float speed = 1.5f * (float)rng->rand() / (float)RAND_MAX;
+          float angle = ((float)rng->rand() / (float)RAND_MAX) * 360; // TODO radian conversion can be done right here
+          particles->add(145, player_pos + 8, (float)cos(angle * (3.14159265 / 180)) * speed - 3.5f, (float)sin(angle * (3.14159265 / 180)) * speed + .5f, rng->rand() % 100, 6, 4, ParticleSystem::PIXEL, (rng->rand() | 0xFF0000FF) & 0xFFD700FF);
+        }
+      }
     }
   }
 
