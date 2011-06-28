@@ -20,7 +20,7 @@ Mode GameOverMode::frame()
   std::ostringstream p;
   p << "Score: " << globalStore->score;
   char* pc = (char*)p.str().c_str();
-  fontm->write(display, 400 - fontm->textWidth(2, pc) / 2, 80, 2, pc);
+  fontm->write(display, 400 - fontm->textWidth(3, pc) / 2, 80, 3, pc);
 
   fontm->write(display, 100, 240, 1, (char*)"Highscores:");
   for(int i = 0; i < 5; i++)
@@ -28,6 +28,15 @@ Mode GameOverMode::frame()
     std::ostringstream h;
     h << i+1 << ". -  " << storage->getHighscore(i);
     fontm->write(display, 290, 270 + 30 * i, 1, (char*)h.str().c_str());
+  }
+
+  char* t = (char*)"Press T to tweet your score!";
+  fontm->write(display, 400 - fontm->textWidth(1,t) / 2, 460, 1, t);
+
+  if(!storage->getBrowser().length())
+  {
+    char* n = (char*)">>> Browser not set. Please edit ~/.caveblobb <<<";
+    fontm->write(display, 400 - fontm->textWidth(0,n) / 2, 490, 0, n);
   }
 
   SDL_Event event;
@@ -41,6 +50,20 @@ Mode GameOverMode::frame()
         {
           storage->write();
           return MENU;
+        }
+        std::ostringstream s;
+        switch(event.key.keysym.sym)
+        {
+          case ' ':
+            storage->write();
+            return MENU;
+            break;
+          case 't':
+            s << storage->getBrowser() << " \"https://twitter.com/intent/tweet?text=I+just+got+" << globalStore->score << "+points+playing&hashtags=caveblobb\"";
+            system(s.str().c_str());
+            break;
+          default:
+            break;
         }
     }
   }

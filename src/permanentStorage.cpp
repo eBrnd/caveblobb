@@ -1,14 +1,13 @@
 #include "permanentStorage.hpp"
 
 PermanentStorage::PermanentStorage()
-{
-  read();
-}
+{}
 
 void PermanentStorage::read()
 {
   for(int i = 0; i < 5; i++)
     highscores[i] = 0;
+  strcpy(browser, "");
   std::string path = getenv("HOME");
   path += "/.caveblobb";
   std::ifstream ifs;
@@ -76,4 +75,9 @@ void PermanentStorage::insert(unsigned long int score)
   highscores[i] = score;
   
   
+}
+
+std::string PermanentStorage::getBrowser()
+{
+  return browser;
 }

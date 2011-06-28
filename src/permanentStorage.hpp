@@ -17,6 +17,7 @@ class PermanentStorage
     void write();
     unsigned long int getHighscore(int index);
     void insert(unsigned long int score);
+    std::string getBrowser();
 };
 
 #endif
