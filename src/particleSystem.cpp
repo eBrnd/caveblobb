@@ -30,6 +30,7 @@ void ParticleSystem::add(float x, float y, float vx, float vy, int ttl, int size
   }
 }
 
+// TODO I could make this much faster by using an array or vector of vectors - the index is the group
 void ParticleSystem::draw(int group)
 {
   for(unsigned int i = 0; i < particles.size(); i++)

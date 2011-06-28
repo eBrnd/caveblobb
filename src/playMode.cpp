@@ -6,6 +6,7 @@ PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
   particles = new ParticleSystem(display);
   floating = new FloatingText(display);
   rng = RandomNumberGenerator::getInstance();
+  background = new BackgroundGenerator(display);
   reset();
 }
 
@@ -29,6 +30,7 @@ void PlayMode::reset()
   justHit = 0;
 
   particles->clear();
+  background->clear();
   obstacle_distance = 160;
 
   crashed = false;
@@ -58,11 +60,13 @@ Mode PlayMode::frame()
 {
   if(!paused)
   {
+    background->draw();
     if(!crashed)
     {
       if(!handleInput())
         return MENU;
       moveField();
+      background->update();
       updatePlayer();
       generateWalls();
       generateObstacles();

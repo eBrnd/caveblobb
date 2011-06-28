@@ -14,6 +14,7 @@
 #include "particleSystem.hpp"
 #include "randomNumberGenerator.hpp"
 #include "floatingText.hpp"
+#include "backgroundGenerator.hpp"
 
 class PlayMode : public GameMode
 {
@@ -34,8 +35,10 @@ class PlayMode : public GameMode
     int gameOverExplosionTime;
     ParticleSystem* particles;
     FloatingText* floating;
+    BackgroundGenerator* background;
 
     inline void FillRect(int x, int y, int w, int h, Uint32 color);
+    void drawBackground();
     void moveField();
     void updatePlayerTail();
     void drawStuff();
