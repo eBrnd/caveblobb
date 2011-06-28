@@ -17,6 +17,7 @@ class Game
     SDL_Surface* display;
 
     GlobalStore* globalStore;
+    PermanentStorage* storage;
     GameMode* playMode;
     GameMode* menuMode;
     GameMode* gameOverMode;

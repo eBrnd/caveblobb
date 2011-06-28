@@ -1,12 +1,13 @@
 #include "playMode.hpp"
 
-PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore)
+PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore, PermanentStorage* storage)
   : GameMode(display, globalStore)
 {
   particles = new ParticleSystem(display);
   floating = new FloatingText(display);
   rng = RandomNumberGenerator::getInstance();
   background = new BackgroundGenerator(display);
+  this->storage = storage;
   reset();
 }
 
@@ -31,6 +32,8 @@ void PlayMode::reset()
 
   particles->clear();
   background->clear();
+  for(int i = 0; i < 600; i++)
+    background->update();
   obstacle_distance = 160;
 
   crashed = false;
@@ -89,6 +92,8 @@ Mode PlayMode::frame()
       globalStore->score = score;
       globalStore->obstacles = passed;
       globalStore->stars = collected;
+      storage->read();
+      storage->insert(score);
       return GAMEOVER;
     }
     particles->update();

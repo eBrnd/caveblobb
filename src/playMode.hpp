@@ -9,6 +9,7 @@
 #include <SDL_gfxPrimitives.h>
 
 #include "globalStore.hpp"
+#include "permanentStorage.hpp"
 #include "gameMode.hpp"
 #include "mode.hpp"
 #include "particleSystem.hpp"
@@ -36,6 +37,7 @@ class PlayMode : public GameMode
     ParticleSystem* particles;
     FloatingText* floating;
     BackgroundGenerator* background;
+    PermanentStorage* storage;
 
     inline void FillRect(int x, int y, int w, int h, Uint32 color);
     void drawBackground();
@@ -58,7 +60,7 @@ class PlayMode : public GameMode
     Uint32 hue2rgb(float h);
 
   public:
-    PlayMode(SDL_Surface* display, GlobalStore* globalStore);
+    PlayMode(SDL_Surface* display, GlobalStore* globalStore, PermanentStorage* storage);
     void reset();
     Mode frame();
 };

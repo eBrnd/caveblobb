@@ -6,11 +6,12 @@ Game::Game(SDL_Surface* display)
   mode = MENU;
   this->display = display;
   globalStore = new GlobalStore();
+  storage = new PermanentStorage();
 
   // init game modes
-  playMode = new PlayMode(display, globalStore);
+  playMode = new PlayMode(display, globalStore, storage);
   menuMode = new MenuMode(display, globalStore);
-  gameOverMode = new GameOverMode(display, globalStore);
+  gameOverMode = new GameOverMode(display, globalStore, storage);
 }
 
 Game::~Game()
@@ -19,6 +20,7 @@ Game::~Game()
   delete menuMode;
   delete gameOverMode;
   delete globalStore;
+  delete storage;
 }
 
 void Game::frame()
