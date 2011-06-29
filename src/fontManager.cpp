@@ -5,9 +5,17 @@ FontManager* FontManager::pointer = NULL;
 FontManager::FontManager()
 {
   font_surface = IMG_Load("/usr/local/share/caveblobb/font.png");
+  if(font_surface == NULL)
+    font_surface = IMG_Load("/usr/local/caveblobb/font.png");
   font2x_surface = IMG_Load("/usr/local/share/caveblobb/font2x.png");
+  if(font2x_surface == NULL)
+    font2x_surface = IMG_Load("/usr/local/caveblobb/font2x.png");
   font4x_surface = IMG_Load("/usr/local/share/caveblobb/font4x.png");
+  if(font4x_surface == NULL)
+    font4x_surface = IMG_Load("/usr/local/caveblobb/font4x.png");
   font8x_surface = IMG_Load("/usr/local/share/caveblobb/font8x.png");
+  if(font8x_surface == NULL)
+    font8x_surface = IMG_Load("/usr/local/caveblobb/font8x.png");
   
   fonts[0] = SFont_InitFont(font_surface);
   fonts[1] = SFont_InitFont(font2x_surface);

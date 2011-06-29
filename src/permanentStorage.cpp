@@ -7,7 +7,7 @@ void PermanentStorage::read()
 {
   for(int i = 0; i < 5; i++)
     highscores[i] = 0;
-  strcpy(browser, "");
+  browser = "false";
   std::string path = getenv("HOME");
   path += "/.caveblobb";
   std::ifstream ifs;
@@ -16,22 +16,22 @@ void PermanentStorage::read()
     std::cout << "failed to open " << path << " - attempting to create new file later" << std::endl;
   else
   {
-    char line[128];
+    std::string line;
     while(ifs.good())
     {
-      ifs.getline(line, 128);
-      if(!strncmp(line, "browser ", 8))
-        strncpy(browser, line+8, 120);
-      if(!strncmp(line, "highsc1 ", 8))
-        highscores[0] = atol(line+8);
-      if(!strncmp(line, "highsc2 ", 8))
-        highscores[1] = atol(line+8);
-      if(!strncmp(line, "highsc3 ", 8))
-        highscores[2] = atol(line+8);
-      if(!strncmp(line, "highsc4 ", 8))
-        highscores[3] = atol(line+8);
-      if(!strncmp(line, "highsc5 ", 8))
-        highscores[4] = atol(line+8);
+      ifs >> line;
+      if(line == "browser")
+        ifs >> browser;
+      if(line == "highsc1")
+        ifs >> highscores[0];
+      if(line == "highsc2")
+        ifs >> highscores[1];
+      if(line == "highsc3")
+        ifs >> highscores[2];
+      if(line == "highsc4")
+        ifs >> highscores[3];
+      if(line == "highsc5")
+        ifs >> highscores[4];
     }
   }
   ifs.close();

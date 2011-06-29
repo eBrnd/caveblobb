@@ -10,7 +10,7 @@ class PermanentStorage
 {
   private:
     unsigned long int highscores[5];
-    char browser[120];
+    std::string browser;
   public:
     PermanentStorage();
     void read();
