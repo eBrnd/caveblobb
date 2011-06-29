@@ -239,7 +239,10 @@ bool PlayMode::handleInput()
         switch(event.key.keysym.sym)
         {
           case SDLK_ESCAPE:
-            return false;
+            if(!crashed)
+              return false;
+            else
+              gameOverExplosionTime = 0; // immediately go to game over screen
           case ' ':
             if(!crashed && special >= 50 && !paused)  // fire shot
             {
