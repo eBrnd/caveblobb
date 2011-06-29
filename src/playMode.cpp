@@ -64,10 +64,10 @@ Mode PlayMode::frame()
   if(!paused)
   {
     background->draw();
+    if(!handleInput())
+      return MENU;
     if(!crashed)
     {
-      if(!handleInput())
-        return MENU;
       moveField();
       background->update();
       updatePlayer();
@@ -241,7 +241,7 @@ bool PlayMode::handleInput()
           case SDLK_ESCAPE:
             return false;
           case ' ':
-            if(special >= 50 && !paused)  // fire shot
+            if(!crashed && special >= 50 && !paused)  // fire shot
             {
               shot[0] = player_pos;
               shot[1] = player_pos; // shot needs to be 2 columns long because the shot moves to the right and the level to the left, and we have to make sure it overlaps with every column at least once
@@ -249,7 +249,8 @@ bool PlayMode::handleInput()
             }
             break;
           case 'p':
-            paused = !paused;
+            if(!crashed)
+              paused = !paused;
             break;
           default:
             break;
