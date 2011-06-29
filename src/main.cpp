@@ -21,7 +21,7 @@ int main(int argc, char** argv)
     std::string f ("-f");
     if(!fullscreen.compare(argv[i]) || !f.compare(argv[i]))
       // sdlopts = SDL_SWSURFACE | SDL_FULLSCREEN;
-      std::cout << "Fullscreen is broken. Sorry!" << endl;
+      std::cout << "Fullscreen is broken. Sorry!" << std::endl;
     std::string help ("--help");
     std::string h ("-h");
     if(!help.compare(argv[i]) || !h.compare(argv[i]))
