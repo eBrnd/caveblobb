@@ -5,7 +5,6 @@
 #include <sstream>
 
 #include <SDL.h>
-#include <SDL_ttf.h>
 #include <SDL_gfxPrimitives.h>
 
 #include "globalStore.hpp"

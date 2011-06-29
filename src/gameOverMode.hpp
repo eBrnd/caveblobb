@@ -4,8 +4,6 @@
 #include <string>
 #include <sstream>
 
-#include <SDL_ttf.h>
-
 #include "gameMode.hpp"
 #include "mode.hpp"
 #include "permanentStorage.hpp"
