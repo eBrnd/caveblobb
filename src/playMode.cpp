@@ -249,8 +249,7 @@ bool PlayMode::handleInput()
             }
             break;
           case 'p':
-            if(!crashed)
-              paused = !paused;
+            paused = !paused;
             break;
           default:
             break;
