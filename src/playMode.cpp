@@ -4,7 +4,7 @@ PlayMode::PlayMode(SDL_Surface* display, GlobalStore* globalStore, PermanentStor
   : GameMode(display, globalStore)
 {
   particles = new ParticleSystem(display);
-  floating = new FloatingText(display);
+  floating = new FloatingText(display, font1);
   rng = RandomNumberGenerator::getInstance();
   background = new BackgroundGenerator(display);
   this->storage = storage;
@@ -417,13 +417,9 @@ void PlayMode::drawScorePanel()
   {
     std::ostringstream s;
     s << " Score: " << score;
+    font2->write(display, 17, 17, s.str());
 
-    char* sc = (char*)s.str().c_str();
-
-    fontm->write(display, 17,17, 1, sc);
-
-    char* pc = (char*)"Special";
-    fontm->write(display, 399-fontm->textWidth(1,pc), 17, 1, pc);
+    font2->write(display, 399-font2->width("Special"), 17, "Special");
 
     FillRect(400,17, 200, 24, 0x000000);
     FillRect(400,17, special, 24, 0xFFFF00);
@@ -485,8 +481,5 @@ void PlayMode::crashExplosion()
 
 void PlayMode::drawPauseScreen()
 {
-  std::ostringstream s;
-  s << "Pause. Press P to continue.";
-  char* pc = (char*)"Pause. Press P to continue.";
-  fontm->write(display, 400 - fontm->textWidth(1,pc) / 2, 200, 1, pc);
+  font2->writeCentered(display, 400, 200, "Pause. Press P to continue");
 }

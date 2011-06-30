@@ -3,17 +3,17 @@
 
 #include <vector>
 #include <SDL.h>
-#include "fontManager.hpp"
+#include "font.hpp"
 
 class FloatingText
 {
   private:
-    struct line { char* text; int x,y,ttl; };
+    struct line { std::string text; int x,y,ttl; };
     std::vector<line> lines;
     SDL_Surface* display;
-    FontManager* fontm;
+    Font* font;
   public:
-    FloatingText(SDL_Surface* display);
+    FloatingText(SDL_Surface* display, Font* font);
     void draw();
     void update();
     void add(const char* text, int x, int y, int ttl);

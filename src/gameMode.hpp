@@ -5,14 +5,14 @@
 
 #include "globalStore.hpp"
 #include "mode.hpp"
-#include "fontManager.hpp"
+#include "font.hpp"
 
 class GameMode
 {
   protected:
     SDL_Surface* display;
     GlobalStore* globalStore;
-    FontManager* fontm;
+    Font* font1, *font2, *font4, *font8;
   public:
     GameMode(SDL_Surface* display, GlobalStore* globalStore);
     virtual void reset() = 0;

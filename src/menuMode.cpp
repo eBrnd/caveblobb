@@ -6,11 +6,8 @@ MenuMode::MenuMode(SDL_Surface* display, GlobalStore* globalStore)
 
 Mode MenuMode::frame()
 {
-  char* title = (char*)"~cavEbl0bb~";
-  fontm->write(display, 400 - fontm->textWidth(3, title) / 2, 100, 3, title);
-
-  char* clicktostart = (char*)"Click to start! Esc to quit.";
-  fontm->write(display, 400 - fontm->textWidth(1, clicktostart) / 2, 280, 1, clicktostart);
+  font8->writeCentered(display, 400, 100, "~cavEbl0bb~");
+  font2->writeCentered(display, 400, 280, "Click to start! Esc to quit.");
 
   SDL_Event event;
   while(SDL_PollEvent(&event))
