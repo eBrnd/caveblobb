@@ -72,9 +72,8 @@ void PermanentStorage::insert(unsigned long int score)
     i++;
   for(int j = 3; j >= i; j--)
     highscores[j+1] = highscores[j];
-  highscores[i] = score;
-  
-  
+  if(i < 5)
+    highscores[i] = score;
 }
 
 std::string PermanentStorage::getBrowser()
