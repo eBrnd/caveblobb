@@ -68,7 +68,7 @@ unsigned long int PermanentStorage::getHighscore(int index)
 void PermanentStorage::insert(unsigned long int score)
 {
   int i = 0;
-  while(highscores[i] > score)
+  while(highscores[i] > score && i < 5)
     i++;
   for(int j = 3; j >= i; j--)
     highscores[j+1] = highscores[j];
