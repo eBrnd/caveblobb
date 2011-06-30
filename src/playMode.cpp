@@ -29,6 +29,8 @@ void PlayMode::reset()
   collected = 0;
   special = 0;
   justHit = 0;
+  comboTime = 0;
+  hitDuringCombo = 0;
 
   particles->clear();
   background->clear();
@@ -161,7 +163,7 @@ void PlayMode::drawStuff()
     if(obstacles[i])
       FillRect(5 * i, obstacles[i], 5, 50, 0x309930);
     if(i < 131 && shot[i])
-      FillRect(5 * i + 140, shot[i], 5, 5, 0xFFFFFF);
+      FillRect(5 * i + 140, shot[i], 5, 5, (comboTime && !(playtime % 3)) ? 0xFF1111 : 0xFFFFFF); // flashing red during combo time, white normally
     if(items[i])
     {
       Sint16 vx[] = { 7, 5, 0, 4, 2, 7, 9, 14, 12, 16, 10, 8 }; // Star shape
@@ -378,14 +380,31 @@ void PlayMode::collisionDetect()
       if(justHit == 3)
       {
         addExplosion((i+28) * 5, shot[i]);
+        comboTime = 50;
         score+=512;
         floating->add("512", (i+28)*5, shot[i], 40);
+        if(hitDuringCombo == 0)
+        {
+          score+=512;
+          floating->add("512", (i+28)*5, shot[i], 40);
+          hitDuringCombo++;
+        } else
+        {
+          score+=512*(pow(2, hitDuringCombo));
+          std::ostringstream s;
+          s << "512 x" << hitDuringCombo+1;
+          floating->add(s.str().c_str(), (i+28)*5, shot[i], 40);
+          hitDuringCombo++;
+        }
       }
       if(justHit) // too warm here to think straight - there must be a more elegant way to do this
         justHit--;
     }
   }
-  
+  if(comboTime)
+    comboTime--;
+  else
+    hitDuringCombo = 0;
 
   // ...and with walls
   for(int i = 1; i < 130; i++) // only from 1..130 because we have to delete 3 elements in the shots array to make sure the shot is erased completely

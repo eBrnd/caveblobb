@@ -32,6 +32,8 @@ class PlayMode : public GameMode
     bool crashed;
     bool paused;
     int justHit;
+    int comboTime;
+    int hitDuringCombo;
     int gameOverExplosionTime;
     ParticleSystem* particles;
     FloatingText* floating;
