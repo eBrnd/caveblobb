@@ -31,6 +31,7 @@ void PlayMode::reset()
   justHit = 0;
   comboTime = 0;
   hitDuringCombo = 0;
+  superShotActive = 0;
 
   particles->clear();
   background->clear();
@@ -133,6 +134,14 @@ void PlayMode::moveField()
     shot[i] = shot[i-1];
   }
   shot[0] = 0;
+
+  // the super shot
+  if(superShotActive-- > 1)
+    for(int i = 0; i < 131; i++)
+      shot[i] = player_pos + 2;
+  if(superShotActive == 1) // erase the shot
+    for(int i = 0; i < 131; i++)
+      shot[i] = 0;
 }
 
 void PlayMode::updatePlayerTail()
@@ -150,7 +159,7 @@ void PlayMode::updatePlayerTail()
       angle = angle * (3.14159265 / 180); // radian
       particles->add(140.f, player_pos + 5, (float)cos(angle) * speed, (float)sin(angle) * speed, 30, 3, 0, ParticleSystem::SQUARE, color);
     }
-  } 
+  }
 }
 
 void PlayMode::drawStuff()
@@ -248,9 +257,16 @@ bool PlayMode::handleInput()
           case ' ':
             if(!crashed && special >= 50 && !paused)  // fire shot
             {
-              shot[0] = player_pos;
-              shot[1] = player_pos; // shot needs to be 2 columns long because the shot moves to the right and the level to the left, and we have to make sure it overlaps with every column at least once
-              special -= 50;
+              if(special < 200)
+              {
+                shot[0] = player_pos + 2;
+                shot[1] = player_pos + 2; // shot needs to be 2 columns long because the shot moves to the right and the level to the left, and we have to make sure it overlaps with every column at least once
+                special -= 50;
+              } else
+              {
+                superShotActive = 90;
+                special = 0;
+              }
             }
             break;
           case 'p':
@@ -392,7 +408,7 @@ void PlayMode::collisionDetect()
         {
           score+=512*(pow(2, hitDuringCombo));
           std::ostringstream s;
-          s << "512 x" << hitDuringCombo+1;
+          s << "512 x" << pow(2, hitDuringCombo);
           floating->add(s.str().c_str(), (i+28)*5, shot[i], 40);
           hitDuringCombo++;
         }
@@ -438,8 +454,6 @@ void PlayMode::drawScorePanel()
     s << " Score: " << score;
     font2->write(display, 17, 17, s.str());
 
-    font2->write(display, 399-font2->width("Special"), 17, "Special");
-
     FillRect(400,17, 200, 24, 0x000000);
     FillRect(400,17, special, 24, 0xFFFF00);
     if(special >= 50)
@@ -453,6 +467,12 @@ void PlayMode::drawScorePanel()
     FillRect(450,17, 1, 24, 0x808080);
     FillRect(500,17, 1, 24, 0x808080);
     FillRect(550,17, 1, 24, 0x808080);
+
+    if(special >= 200 && !((playtime / 4) % 3)) // make "Special" and score bar flash when special is fully charged
+      FillRect(400, 17, 200, 24, 0xFFFF00);
+    else
+      font2->write(display, 399-font2->width("Special"), 17, "Special");
+
   }
 }
 

@@ -35,6 +35,7 @@ class PlayMode : public GameMode
     int comboTime;
     int hitDuringCombo;
     int gameOverExplosionTime;
+    int superShotActive;
     ParticleSystem* particles;
     FloatingText* floating;
     BackgroundGenerator* background;
