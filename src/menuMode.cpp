@@ -16,12 +16,19 @@ Mode MenuMode::frame()
     {
       case SDL_MOUSEBUTTONDOWN:
         return START;
+        break;
       case SDL_KEYDOWN:
-        std::string esc ("escape");
-        if(!esc.compare(SDL_GetKeyName(event.key.keysym.sym)))
+        switch(event.key.keysym.sym)
         {
-          return QUIT;
+          case SDLK_ESCAPE:
+            return QUIT;
+            break;
+          default:
+            break;
         }
+          break;
+      case SDL_QUIT:
+        exit(0);
     }
   }
 

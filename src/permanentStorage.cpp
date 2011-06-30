@@ -34,6 +34,8 @@ void PermanentStorage::read()
         ifs >> highscores[4];
     }
   }
+  if(browser == "highsc1")
+    browser = "false";
   ifs.close();
 }
 

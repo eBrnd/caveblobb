@@ -280,6 +280,9 @@ bool PlayMode::handleInput()
         {
           paused = true;
         }
+        break;
+      case SDL_QUIT:
+        exit(0);
     }
   }
 

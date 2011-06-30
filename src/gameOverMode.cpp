@@ -36,16 +36,10 @@ Mode GameOverMode::frame()
   SDL_Event event;
   while(SDL_PollEvent(&event))
   {
+    std::ostringstream s;
     switch(event.type)
     {
       case SDL_KEYDOWN:
-        std::string space ("space");
-        if(!space.compare(SDL_GetKeyName(event.key.keysym.sym)))
-        {
-          storage->write();
-          return MENU;
-        }
-        std::ostringstream s;
         switch(event.key.keysym.sym)
         {
           case ' ':
@@ -59,6 +53,9 @@ Mode GameOverMode::frame()
           default:
             break;
         }
+        break;
+      case SDL_QUIT:
+        exit(0);
     }
   }
 
