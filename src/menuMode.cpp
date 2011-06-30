@@ -2,8 +2,7 @@
 
 MenuMode::MenuMode(SDL_Surface* display, GlobalStore* globalStore)
   : GameMode(display, globalStore)
-{
-}
+{}
 
 Mode MenuMode::frame()
 {

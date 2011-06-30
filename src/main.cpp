@@ -4,6 +4,8 @@
 
 #include "game.hpp"
 
+#include "font.hpp"
+
 int main(int argc, char** argv)
 {
   // Start up SDL
@@ -13,7 +15,7 @@ int main(int argc, char** argv)
     exit(1);
   }
 
-  int sdlopts = SDL_SWSURFACE;
+  int sdlopts = SDL_SWSURFACE | SDL_DOUBLEBUF;
 
   for(int i = 1; i < argc; i++)
   {
