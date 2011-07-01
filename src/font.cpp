@@ -60,7 +60,7 @@ void Font::write(SDL_Surface* display, int x, int y, std::string text)
   for(unsigned int i = 0; i < text.size(); i++)
   {
     unsigned char c = (unsigned int)text[i] - 0x20;
-    if(c >= 0 && c < 95)
+    if(c < 95)
     {
       SDL_Rect char_pos = { letters[c].x, 1, letters[c].w, h };
       SDL_Rect dest_pos = { x + offset, y, letters[c].w, h };
@@ -76,7 +76,7 @@ unsigned int Font::width(std::string text)
   for(unsigned int i = 0; i < text.size(); i++)
   {
     unsigned char c = (unsigned int)text[i] - 0x20;
-    if(c >= 0 && c < 95)
+    if(c < 95)
       offset += letters[i].w;
   }
   return offset;
