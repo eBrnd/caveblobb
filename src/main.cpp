@@ -3,11 +3,17 @@
 #include <SDL_framerate.h>
 
 #include "game.hpp"
+#include <config/config.h>
 
 #include "font.hpp"
 
 int main(int argc, char** argv)
 {
+  std::cout << "Caveblobb version " << VERSION_MAJOR << "." 
+    << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
+#ifdef HAS_MACOS
+  std::cout << "Running on MacOS." << std::endl;
+#endif
   // Start up SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) 
   {

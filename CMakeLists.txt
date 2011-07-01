@@ -63,6 +63,7 @@ include(FindSDL_image)
 FIND_PACKAGE(Boost 1.40.0 COMPONENTS random)
 
 # Reflect the package structure
+add_subdirectory(config)
 add_subdirectory(src)
 add_subdirectory(contrib)
 

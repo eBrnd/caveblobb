@@ -1,0 +1,9 @@
+// Version information
+#define VERSION_MAJOR @V_MAJOR@
+#define VERSION_MINOR @V_MINOR@
+#define VERSION_PATCH @V_PATCH@
+
+// Platform definitions
+#define HAS_MACOS @APPLE@
+#define HAS_WIN32 @WIN32@
+#define HAS_LINUX @LINUX@
