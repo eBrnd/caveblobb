@@ -9,6 +9,10 @@ Mode MenuMode::frame()
   font8->writeCentered(display, 400, 100, "~cavEbl0bb~");
   font2->writeCentered(display, 400, 280, "Click to start! Esc to quit.");
 
+  std::ostringstream s;
+  s << "Version " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH;
+  font1->write(display, 700, 580, s.str());
+
   SDL_Event event;
   while(SDL_PollEvent(&event))
   {

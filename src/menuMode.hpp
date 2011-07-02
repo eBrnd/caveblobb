@@ -2,7 +2,9 @@
 #define MENUMODE
 
 #include <string>
+#include <sstream>
 
+#include <config/config.h>
 #include "gameMode.hpp"
 #include "mode.hpp"
 
