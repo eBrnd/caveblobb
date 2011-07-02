@@ -55,6 +55,7 @@ Mode GameOverMode::frame()
         }
         break;
       case SDL_QUIT:
+        storage->write();
         exit(0);
     }
   }
