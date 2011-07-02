@@ -40,6 +40,7 @@ class PlayMode : public GameMode
     FloatingText* floating;
     BackgroundGenerator* background;
     PermanentStorage* storage;
+    int last_hit_x, last_hit_y;
 
     inline void FillRect(int x, int y, int w, int h, Uint32 color);
     void drawBackground();

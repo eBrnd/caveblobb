@@ -398,10 +398,10 @@ void PlayMode::collisionDetect()
       // If an obstacle was hit by a shot, generate explosion and count score
       if(justHit == 3)
       {
+        last_hit_x = (i+28) * 5;
+        last_hit_y = shot[i];
         addExplosion((i+28) * 5, shot[i]);
         comboTime = 50;
-        score+=512;
-        floating->add("512", (i+28)*5, shot[i], 40);
         if(hitDuringCombo == 0)
         {
           score+=512;
@@ -409,9 +409,10 @@ void PlayMode::collisionDetect()
           hitDuringCombo++;
         } else
         {
-          score+=512*(pow(2, hitDuringCombo));
+          score+=512 * pow(2, hitDuringCombo);
           std::ostringstream s;
-          s << "512 x" << pow(2, hitDuringCombo);
+          // s << "512 x" << pow(2, hitDuringCombo);
+          s << 512 * pow(2, hitDuringCombo);
           floating->add(s.str().c_str(), (i+28)*5, shot[i], 40);
           hitDuringCombo++;
         }
@@ -476,6 +477,14 @@ void PlayMode::drawScorePanel()
     else
       font2->write(display, 399-font2->width("Special"), 17, "Special");
 
+  }
+
+  // combo!
+  if((hitDuringCombo >= 2) && !(playtime % 4))
+  {
+    std::ostringstream s;
+    s << hitDuringCombo << " Hit combo!";
+    font4->writeCentered(display, last_hit_x, last_hit_y - 25, s.str());
   }
 }
 
