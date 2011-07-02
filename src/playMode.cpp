@@ -168,7 +168,7 @@ void PlayMode::drawStuff()
   for(int i = 0; i < 160; i++)
   {
     FillRect(5 * i, 0, 5, walls_top[i], 0x309930);
-    FillRect(5 * i, walls_bottom[i], 5, 599 - walls_bottom[i], 0x309930);
+    FillRect(5 * i, walls_bottom[i], 5, 600 - walls_bottom[i], 0x309930);
     if(obstacles[i])
       FillRect(5 * i, obstacles[i], 5, 50, 0x309930);
     if(i < 131 && shot[i])
@@ -502,9 +502,9 @@ Uint32 PlayMode::hue2rgb(float h)
 
 void PlayMode::addExplosion(int x, int y)
 {
-  for(int i = 0; i < 100; i++)
+  for(int i = 0; i < 80 * pow(2,hitDuringCombo); i++)
   {
-    float speed = (float)rng->rand() / (float)RAND_MAX;
+    float speed = (hitDuringCombo + 1) * (float)rng->rand() / (float)RAND_MAX;
     float angle = ((float)rng->rand() / (float)RAND_MAX) * 360; // TODO radian conversion can be done right here
     particles->add(x, y, (float)cos(angle * (3.14159265 / 180)) * speed + 3, (float)sin(angle * (3.14159265 / 180)) * speed, rng->rand() % 100, 6, 1, ParticleSystem::SQUARE, (rng->rand() | 0xFF0000FF) & 0xFFAF3FFF);
   }
