@@ -9,8 +9,6 @@
 
 int main(int argc, char** argv)
 {
-  std::cout << "Caveblobb version " << VERSION_MAJOR << "." 
-    << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
   if(HAS_MACOS)
     std::cout << "Running on MacOS" << std::endl;
 

@@ -38,7 +38,7 @@ void Font::readPositions()
     Uint8 r,g,b,a,nr,ng,nb,na;
     SDL_GetRGBA(*((Uint32*)font_surf->pixels + i-1), font_surf->format, &r, &g, &b, &a);
     SDL_GetRGBA(*((Uint32*)font_surf->pixels + i), font_surf->format, &nr, &ng, &nb, &na);
-    if(r == 255 && g == 0 && b == 255 && na == 0)
+    if(r == 255 && g == 0 && b >= 200 && na == 0)
     {
       letter l;
       l.x = i;

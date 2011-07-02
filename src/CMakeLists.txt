@@ -5,7 +5,9 @@ file(GLOB_RECURSE cpp_files "*.cpp")
 file(GLOB_RECURSE c_files "*.c")
 set(caveblobb_src "${h_files}" "${cpp_files}" "${c_files}")
 
-include_directories(${CMAKE_SOURCE_DIR} 
+include_directories(
+  ${CMAKE_SOURCE_DIR} 
+  ${CMAKE_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR} 
   ${SDL_INCLUDE_DIR}
   ${SDLGFX_INCLUDE_DIR}
