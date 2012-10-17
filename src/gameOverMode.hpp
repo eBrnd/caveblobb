@@ -17,6 +17,7 @@ class GameOverMode : public GameMode
     Mode frame();
     void prepare();
     void reset();
+    virtual ~GameOverMode() { }
 };
 
 #endif

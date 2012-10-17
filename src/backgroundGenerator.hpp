@@ -14,7 +14,7 @@ class BackgroundGenerator {
     RandomNumberGenerator* rng;
     int counter;
 
-    inline void FillRect(int x, int y, int w, int h, Uint32 color);
+    inline void FillRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h, Uint32 color);
   public:
     BackgroundGenerator(SDL_Surface* display);
     void clear();

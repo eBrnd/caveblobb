@@ -39,7 +39,7 @@ void BackgroundGenerator::update()
   }
 }
 
-inline void BackgroundGenerator::FillRect(int x, int y, int w, int h, Uint32 color)
+inline void BackgroundGenerator::FillRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h, Uint32 color)
 {
   SDL_Rect rect = {x,y,w,h};
   SDL_FillRect(display, &rect, color);

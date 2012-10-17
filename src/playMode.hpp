@@ -42,7 +42,7 @@ class PlayMode : public GameMode
     PermanentStorage* storage;
     int last_hit_x, last_hit_y;
 
-    inline void FillRect(int x, int y, int w, int h, Uint32 color);
+    inline void FillRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h, Uint32 color);
     void drawBackground();
     void moveField();
     void updatePlayerTail();
@@ -66,6 +66,7 @@ class PlayMode : public GameMode
     PlayMode(SDL_Surface* display, GlobalStore* globalStore, PermanentStorage* storage);
     void reset();
     Mode frame();
+    virtual ~PlayMode() { }
 };
 
 #endif

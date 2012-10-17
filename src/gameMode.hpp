@@ -15,6 +15,7 @@ class GameMode
     Font* font1, *font2, *font4, *font8;
   public:
     GameMode(SDL_Surface* display, GlobalStore* globalStore);
+    virtual ~GameMode() { }
     virtual void reset() = 0;
     virtual Mode frame() = 0;
 };

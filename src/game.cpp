@@ -16,9 +16,9 @@ Game::Game(SDL_Surface* display)
 
 Game::~Game()
 {
-  delete playMode;
-  delete menuMode;
-  delete gameOverMode;
+  delete (PlayMode*)playMode;
+  delete (MenuMode*)menuMode;
+  delete (GameOverMode*)gameOverMode;
   delete globalStore;
   delete storage;
 }

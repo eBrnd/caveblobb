@@ -56,7 +56,7 @@ void PlayMode::reset()
   }
 }
 
-inline void PlayMode::FillRect(int x, int y, int w, int h, Uint32 color)
+inline void PlayMode::FillRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h, Uint32 color)
 {
   SDL_Rect rect = {x,y,w,h};
   SDL_FillRect(display, &rect, color);

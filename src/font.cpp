@@ -54,16 +54,16 @@ void Font::readPositions()
   }
 }
 
-void Font::write(SDL_Surface* display, int x, int y, std::string text)
+void Font::write(SDL_Surface* display, Sint16 x, Sint16 y, std::string text)
 {
-  unsigned int offset = 0;
+  Sint16 offset = 0;
   for(unsigned int i = 0; i < text.size(); i++)
   {
     unsigned char c = (unsigned int)text[i] - 0x20;
     if(c < 95)
     {
       SDL_Rect char_pos = { letters[c].x, 1, letters[c].w, h };
-      SDL_Rect dest_pos = { x + offset, y, letters[c].w, h };
+      SDL_Rect dest_pos = { (Sint16)(x + offset), y, letters[c].w, h };
       SDL_BlitSurface(font_surf, &char_pos, display, &dest_pos);
       offset += dest_pos.w;
     }

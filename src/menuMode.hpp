@@ -15,6 +15,7 @@ class MenuMode : public GameMode
     MenuMode(SDL_Surface* display, GlobalStore* globalStore);
     Mode frame();
     void reset();
+    virtual ~MenuMode() { }
 };
 
 #endif

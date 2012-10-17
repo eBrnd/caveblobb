@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#pragma GCC diagnostic ignored "-Warray-bounds" // gcc bug?
+
 class PermanentStorage
 {
   private:
